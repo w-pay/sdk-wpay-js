@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> WPayMerchantOptions</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="ApiException.html">ApiException</a></li><li><a href="HttpErrorException.html">HttpErrorException</a></li><li><a href="JsonParsingException.html">JsonParsingException</a></li></ul><h3>Interfaces</h3><ul><li><a href="ApiAuthenticator.html">ApiAuthenticator</a></li><li><a href="WPayCustomerApi.html">WPayCustomerApi</a></li><li><a href="WPayCustomerOptions.html">WPayCustomerOptions</a></li><li><a href="WPayMerchantApi.html">WPayMerchantApi</a></li><li><a href="WPayMerchantOptions.html">WPayMerchantOptions</a></li><li><a href="WPayOptions.html">WPayOptions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#details">details</a></li><li><a href="global.html#Wallet">Wallet</a></li></ul></div><div class="category"><h2>API</h2><h3>Interfaces</h3><ul><li><a href="AdministrationApi.html">AdministrationApi</a></li><li><a href="CustomerPaymentRequestsApi.html">CustomerPaymentRequestsApi</a></li><li><a href="CustomerPaymentSessionsApi.html">CustomerPaymentSessionsApi</a></li><li><a href="CustomerPreferencesApi.html">CustomerPreferencesApi</a></li><li><a href="CustomerTransactionsApi.html">CustomerTransactionsApi</a></li><li><a href="MerchantPaymentsApi.html">MerchantPaymentsApi</a></li><li><a href="MerchantPaymentSessionsApi.html">MerchantPaymentSessionsApi</a></li><li><a href="MerchantPreferencesApi.html">MerchantPreferencesApi</a></li><li><a href="MerchantTransactionsApi.html">MerchantTransactionsApi</a></li><li><a href="PaymentInstrumentsApi.html">PaymentInstrumentsApi</a></li><li><a href="QRCodeApi.html">QRCodeApi</a></li><li><a href="SchemasApi.html">SchemasApi</a></li></ul></div><div class="category"><h2>Model</h2><h3>Interfaces</h3><ul><li><a href="Basket.html">Basket</a></li><li><a href="BasketItem.html">BasketItem</a></li><li><a href="ChallengeResponse.html">ChallengeResponse</a></li><li><a href="CreatePaymentRequestResult.html">CreatePaymentRequestResult</a></li><li><a href="CreatePaymentSessionRequest.html">CreatePaymentSessionRequest</a></li><li><a href="CreatePaymentSessionResult.html">CreatePaymentSessionResult</a></li><li><a href="CreditCard.html">CreditCard</a></li><li><a href="CreditCardStepUp.html">CreditCardStepUp</a></li><li><a href="CustomerPaymentRequest.html">CustomerPaymentRequest</a></li><li><a href="CustomerTransactionDetails.html">CustomerTransactionDetails</a></li><li><a href="CustomerTransactionSummaries.html">CustomerTransactionSummaries</a></li><li><a href="CustomerTransactionSummary.html">CustomerTransactionSummary</a></li><li><a href="CustomerTransactionUsedPaymentInstrument.html">CustomerTransactionUsedPaymentInstrument</a></li><li><a href="CustomerUpdatePaymentSessionRequest.html">CustomerUpdatePaymentSessionRequest</a></li><li><a href="DynamicPayload.html">DynamicPayload</a></li><li><a href="GiftCard.html">GiftCard</a></li><li><a href="GiftCardStepUp.html">GiftCardStepUp</a></li><li><a href="HealthCheck.html">HealthCheck</a></li><li><a href="MerchantPayload.html">MerchantPayload</a></li><li><a href="MerchantPaymentDetails.html">MerchantPaymentDetails</a></li><li><a href="MerchantPaymentSummaries.html">MerchantPaymentSummaries</a></li><li><a href="MerchantPaymentSummary.html">MerchantPaymentSummary</a></li><li><a href="MerchantSchema.html">MerchantSchema</a></li><li><a href="MerchantSchemaSummaries.html">MerchantSchemaSummaries</a></li><li><a href="MerchantSchemaSummary.html">MerchantSchemaSummary</a></li><li><a href="MerchantTransactionDetails.html">MerchantTransactionDetails</a></li><li><a href="MerchantTransactionSummaries.html">MerchantTransactionSummaries</a></li><li><a href="MerchantTransactionSummary.html">MerchantTransactionSummary</a></li><li><a href="MerchantUpdatePaymentSessionRequest.html">MerchantUpdatePaymentSessionRequest</a></li><li><a href="NewPaymentRequest.html">NewPaymentRequest</a></li><li><a href="NewPaymentRequestQRCode.html">NewPaymentRequestQRCode</a></li><li><a href="Payment.html">Payment</a></li><li><a href="PaymentInstrument.html">PaymentInstrument</a></li><li><a href="PaymentInstrumentAddition.html">PaymentInstrumentAddition</a></li><li><a href="PaymentInstrumentAdditionResult.html">PaymentInstrumentAdditionResult</a></li><li><a href="PaymentInstrumentIdentifier.html">PaymentInstrumentIdentifier</a></li><li><a href="PaymentInstruments.html">PaymentInstruments</a></li><li><a href="PaymentSession.html">PaymentSession</a></li><li><a href="PosPayload.html">PosPayload</a></li><li><a href="QRCode.html">QRCode</a></li><li><a href="SecondaryPaymentInstrument.html">SecondaryPaymentInstrument</a></li><li><a href="TransactionRefundDetails.html">TransactionRefundDetails</a></li><li><a href="TransactionSummary.html">TransactionSummary</a></li><li><a href="WalletContents.html">WalletContents</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ChallengeResponseType">ChallengeResponseType</a></li><li><a href="global.html#HealthCheckStatus">HealthCheckStatus</a></li><li><a href="global.html#PaymentInstrumentStatus">PaymentInstrumentStatus</a></li><li><a href="global.html#QRCodePaymentReferenceType">QRCodePaymentReferenceType</a></li><li><a href="global.html#TransactionSummaryPaymentStatus">TransactionSummaryPaymentStatus</a></li><li><a href="global.html#TransactionSummaryPaymentType">TransactionSummaryPaymentType</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Interface</p>
+                    <h1>WPayMerchantOptions</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>WPayMerchantOptions</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">Options unique to using the Merchant API operations.</div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="WPayMerchant.d.ts.html" class="button">View Source</a>
+            <span>
+                <a href="WPayMerchant.d.ts.html">WPayMerchant.d.ts</a>, <a href="WPayMerchant.d.ts.html#line28">line 28</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">string</span>
+
+
+    </span>
+
+<h4 class="name" id="merchantId">
+    <a class="href-link" href="#merchantId">#</a>
+    
+    <span class="code-name">
+        merchantId
+    </span>
+    
+        <span class='tag'>Optional</span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    If given, the merchant ID will be added to the headers.
+
+Since the merchant ID identifies the merchant it can be overridden with another value by the
+API gateway which uses the authentication token to identify the merchant.
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="WPayMerchant.d.ts.html" class="button">View Source</a>
+            <span>
+                <a href="WPayMerchant.d.ts.html">WPayMerchant.d.ts</a>, <a href="WPayMerchant.d.ts.html#line32">line 32</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>

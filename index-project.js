@@ -17,10 +17,10 @@ async function scanDir(dir) {
 		.filter((file) => file.match(/\.ts$/))
 
 		// ignore index files.
-		.filter((file) => !file.match("index.ts"))
+		.filter((file) => !file.match("index.js"))
 		.sort();
 
-	const index = fs.createWriteStream(path.join(dir, "index.ts"), { encoding: "utf8" });
+	const index = fs.createWriteStream(path.join(dir, "index.js"), { encoding: "utf8" });
 
 	if (dirs.length > 0) {
 		for (const d of dirs) {

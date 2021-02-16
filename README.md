@@ -41,7 +41,7 @@ to make the existing authentication details available to the SDK.
 ### API layer
 
 The API layer is decoupled from the rest of the SDK via the
-`WPayCustomerApiRepository` and `WPayMerchantApiRepository`
+`WPayCustomerApi` and `WPayMerchantApi`
 interfaces. Consumers can configure their `WPay` instance to use
 an implementation of the correct repository that conforms to needs and
 technology choices of the application.

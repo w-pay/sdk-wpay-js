@@ -3,9 +3,9 @@ const path = require("path");
 
 module.exports = {
 	entry: {
-		all: path.join(__dirname, "/src/index.ts"),
-		customer: path.join(__dirname, "/src/customer-index.ts"),
-		merchant: path.join(__dirname, "/src/merchant-index.ts")
+		all: path.join(__dirname, "/src/index.js"),
+		customer: path.join(__dirname, "/src/customer-index.js"),
+		merchant: path.join(__dirname, "/src/merchant-index.js")
 	},
 	output: {
 		globalObject: "this",
@@ -14,16 +14,10 @@ module.exports = {
 		library: "WPay",
 		libraryTarget: "umd"
 	},
-	module: {
-		rules: [
-			{
-				test: /\.tsx?$/,
-				loader: "ts-loader",
-				exclude: [/node_modules/, /test/]
-			}
-		]
-	},
 	resolve: {
-		extensions: [".tsx", ".ts", ".js"]
+		extensions: [ ".js" ],
+
+		// we don't want a polyfill for Node streams.
+		fallback: { "stream": false }
 	}
 };

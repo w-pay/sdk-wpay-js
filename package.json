@@ -2,24 +2,29 @@
   "name": "@wpay/wallet-sdk",
   "version": "2.0.0-alpha.0",
   "description": "Library that can facilitate JS applications accessing the WPay API.",
-  "main": "build/index.js",
+  "main": "src/index.js",
+  "types": "types",
   "engines": {
     "node": "~12.18"
   },
   "scripts": {
     "dist": "npm run test:node && npm run build && npm run test:pack",
-    "doc": "rm -rf docs && typedoc --out docs src",
+    "doc": "rm -rf docs && jsdoc -c ./jsdoc.config.json -d docs",
     "lint": "eslint src test",
-    "clean": "rm -rf build dist",
-    "build": "npm run compile && npm run pack",
-    "compile": "npm run clean && npm run lint && tsc -p .",
+    "build": "npm run check && npm run pack",
+    "check": "tsc types/**/*.ts --noEmit",
     "pack": "webpack --mode production",
-    "test:node": "find test/ -name *.test.ts | xargs mocha --timeout 1000",
+    "test:node": "find test/ -name *.test.js | xargs mocha --timeout 1000",
     "test:pack": "npm run test:pack:customer && npm run test:pack:merchant && npm run test:pack:all",
     "test:pack:customer": "karma start test/webpack/customer/karma.config.js --single-run",
     "test:pack:merchant": "karma start test/webpack/merchant/karma.config.js --single-run",
     "test:pack:all": "karma start test/webpack/all/karma.config.js --single-run"
   },
+  "files": [
+    "src",
+    "types",
+    "docs"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/woolworthslimited/sdk-wpay-js"
@@ -31,16 +36,19 @@
   },
   "homepage": "https://github.com/woolworthslimited/sdk-wpay-js#readme",
   "dependencies": {
-    "tslib": "^2.0.2"
+    "@sdk-creator/http-api-client": "file:sdk-creator-http-api-client-0.0.1.tgz",
+    "crocks": "^0.12.4"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
     "@types/mocha": "^8.0.3",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
+    "better-docs": "^2.3.2",
     "eslint": "^7.11.0",
     "eslint-config-prettier": "^6.12.0",
     "hamjest": "^3.7.1",
+    "jsdoc": "^3.6.6",
     "jsdom": "^16.4.0",
     "karma": "^5.2.3",
     "karma-jsdom-launcher": "^8.0.2",
@@ -56,8 +64,5 @@
     "typescript": "^4.0.3",
     "webpack": "^5.1.3",
     "webpack-cli": "^4.1.0"
-  },
-  "files": [
-    "build/**/*"
-  ]
+  }
 }

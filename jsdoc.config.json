@@ -1,0 +1,23 @@
+{
+	"plugins": [
+		"node_modules/better-docs/typescript",
+		"node_modules/better-docs/category"
+	],
+	"source": {
+		"include": [ "src", "types" ],
+		"includePattern": ".+\\.(ts|d.ts)?$"
+	},
+	"sourceType": "module",
+	"tags": {
+		"allowUnknownTags": true,
+		"dictionaries": [ "jsdoc" ]
+	},
+	"templates": {
+		"cleverLinks": true
+	},
+	"opts": {
+		"readme": "./README.md",
+		"recurse": true,
+		"template": "node_modules/better-docs"
+	}
+}

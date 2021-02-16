@@ -2,38 +2,12 @@
 	"extends": "@tsconfig/recommended/tsconfig.json",
 
 	"compilerOptions": {
-		/* Project options */
-		"declaration": true,
-		"declarationMap": true,
-		"importHelpers": true, // uses tslib at runtime
+		"noEmit": true,
 
-		"lib": [ "es2015", "dom" ],
 		"module": "commonjs",
-		"outDir": "./build",
-		"removeComments": true,
-		"sourceMap": true,
-		"target": "es5",
-
-		/* Module Resolution */
-		"baseUrl": "./",
-		"allowSyntheticDefaultImports": true,
-		"moduleResolution": "node",
-
-		/* Experimental */
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-
-		/* Advanced */
-		"resolveJsonModule": true
 	},
+
 	"include": [
-		"./src/**/*.ts"
-	],
-	"exclude": [
-		"node_modules",
-		"webpack.config.js",
-		"**/*.spec.ts",
-		"**/*.test.ts"
+		"./types/**/*.ts",
 	]
 }
-
