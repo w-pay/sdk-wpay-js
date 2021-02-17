@@ -8,10 +8,7 @@ const { addHeaders, jsonMarshaller, resolveUrl } = require("@sdk-creator/http-ap
 const { defaultHeaders } = require("./headers/default-headers");
 const { resultHandler } = require("./api/result-handler");
 
-const createApiClient = (httpClient, token, options) => {
-	// TODO: Replace me when token is part of the options
-	options.accessToken = token;
-
+const createApiClient = (httpClient, options) => {
 	const headers = defaultHeaders(options)
 		.either((err) => { throw err }, identity);
 

@@ -1,7 +1,6 @@
 import { HttpClientFactory } from "@sdk-creator/http-api-client";
 
 import { AdministrationApi } from "./api";
-import { ApiTokenType } from "./WPayFactory";
 import { CustomerPaymentRequestsRepository } from "./api";
 import { CustomerPaymentSessionsRepository } from "./api";
 import { CustomerPreferencesRepository } from "./api";
@@ -13,12 +12,10 @@ import { WPayOptions } from "./WPayOptions";
  * Factory for creating a {@link WPayCustomerApi} instance
  *
  * @param httpClient
- * @param token
  * @param options
  */
 export function createCustomerSDK(
 	httpClient: HttpClientFactory,
-	token: ApiTokenType,
 	options: WPayCustomerOptions
 ): WPayCustomerApi
 

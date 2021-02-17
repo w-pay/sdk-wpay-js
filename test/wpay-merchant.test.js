@@ -17,7 +17,7 @@ describe("WPay Merchant", function () {
 	});
 
 	it("should not add merchant id header when no id given", async function () {
-		const sdk = createMerchantSDK(stubHttpClient.factory(), "abc123", options);
+		const sdk = createMerchantSDK(stubHttpClient.factory(), options);
 
 		await sdk.admin.checkHealth();
 
@@ -27,7 +27,6 @@ describe("WPay Merchant", function () {
 	it("should add merchant id header when id given", async function () {
 		const sdk = createMerchantSDK(
 			stubHttpClient.factory(),
-			"abc123",
 			{ ...options, merchantId: "12345465" }
 		);
 

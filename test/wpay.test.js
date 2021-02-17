@@ -34,9 +34,7 @@ describe("WPay SDKs", function () {
 
 		describe(`${sdk.name}`, function () {
 			it("should pass needed request headers in request", async function () {
-				const token = "abc123";
-
-				const sdk = factory(stubHttpClient.factory(), token, options);
+				const sdk = factory(stubHttpClient.factory(), { ...options, accessToken: "abc123" });
 				await sdk.admin.checkHealth();
 
 				const request = stubHttpClient.request;
@@ -49,7 +47,7 @@ describe("WPay SDKs", function () {
 
 			// for unauthenticated endpoints
 			it("should omit authorisation if no token provided", async function () {
-				const sdk = factory(stubHttpClient.factory(), null, options);
+				const sdk = factory(stubHttpClient.factory(), options);
 				await sdk.admin.checkHealth();
 
 				assertThat(stubHttpClient.request.headers, not(hasProperty(AUTHORISATION)));

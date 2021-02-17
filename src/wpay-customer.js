@@ -6,8 +6,8 @@ const api = require("./api");
 /**
  * @type {import('../types/WPayCustomer').createCustomerSDK}
  */
-const createCustomerSDK = (httpClient, token, options) => {
-	const client = createApiClient(httpClient, token, options);
+const createCustomerSDK = (httpClient, options) => {
+	const client = createApiClient(httpClient, options);
 
 	return {
 		admin: api.administration(client),

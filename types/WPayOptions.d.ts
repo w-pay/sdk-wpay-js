@@ -1,6 +1,8 @@
 /**
  * Options to configure the SDK
  */
+import { ApiTokenType } from "./WPayFactory";
+
 export interface WPayOptions {
 	/** The API key to identify the SDK to the API. */
 	apiKey: string;
@@ -10,4 +12,6 @@ export interface WPayOptions {
 	 * context root for the API paths to use eg: https://myawesomeapp.com/api
 	 */
 	baseUrl: string;
+
+	accessToken?: ApiTokenType
 }

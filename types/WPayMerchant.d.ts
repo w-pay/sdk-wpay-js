@@ -1,6 +1,5 @@
 import { HttpClientFactory } from "@sdk-creator/http-api-client";
 
-import { ApiTokenType } from "../src";
 import { AdministrationApi } from "./WPayFactory";
 import { MerchantPaymentsRepository } from "./api";
 import { MerchantPaymentSessionsRepository } from "./api";
@@ -14,12 +13,10 @@ import { WPayOptions } from "./WPayOptions";
  * Factory for creating a {@link WPayMerchantApi} instance
  *
  * @param httpClient
- * @param token
  * @param options
  */
 export function createMerchantSDK(
 	httpClient: HttpClientFactory,
-	token: ApiTokenType,
 	options: WPayMerchantOptions
 ): WPayMerchantApi
 

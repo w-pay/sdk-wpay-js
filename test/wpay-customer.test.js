@@ -17,7 +17,7 @@ describe("WPay Customer", function () {
 	});
 
 	it("should not add wallet id header when no id given", async function () {
-		const sdk = createCustomerSDK(stubHttpClient.factory(), "abc123", options);
+		const sdk = createCustomerSDK(stubHttpClient.factory(), options);
 
 		await sdk.admin.checkHealth();
 
@@ -27,7 +27,6 @@ describe("WPay Customer", function () {
 	it("should add wallet id header when id given", async function() {
 		const sdk = createCustomerSDK(
 			stubHttpClient.factory(),
-			"abc123",
 			{ ...options, walletId: "1234567" }
 		)
 
