@@ -36,6 +36,10 @@ class HttpErrorException extends ApiException {
 				}
 			})()
 		);
+
+		this.statusCode = statusCode;
+		this.responseHeaders = responseHeaders;
+		this.responseBody = responseBody;
 	}
 }
 

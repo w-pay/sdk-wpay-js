@@ -3,9 +3,10 @@
 const identity = require("crocks/combinators/identity");
 const pipeK = require("crocks/helpers/pipeK");
 
-const { addHeaders, jsonMarshaller, jsonUnmarshaller, resolveUrl } = require("@sdk-creator/http-api-client");
+const { addHeaders, jsonMarshaller, resolveUrl } = require("@sdk-creator/http-api-client");
 
 const { defaultHeaders } = require("./headers/default-headers");
+const { resultHandler } = require("./api/result-handler");
 
 const createApiClient = (httpClient, token, options) => {
 	// TODO: Replace me when token is part of the options
@@ -20,7 +21,7 @@ const createApiClient = (httpClient, token, options) => {
 		addHeaders(headers),
 		jsonMarshaller(),
 		httpClient(),
-		jsonUnmarshaller()
+		resultHandler()
 	)
 }
 

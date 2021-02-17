@@ -13,5 +13,7 @@ module.exports = {
 	merchantTransactions: require("./merchant-transactions"),
 	paymentInstruments: require("./payment-instruments"),
 	qrCode: require("./qr-code"),
-	schemas: require("./schemas")
+	schemas: require("./schemas"),
+
+	handlers: require("./result-handler")
 }
