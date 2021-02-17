@@ -1,6 +1,6 @@
 {
   "name": "@wpay/wallet-sdk",
-  "version": "2.0.0-alpha.0",
+  "version": "1.1.0",
   "description": "Library that can facilitate JS applications accessing the WPay API.",
   "main": "src/index.js",
   "types": "types",
