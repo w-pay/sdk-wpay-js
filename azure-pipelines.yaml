@@ -1,0 +1,43 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+      - main
+      - release/*
+
+pr:
+  - master
+  - main
+  - release/*
+
+variables:
+  nodeVersion: 15.x
+  feedName: Nodejs-Shared
+
+resources:
+  repositories:
+  - repository: pe-templates # shared build/release templates
+    type: git
+    # name: "Platform Engineering/vsts-build-templates"
+    name: "Digital Pay/vsts-build-templates"
+    ref: 'refs/heads/master'
+
+stages:
+- stage: CI
+  jobs:
+  - job: Build_and_Test
+    pool:
+      name: wlx-ubuntu1804
+    workspace:
+      clean: all
+    steps:
+    - checkout: self
+      clean: true
+    - template: /nodejs/build-publish-feed.yaml@pe-templates
+      parameters:
+        feedName: $(feedName)
+    - template: /release/common/steps/github-release.yaml@pe-templates
+      parameters:
+        serviceConnection: 'wx-dp-devops'
+      
