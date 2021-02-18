@@ -2,5 +2,6 @@
 
 module.exports = {
 	...require("./api/index"),
-	...require("./headers")
+	...require("./headers/index"),
+	...require("./model/index")
 };

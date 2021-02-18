@@ -14,6 +14,13 @@ describe("WPay Customer", function () {
 
 	beforeEach(function() {
 		stubHttpClient = new StubHttpClient();
+
+		stubHttpClient.response.body = JSON.stringify({
+			data: {
+				healthCheck: "success"
+			},
+			meta: {}
+		})
 	});
 
 	it("should not add wallet id header when no id given", async function () {

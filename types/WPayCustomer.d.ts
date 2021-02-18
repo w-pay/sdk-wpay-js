@@ -1,11 +1,11 @@
 import { HttpClientFactory } from "@sdk-creator/http-api-client";
 
 import { AdministrationApi } from "./api";
-import { CustomerPaymentRequestsRepository } from "./api";
-import { CustomerPaymentSessionsRepository } from "./api";
-import { CustomerPreferencesRepository } from "./api";
-import { CustomerTransactionsRepository } from "./api";
-import { PaymentInstrumentsRepository } from "./api";
+import { CustomerPaymentRequestsApi } from "./api";
+import { CustomerPaymentSessionsApi } from "./api";
+import { CustomerPreferencesApi } from "./api";
+import { CustomerTransactionsApi } from "./api";
+import { PaymentInstrumentsApi } from "./api";
 import { WPayOptions } from "./WPayOptions";
 
 /**
@@ -29,11 +29,11 @@ export function createCustomerSDK(
  */
 export interface WPayCustomerApi {
 	admin: AdministrationApi;
-	instruments: PaymentInstrumentsRepository;
-	paymentRequests: CustomerPaymentRequestsRepository;
-	paymentSessions: CustomerPaymentSessionsRepository;
-	preferences: CustomerPreferencesRepository;
-	transactions: CustomerTransactionsRepository;
+	instruments: PaymentInstrumentsApi;
+	paymentRequests: CustomerPaymentRequestsApi;
+	paymentSessions: CustomerPaymentSessionsApi;
+	preferences: CustomerPreferencesApi;
+	transactions: CustomerTransactionsApi;
 
 	/**
 	 * Options that were given at SDK initialisation

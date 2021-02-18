@@ -1,4 +1,9 @@
-import { MerchantSchema, MerchantSchemaSummaries, MerchantSchemaSummary } from "../model";
+import {
+	MerchantSchema,
+	MerchantSchemaSummaries,
+	MerchantSchemaSummary,
+	NewMerchantSchema
+} from "../model";
 
 /**
  * @category API
@@ -21,5 +26,5 @@ export interface SchemasApi {
 	 *
 	 * @param schema The schema definition
 	 */
-	create(schema: MerchantSchema): Promise<MerchantSchemaSummary>;
+	create(schema: NewMerchantSchema): Promise<MerchantSchemaSummary>;
 }

@@ -25,6 +25,9 @@ export interface MerchantSchemaSummary {
 
 	/** A description for the schema. */
 	description?: string;
+
+	/** The timestamp when the schema was created */
+	created?: Date;
 }
 
 /**
@@ -32,7 +35,12 @@ export interface MerchantSchemaSummary {
  *
  * @category Model
  */
-export interface MerchantSchema {
+export interface MerchantSchema extends NewMerchantSchema {
+	/** The timestamp when the schema was created */
+	created?: Date;
+}
+
+export interface NewMerchantSchema {
 	/** The schema content formatted according to JSON Schema standards */
 	schema: { [key: string]: string };
 
@@ -41,7 +49,4 @@ export interface MerchantSchema {
 
 	/** A description for the schema */
 	description?: string;
-
-	/** The timestamp when the schema was created */
-	created?: Date;
 }

@@ -43,7 +43,10 @@ class HttpErrorException extends ApiException {
 	}
 }
 
+const requiredParameterError = (name) => new Error(`'${name}' is mandatory`);
+
 module.exports = {
 	JsonParsingException,
-	HttpErrorException
+	HttpErrorException,
+	requiredParameterError
 }
