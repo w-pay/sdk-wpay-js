@@ -1,4 +1,4 @@
-import { HttpClientFactory } from "@sdk-creator/http-api-client";
+import { HttpClientFactory } from "@api-sdk-creator/http-api-client";
 
 import { AdministrationApi } from "./WPayFactory";
 import { MerchantPaymentsApi } from "./api";

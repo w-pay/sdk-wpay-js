@@ -2,7 +2,7 @@
 
 const { assertThat, is, throws } = require("hamjest");
 
-const { HttpRequestMethod } = require("@sdk-creator/http-api-client");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/payment-instruments");
 const { PaymentInstrumentStatus, Wallet } = require("../../src/model/enums");

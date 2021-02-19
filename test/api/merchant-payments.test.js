@@ -2,7 +2,7 @@
 
 const { assertThat, defined, hasProperties, instanceOf, is, not, throws } = require("hamjest");
 
-const { HttpRequestMethod } = require("@sdk-creator/http-api-client");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/merchant-payments");
 const { QRCodePaymentReferenceType } = require("../../src/model/enums");

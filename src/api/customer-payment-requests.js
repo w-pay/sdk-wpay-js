@@ -7,7 +7,7 @@ const mapProps = require("crocks/helpers/mapProps");
 const pipe = require("crocks/helpers/pipe");
 const resultToAsync = require("crocks/Async/resultToAsync");
 
-const { addHeaders, HttpRequestMethod } = require("@sdk-creator/http-api-client");
+const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
 const { fromBasketDTO } = require("../transformers/basket");

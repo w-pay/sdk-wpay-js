@@ -11,7 +11,7 @@ const {
 	throws
 } = require("hamjest");
 
-const { HttpRequestMethod } = require("@sdk-creator/http-api-client");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/merchant-payment-sessions");
 const { QRCodePaymentReferenceType } = require("../../src/model/enums");

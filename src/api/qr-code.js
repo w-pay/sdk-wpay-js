@@ -6,7 +6,7 @@ const map = require("crocks/pointfree/map");
 const pipe = require("crocks/helpers/pipe");
 const resultToAsync = require("crocks/Async/resultToAsync");
 
-const { HttpRequestMethod } = require("@sdk-creator/http-api-client");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { fromQrDTO } = require("../transformers/qr-code");
 const { getPropOrError } = require("../helpers/props");

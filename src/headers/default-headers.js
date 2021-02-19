@@ -22,7 +22,7 @@ const safe = require("crocks/Maybe/safe");
 const sequence = require("crocks/pointfree/sequence");
 const valueOf = require("crocks/pointfree/valueOf");
 
-const { bearerToken, constantHeaders, createHeaders } = require("@sdk-creator/http-api-client");
+const { bearerToken, constantHeaders, createHeaders } = require("@api-sdk-creator/http-api-client");
 
 const { toApiAuthenticator } = require("./api-authenticator");
 const { X_API_KEY, X_MERCHANT_ID, X_WALLET_ID } = require("./header-names");

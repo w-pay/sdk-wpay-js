@@ -1,6 +1,6 @@
 "use strict";
 
-const { constantHeaders } = require("@sdk-creator/http-api-client");
+const { constantHeaders } = require("@api-sdk-creator/http-api-client");
 
 const { Wallet } = require("../model/enums");
 const { X_EVERYDAY_PAY_WALLET } = require("./header-names");

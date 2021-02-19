@@ -110,7 +110,7 @@ const options = {
 #### Accessing an unauthenticated API
 
 ```javascript
-const { createAxiosHttpClient } = require("@sdk-creator/axios-http-client");
+const { createAxiosHttpClient } = require("@api-sdk-creator/axios-http-client");
 import { createCustomerSDK } from "@wpay/sdk"
 
 const sdk = createCustomerSDK(createAxiosHttpClient, options);
