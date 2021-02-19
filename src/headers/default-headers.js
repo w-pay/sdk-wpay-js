@@ -2,10 +2,9 @@
 
 const Assign = require("crocks/Assign");
 const Async = require("crocks/Async");
-const List = require("crocks/List");
 const Result = require("crocks/Result");
 
-const ap = require("crocks/pointfree/ap");
+const applyTo = require("crocks/combinators/applyTo");
 const chain = require("crocks/pointfree/chain");
 const constant = require("crocks/combinators/constant");
 const curry = require("crocks/core/curry");
@@ -30,9 +29,8 @@ const { X_API_KEY, X_MERCHANT_ID, X_WALLET_ID } = require("./header-names");
 
 const { getPropOrError } = require("../helpers/props");
 
-// TODO: there might be a better way to do this
-// ap :: Applicative m => m (a -> b) -> m a ->  m b
-const applyFunctions = flip(ap);
+// mapFunctions :: [ a -> b ] -> a -> [ b ]
+const mapFunctions = flip(pipe(applyTo, map));
 
 // getHeaderOrError :: String -> String -> Result Error Assign
 const getHeaderOrError = curry((prop, headerName) =>
@@ -61,12 +59,11 @@ const apiAuthenticatorToRequestHeaderFactory =
 // constantOptsToHeaders :: Object -> Result Error RequestHeaderFactory
 const constantOptsToHeaders =
 	pipe(
-		List.of,
-		applyFunctions(List([
+		mapFunctions([
 			pipe(getHeaderOrError("apiKey", X_API_KEY)),
 			pipe(getHeaderOrNothing("walletId", X_WALLET_ID)),
 			pipe(getHeaderOrNothing("merchantId", X_MERCHANT_ID))
-		])),
+		]),
 		fold,
 		map(valueOf),
 		map(constantHeaders),
@@ -92,11 +89,10 @@ const accessTokenToHeader =
 // defaultHeaders :: Object -> Result Error RequestHeadersFactory
 const defaultHeaders =
 	pipe(
-		List.of,
-		applyFunctions(List([
+		mapFunctions([
 			constantOptsToHeaders,
 			accessTokenToHeader
-		])),
+		]),
 		sequence(Result.of),
 		map(createHeaders),
 	)
