@@ -79,20 +79,6 @@ $ npm install @wpay/sdk
 $ npm install @api-sdk-creator/axios-http-client
 ```
 
-<!--
-TODO: When modules are published.
-
-If using the SDK in a project with a bundler (eg: Webpack) the SDK can be installed via NPM and imported like any other module.
-
-```shell script
-# not required if using the Open API implementation as the SDK will be a transitive dependency.
-$ npm install @wpay/wallet-sdk
-
-# not required if not using the Open API implementation
-$ npm install @wpay/wallet-sdk-openapi
-```
--->
-
 If using the SDK via a `<script>` tag, the `WPay` global will be made available
 
 ```html
@@ -125,7 +111,7 @@ const options = {
 
 ```javascript
 const { createAxiosHttpClient } = require("@sdk-creator/axios-http-client");
-import { createCustomerSDK } from "@wpay/wallet-sdk"
+import { createCustomerSDK } from "@wpay/sdk"
 
 const sdk = createCustomerSDK(createAxiosHttpClient, options);
 
@@ -138,7 +124,7 @@ If an access token is acquired outside the SDK, it can be given to the SDK and u
 as the token is valid.
 
 ```javascript
-import { createCustomerSDK } from "@wpay/wallet-sdk"
+import { createCustomerSDK } from "@wpay/sdk"
 
 options.accessToken = aquireAccessToken();
 
@@ -156,7 +142,7 @@ responsibility of the client application to manage that token.
 (This example is written in Typescript so that type information can be used).
 
 ```typescript
-import { createCustomerSDK } from "@wpay/wallet-sdk"
+import { createCustomerSDK } from "@wpay/sdk"
 
 const authenticator: ApiAuthenticator = createAuthenticator();
 options.accessToken = authenticator;
