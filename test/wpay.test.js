@@ -27,6 +27,13 @@ describe("WPay SDKs", function () {
 
 	beforeEach(function() {
 		stubHttpClient = new StubHttpClient();
+
+		stubHttpClient.response.body = JSON.stringify({
+			data: {
+				healthCheck: "success"
+			},
+			meta: {}
+		})
 	});
 
 	sdks.forEach((sdk) => {

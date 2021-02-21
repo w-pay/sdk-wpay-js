@@ -1,13 +1,19 @@
 "use strict";
 
-const getPreferences = client => Promise.resolve();
+const { getPreferences, setPreferences } = require("./preferences");
 
-const setPreferences = (client, preferences) => Promise.resolve();
+const getPrefs = getPreferences({
+	url: "/customer/preferences"
+})
+
+const setPrefs = setPreferences({
+	url: "/customer/preferences",
+})
 
 module.exports = (client) => {
 	/** @implements {import('../../types/api/CustomerPreferences').CustomerPreferencesApi} */
 	return {
-		get: getPreferences(client),
-		set: setPreferences(client)
+		get: getPrefs(client),
+		set: setPrefs(client)
 	};
 }

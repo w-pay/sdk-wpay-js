@@ -4,6 +4,8 @@ const Async = require("crocks/Async");
 
 class StubHttpClient {
 	constructor() {
+		this.request = null;
+
 		this.response = {
 			statusCode: 200,
 			statusMessage: "OK",
@@ -12,14 +14,16 @@ class StubHttpClient {
 	}
 
 	factory() {
-		return () => (request) => {
+		return () => this.client()
+	}
+
+	client() {
+		return (request) => {
 			this.request = request;
 
-			return Async((reject, resolve) => {
-				resolve({
-					request,
-					response: this.response
-				})
+			return Async.of({
+				request,
+				response: this.response
 			});
 		}
 	}

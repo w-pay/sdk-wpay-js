@@ -10,3 +10,6 @@ declare const X_API_KEY;
 
 /** Header name to specify merchant ID */
 declare const X_MERCHANT_ID;
+
+/** Header name to specify the use of the Everyday Pay Wallet */
+declare const X_EVERYDAY_PAY_WALLET;

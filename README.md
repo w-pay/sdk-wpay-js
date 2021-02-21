@@ -1,11 +1,14 @@
-# WPay Wallet Javascript SDK
+# WPay Javascript SDK
 
 This project contains a `npm` module that can facilitate applications accessing the WPay API.
 
-The SDK is currently in development. Therefore parts may change.
+| :memo: | The SDK is currently in development. Therefore parts may change. |
+|--------|:-----------------------------------------------------------------|
 
-The SDK is written in Typescript which means that type definitions will be available for client
-developers. Client applications can be written in Typescript or plain Javascript.
+
+The SDK is written in Javascript with Typescript definitions being published which means that 
+type definitions will be available for client developers. Client applications can be written in 
+Typescript or plain Javascript.
 
 ## Usage
 
@@ -38,19 +41,10 @@ authentication workflow can either update the relevant classes to implement the
 `ApiAuthenticator` interface, or provide an [Adapter](https://en.wikipedia.org/wiki/Adapter_pattern#Java)
 to make the existing authentication details available to the SDK.
 
-### API layer
+### HTTP layer
 
-The API layer is decoupled from the rest of the SDK via the
-`WPayCustomerApi` and `WPayMerchantApi`
-interfaces. Consumers can configure their `WPay` instance to use
-an implementation of the correct repository that conforms to needs and
-technology choices of the application.
-
-#### Open API Implementation
-
-For convenience, the [WPay SDK Open API Repository](https://github.com/woolworthslimited/sdk-wow-pay-web-openapi)
-project provides an implementation of the API Repository interfaces
-that wraps an API Client created with the Open API generator.
+As the WPay SDK uses the [api-sdk-creator](https://github.com/RedCrewOS/api-sdk-creator-js)
+project, the HTTP stack is swappable when the SDK is created.
 
 #### Reference Application
 
@@ -74,67 +68,39 @@ in the SDK.
 
 ### Example usage
 
-Some of the examples use the Open API implementation, however any class conforming to the correct
-interface can be used.
+These examples use the `@api-sdk-creator/axios-http-client` `HttpClient`
 
 #### Installation
 
-If using the SDK in a project with a bundler (eg: Webpack) the SDK can be installed via NPM and imported like any other module. However because the module is currently private and unpublished, it can only be installed via Git. This means that a consumer will need to be authorised to clone the repo.
+If using the SDK in a project with a bundler (eg: Webpack) the SDK can be installed via NPM and imported like any other module. However because the module is currently private users will need access to the NPM repository.
 
 ```shell script
-# see `npm install help` for other ways to install from GitHub
-
-# not required if using the Open API implementation as the SDK will be a transitive dependency.
-$ npm install git+ssh://git@github.com:woolworthslimited/sdk-wow-pay-web.git#semver:1.0.0
-
-# not required if not using the Open API implementation
-$ npm install git+ssh://git@github.com:woolworthslimited/sdk-wow-pay-web-openapi.git#semver:1.0.0
+$ npm install @wpay/sdk
+$ npm install @api-sdk-creator/axios-http-client
 ```
-
-<!--
-TODO: When modules are published.
-
-If using the SDK in a project with a bundler (eg: Webpack) the SDK can be installed via NPM and imported like any other module.
-
-```shell script
-# not required if using the Open API implementation as the SDK will be a transitive dependency.
-$ npm install @wpay/wallet-sdk
-
-# not required if not using the Open API implementation
-$ npm install @wpay/wallet-sdk-openapi
-```
--->
 
 If using the SDK via a `<script>` tag, the `WPay` global will be made available
 
 ```html
+<!-- Found in the @api-sdk-creator/axios-http-client repo -->
+<script type="javascript" src="axios-http-client.js" />
+
 <!-- For customer only -->
-<!-- Not required if using the Open API implementation as the SDK will be bundled -->
 <script type="javascript" src="wpay-wallet-sdk.customer.js" />
 
-<!-- Not required if not using the Open API implementation -->
-<script type="javascript" src="wpay-open-api-wallet-sdk.customer.js" />
-
 <!-- For merchant only -->
-<!-- Not required if using the Open API implementation as the SDK will be bundled -->
 <script type="javascript" src="wpay-wallet-sdk.merchant.js" />
 
-<!-- Not required if not using the Open API implementation -->
-<script type="javascript" src="wpay-open-api-wallet-sdk.merchant.js" />
-
 <!-- For everything -->
-<!-- Not required if using the Open API implementation as the SDK will be bundled -->
 <script type="javascript" src="wpay-wallet-sdk.all.js" />
 
-<!-- Not required if not using the Open API implementation -->
-<script type="javascript" src="wpay-open-api-wallet-sdk.all.js" />
-
 <script>
-const sdk = WPay.createCustomerSDK(options);
+const sdk = WPay.createCustomerSDK(AxiosHttpClient.createAxiosHttpClient, options);
 </script>
 ``` 
 
 ```javascript
+// mandatory options
 const options = {
   apiKey: "<your key here>",
   baseUrl: "https://api.wpay.com/api"
@@ -144,24 +110,25 @@ const options = {
 #### Accessing an unauthenticated API
 
 ```javascript
-import { createCustomerSDK } from "@wpay/wallet-sdk-openapi"
+const { createAxiosHttpClient } = require("@api-sdk-creator/axios-http-client");
+import { createCustomerSDK } from "@wpay/sdk"
 
-const sdk = createCustomerSDK(options);
+const sdk = createCustomerSDK(createAxiosHttpClient, options);
 
 await sdk.admin.checkHealth();
 ```
 
 #### Using a preprovided access token
 
-If an access token is acquired outside the SDK, it can be given to the SDK. However it becomes the
-responsibility of the client application to manage that token.
+If an access token is acquired outside the SDK, it can be given to the SDK and used for as long
+as the token is valid.
 
 ```javascript
-import { createCustomerSDK } from "@wpay/wallet-sdk-openapi"
+import { createCustomerSDK } from "@wpay/sdk"
 
-const accessToken = aquireAccessToken();
+options.accessToken = aquireAccessToken();
 
-const sdk = createCustomerSDK(options, accessToken);
+const sdk = createCustomerSDK(createAxiosHttpClient, options);
 
 await sdk.preferences.get();
 ```
@@ -169,58 +136,21 @@ await sdk.preferences.get();
 #### Using an ApiAuthenticator
 
 If a client application wants to wrap an existing application authentication strategy then a
-custom `ApiAuthenticator` can be given to the SDK.
+custom `ApiAuthenticator` can be given to the SDK. However it becomes the
+responsibility of the client application to manage that token.
 
 (This example is written in Typescript so that type information can be used).
 
 ```typescript
-import { createCustomerSDK } from "@wpay/wallet-sdk-openapi"
+import { createCustomerSDK } from "@wpay/sdk"
 
-/*
- * The SDK requires at minimum an `accessToken` to be be provided from an ApiAuthenticator.
- */
-const authenticator: ApiAuthenticator<A extends HasAccessToken> = createAuthenticator();
+const authenticator: ApiAuthenticator = createAuthenticator();
+options.accessToken = authenticator;
 
-const sdk = createCustomerSDK(options, authenticator);
+const sdk = createCustomerSDK(createAxiosHttpClient, options);
 
-await sdk.authenticate();
 await sdk.preferences.get();
 ```
-
-#### Using a custom API implementation class
-
-If a client application doesn't want to use the Open API implementation then a custom implementation
-class can be provided to the SDK factory.
-
-(This example is written with ES6 classes)
-
-```javascript
-import { createCustomerSDK } from "@wpay/wallet-sdk"
-
-class CustomCustomerApiRepository {
-  /*
-   * Must conform to the `CustomerApiRepositoryConstructor` signature to be compatible with SDK factory.
-   */
-  constructor(
-    options,
-    headers,
-    authenticator
-  ) {
-    // ... instantiate properties of API repository
-  }
-}
-
-const sdk = createCustomerSDK(options, "accessToken", CustomCustomerApiRepository);
-
-await sdk.authenticate();
-await sdk.preferences.get();
-```
-
-#### Completely customising the SDK
-
-If a client application wishes to have a completely custom SDK configured, the factory function
-`createCustomerSDK` or `createMerchantSDK` is the place to start to learn how to build an SDK
-instance using the component parts of the SDK module.
 
 ### Building
 
@@ -232,7 +162,7 @@ $ npm run dist
 
 ### Documentation
 
-The SDK reference docs are generated using [TypeDoc](https://typedoc.org/)
+The SDK reference docs are generated using [JSDoc](https://jsdoc.app/)
 
 ```shell
 $ npm run doc
@@ -240,4 +170,4 @@ $ npm run doc
 
 ## Publishing
 
-Currently, the module build is only available in GitHub.
+Currently, publishing requires write access to the NPM organisation.

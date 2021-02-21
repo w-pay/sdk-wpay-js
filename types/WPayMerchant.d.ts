@@ -1,12 +1,12 @@
-import { HttpClientFactory } from "@sdk-creator/http-api-client";
+import { HttpClientFactory } from "@api-sdk-creator/http-api-client";
 
 import { AdministrationApi } from "./WPayFactory";
-import { MerchantPaymentsRepository } from "./api";
-import { MerchantPaymentSessionsRepository } from "./api";
-import { MerchantPreferencesRepository } from "./api";
-import { MerchantTransactionsRepository } from "./api";
-import { QRCodeRepository } from "./api";
-import { SchemasRepository } from "./api";
+import { MerchantPaymentsApi } from "./api";
+import { MerchantPaymentSessionsApi } from "./api";
+import { MerchantPreferencesApi } from "./api";
+import { MerchantTransactionsApi } from "./api";
+import { QRCodeApi } from "./api";
+import { SchemasApi } from "./api";
 import { WPayOptions } from "./WPayOptions";
 
 /**
@@ -30,12 +30,12 @@ export function createMerchantSDK(
  */
 export interface WPayMerchantApi {
 	admin: AdministrationApi;
-	payments: MerchantPaymentsRepository;
-	paymentSession: MerchantPaymentSessionsRepository;
-	preferences: MerchantPreferencesRepository;
-	qr: QRCodeRepository;
-	schemas: SchemasRepository;
-	transactions: MerchantTransactionsRepository;
+	payments: MerchantPaymentsApi;
+	paymentSession: MerchantPaymentSessionsApi;
+	preferences: MerchantPreferencesApi;
+	qr: QRCodeApi;
+	schemas: SchemasApi;
+	transactions: MerchantTransactionsApi;
 
 	/**
 	 * Options that were given at SDK initialisation
