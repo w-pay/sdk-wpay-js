@@ -12,7 +12,7 @@ const {
 	throws
 } = require("hamjest");
 
-const { HttpRequestMethod } = require("@sdk-creator/http-api-client");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/customer-payment-sessions");
 const { X_EVERYDAY_PAY_WALLET } = require("../../src/headers/header-names");

@@ -4,7 +4,7 @@ const mapProps = require("crocks/helpers/mapProps");
 
 const { assertThat, equalTo, is, throws } = require("hamjest");
 
-const { HttpRequestMethod } = require("@sdk-creator/http-api-client");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/customer-payment-requests");
 const { toBasketDTO } = require("../../src/transformers/basket");

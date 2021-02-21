@@ -2,7 +2,7 @@
 
 const { assertThat, equalTo, hasProperty, is } = require("hamjest");
 
-const { HttpRequestMethod } = require("@sdk-creator/http-api-client");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/administration");
 

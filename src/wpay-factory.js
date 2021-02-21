@@ -3,7 +3,7 @@
 const identity = require("crocks/combinators/identity");
 const pipeK = require("crocks/helpers/pipeK");
 
-const { addHeaders, jsonMarshaller, resolveUrl } = require("@sdk-creator/http-api-client");
+const { addHeaders, jsonMarshaller, resolveUrl } = require("@api-sdk-creator/http-api-client");
 
 const { defaultHeaders } = require("./headers/default-headers");
 const { resultHandler } = require("./api/result-handler");

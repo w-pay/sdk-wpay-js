@@ -1,6 +1,6 @@
 "use strict";
 
-const { JSON_MIME_TYPE } = require("@sdk-creator/http-api-client");
+const { JSON_MIME_TYPE } = require("@api-sdk-creator/http-api-client");
 
 function givenHttpResult(response) {
 	return {

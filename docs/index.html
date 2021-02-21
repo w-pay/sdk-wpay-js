@@ -145,16 +145,9 @@ the rest of the API interface. Applications that have a preexisting
 authentication workflow can either update the relevant classes to implement the
 <code>ApiAuthenticator</code> interface, or provide an <a href="https://en.wikipedia.org/wiki/Adapter_pattern#Java">Adapter</a>
 to make the existing authentication details available to the SDK.</p>
-<h3>API layer</h3>
-<p>The API layer is decoupled from the rest of the SDK via the
-<code>WPayCustomerApi</code> and <code>WPayMerchantApi</code>
-interfaces. Consumers can configure their <code>WPay</code> instance to use
-an implementation of the correct repository that conforms to needs and
-technology choices of the application.</p>
-<h4>Open API Implementation</h4>
-<p>For convenience, the <a href="https://github.com/woolworthslimited/sdk-wow-pay-web-openapi">WPay SDK Open API Repository</a>
-project provides an implementation of the API Repository interfaces
-that wraps an API Client created with the Open API generator.</p>
+<h3>HTTP layer</h3>
+<p>As the WPay SDK uses the <a href="https://github.com/RedCrewOS/api-sdk-creator-js">api-sdk-creator</a>
+project, the HTTP stack is swappable when the SDK is created.</p>
 <h4>Reference Application</h4>
 <p>A <a href="">Reference Application</a> is available to demonstrate the use of the SDK.</p>
 <p>TODO: Reference app</p>
@@ -168,134 +161,78 @@ will be increased.</p>
 <p>Read the <a href="/docs/index.html">📘 SDK reference docs</a> for more information on the different types
 in the SDK.</p>
 <h3>Example usage</h3>
-<p>Some of the examples use the Open API implementation, however any class conforming to the correct
-interface can be used.</p>
+<p>These examples use the <code>@api-sdk-creator/axios-http-client</code> <code>HttpClient</code></p>
 <h4>Installation</h4>
-<p>If using the SDK in a project with a bundler (eg: Webpack) the SDK can be installed via NPM and imported like any other module. However because the module is currently private and unpublished, it can only be installed via Git. This means that a consumer will need to be authorised to clone the repo.</p>
-<pre class="prettyprint source lang-shell"><code># see `npm install help` for other ways to install from GitHub
-
-# not required if using the Open API implementation as the SDK will be a transitive dependency.
-$ npm install git+ssh://git@github.com:woolworthslimited/sdk-wow-pay-web.git#semver:1.0.0
-
-# not required if not using the Open API implementation
-$ npm install git+ssh://git@github.com:woolworthslimited/sdk-wow-pay-web-openapi.git#semver:1.0.0
+<p>If using the SDK in a project with a bundler (eg: Webpack) the SDK can be installed via NPM and imported like any other module. However because the module is currently private users will need access to the NPM repository.</p>
+<pre class="prettyprint source lang-shell"><code>$ npm install @wpay/sdk
+$ npm install @api-sdk-creator/axios-http-client
 </code></pre>
-<!--
-TODO: When modules are published.
-
-If using the SDK in a project with a bundler (eg: Webpack) the SDK can be installed via NPM and imported like any other module.
-
-```shell script
-# not required if using the Open API implementation as the SDK will be a transitive dependency.
-$ npm install @wpay/wallet-sdk
-
-# not required if not using the Open API implementation
-$ npm install @wpay/wallet-sdk-openapi
-```
--->
 <p>If using the SDK via a <code>&lt;script&gt;</code> tag, the <code>WPay</code> global will be made available</p>
-<pre class="prettyprint source lang-html"><code>&lt;!-- For customer only -->
-&lt;!-- Not required if using the Open API implementation as the SDK will be bundled -->
+<pre class="prettyprint source lang-html"><code>&lt;!-- Found in the @api-sdk-creator/axios-http-client repo -->
+&lt;script type=&quot;javascript&quot; src=&quot;axios-http-client.js&quot; />
+
+&lt;!-- For customer only -->
 &lt;script type=&quot;javascript&quot; src=&quot;wpay-wallet-sdk.customer.js&quot; />
 
-&lt;!-- Not required if not using the Open API implementation -->
-&lt;script type=&quot;javascript&quot; src=&quot;wpay-open-api-wallet-sdk.customer.js&quot; />
-
 &lt;!-- For merchant only -->
-&lt;!-- Not required if using the Open API implementation as the SDK will be bundled -->
 &lt;script type=&quot;javascript&quot; src=&quot;wpay-wallet-sdk.merchant.js&quot; />
 
-&lt;!-- Not required if not using the Open API implementation -->
-&lt;script type=&quot;javascript&quot; src=&quot;wpay-open-api-wallet-sdk.merchant.js&quot; />
-
 &lt;!-- For everything -->
-&lt;!-- Not required if using the Open API implementation as the SDK will be bundled -->
 &lt;script type=&quot;javascript&quot; src=&quot;wpay-wallet-sdk.all.js&quot; />
 
-&lt;!-- Not required if not using the Open API implementation -->
-&lt;script type=&quot;javascript&quot; src=&quot;wpay-open-api-wallet-sdk.all.js&quot; />
-
 &lt;script>
-const sdk = WPay.createCustomerSDK(options);
+const sdk = WPay.createCustomerSDK(AxiosHttpClient.createAxiosHttpClient, options);
 &lt;/script>
 </code></pre>
-<pre class="prettyprint source lang-javascript"><code>const options = {
+<pre class="prettyprint source lang-javascript"><code>// mandatory options
+const options = {
   apiKey: &quot;&lt;your key here>&quot;,
   baseUrl: &quot;https://api.wpay.com/api&quot;
 }
 </code></pre>
 <h4>Accessing an unauthenticated API</h4>
-<pre class="prettyprint source lang-javascript"><code>import { createCustomerSDK } from &quot;@wpay/wallet-sdk-openapi&quot;
+<pre class="prettyprint source lang-javascript"><code>const { createAxiosHttpClient } = require(&quot;@api-sdk-creator/axios-http-client&quot;);
+import { createCustomerSDK } from &quot;@wpay/sdk&quot;
 
-const sdk = createCustomerSDK(options);
+const sdk = createCustomerSDK(createAxiosHttpClient, options);
 
 await sdk.admin.checkHealth();
 </code></pre>
 <h4>Using a preprovided access token</h4>
-<p>If an access token is acquired outside the SDK, it can be given to the SDK. However it becomes the
-responsibility of the client application to manage that token.</p>
-<pre class="prettyprint source lang-javascript"><code>import { createCustomerSDK } from &quot;@wpay/wallet-sdk-openapi&quot;
+<p>If an access token is acquired outside the SDK, it can be given to the SDK and used for as long
+as the token is valid.</p>
+<pre class="prettyprint source lang-javascript"><code>import { createCustomerSDK } from &quot;@wpay/sdk&quot;
 
-const accessToken = aquireAccessToken();
+options.accessToken = aquireAccessToken();
 
-const sdk = createCustomerSDK(options, accessToken);
+const sdk = createCustomerSDK(createAxiosHttpClient, options);
 
 await sdk.preferences.get();
 </code></pre>
 <h4>Using an ApiAuthenticator</h4>
 <p>If a client application wants to wrap an existing application authentication strategy then a
-custom <code>ApiAuthenticator</code> can be given to the SDK.</p>
+custom <code>ApiAuthenticator</code> can be given to the SDK. However it becomes the
+responsibility of the client application to manage that token.</p>
 <p>(This example is written in Typescript so that type information can be used).</p>
-<pre class="prettyprint source lang-typescript"><code>import { createCustomerSDK } from &quot;@wpay/wallet-sdk-openapi&quot;
+<pre class="prettyprint source lang-typescript"><code>import { createCustomerSDK } from &quot;@wpay/sdk&quot;
 
-/*
- * The SDK requires at minimum an `accessToken` to be be provided from an ApiAuthenticator.
- */
-const authenticator: ApiAuthenticator&lt;A extends HasAccessToken> = createAuthenticator();
+const authenticator: ApiAuthenticator = createAuthenticator();
+options.accessToken = authenticator;
 
-const sdk = createCustomerSDK(options, authenticator);
+const sdk = createCustomerSDK(createAxiosHttpClient, options);
 
-await sdk.authenticate();
 await sdk.preferences.get();
 </code></pre>
-<h4>Using a custom API implementation class</h4>
-<p>If a client application doesn't want to use the Open API implementation then a custom implementation
-class can be provided to the SDK factory.</p>
-<p>(This example is written with ES6 classes)</p>
-<pre class="prettyprint source lang-javascript"><code>import { createCustomerSDK } from &quot;@wpay/wallet-sdk&quot;
-
-class CustomCustomerApiRepository {
-  /*
-   * Must conform to the `CustomerApiRepositoryConstructor` signature to be compatible with SDK factory.
-   */
-  constructor(
-    options,
-    headers,
-    authenticator
-  ) {
-    // ... instantiate properties of API repository
-  }
-}
-
-const sdk = createCustomerSDK(options, &quot;accessToken&quot;, CustomCustomerApiRepository);
-
-await sdk.authenticate();
-await sdk.preferences.get();
-</code></pre>
-<h4>Completely customising the SDK</h4>
-<p>If a client application wishes to have a completely custom SDK configured, the factory function
-<code>createCustomerSDK</code> or <code>createMerchantSDK</code> is the place to start to learn how to build an SDK
-instance using the component parts of the SDK module.</p>
 <h3>Building</h3>
 <p>To build the SDK from source</p>
 <pre class="prettyprint source lang-shell"><code>$ npm run dist
 </code></pre>
 <h3>Documentation</h3>
-<p>The SDK reference docs are generated using <a href="https://typedoc.org/">TypeDoc</a></p>
+<p>The SDK reference docs are generated using <a href="https://jsdoc.app/">JSDoc</a></p>
 <pre class="prettyprint source lang-shell"><code>$ npm run doc
 </code></pre>
 <h2>Publishing</h2>
-<p>Currently, the module build is only available in GitHub.</p></article>
+<p>Currently, publishing requires write access to the NPM organisation.</p></article>
     </section>
 
 

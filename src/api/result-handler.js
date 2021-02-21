@@ -15,7 +15,7 @@ const {
 	getHttpResponse,
 	isSuccessfulResult,
 	jsonUnmarshaller
-} = require("@sdk-creator/http-api-client");
+} = require("@api-sdk-creator/http-api-client");
 
 const { HttpErrorException, JsonParsingException } = require("./api-errors");
 
