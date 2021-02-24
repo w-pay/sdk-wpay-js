@@ -19,5 +19,5 @@ export interface NewPaymentRequestQRCode {
 	 *
 	 * If absent, the API will default value to 0 which indicates that the code will not expire until it is deleted.
 	 */
-	timeToLive: number;
+	timeToLive?: number;
 }

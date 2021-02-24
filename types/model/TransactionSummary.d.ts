@@ -26,6 +26,9 @@ export interface TransactionSummary extends Payment {
 
 	/** The reason provided for the refund. Only provided for REFUND transactions */
 	refundReason?: string;
+
+	/** The instruments used to make the payment. For refunds and cash back amounts will be negative */
+	instruments: TransactionUsedPaymentInstrument[];
 }
 
 /**
@@ -55,4 +58,42 @@ export enum TransactionSummaryPaymentStatus {
 
 	/** The transaction was rejected */
 	REJECTED = "REJECTED"
+}
+
+/**
+ * An instrument used for a transaction
+ *
+ * @category Model
+ */
+export interface TransactionUsedPaymentInstrument {
+	/** The ID of the {@link PaymentInstrument} */
+	paymentInstrumentId: string;
+
+	/** The type of the payment instrument */
+	instrumentType: string;
+
+	/** The list of transactions associated with the instrument." */
+	transactions: UsedPaymentInstrumentTransaction[]
+}
+
+/**
+ * A subtransaction associated with a payment instrument
+ * 
+ * @category Model
+ */
+export interface UsedPaymentInstrumentTransaction {
+	/** The type of transaction. */
+	type?: TransactionSummaryPaymentType;
+
+	/** Timestamp of when the transaction occurred */
+	executionTime?: Date;
+
+	/** The reference for the payment */
+	paymentTransactionRef?: string;
+
+	/** The current status of the transactions */
+	status?: TransactionSummaryPaymentStatus;
+
+	/** The amount charged against or refunded to this instrument */
+	amount?: number;
 }

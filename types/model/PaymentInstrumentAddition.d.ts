@@ -10,7 +10,4 @@ import { Wallet } from "./Wallet";
 export interface PaymentInstrumentAddition {
 	/** The unique reference for this interaction as defined by the client application */
 	clientReference: string;
-
-	/** Which wallet to store the new instrument in */
-	wallet: Wallet;
 }

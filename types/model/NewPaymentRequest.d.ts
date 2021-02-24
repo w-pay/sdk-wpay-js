@@ -15,7 +15,7 @@ export interface NewPaymentRequest {
 	grossAmount: number;
 
 	/** Whether a {@link QRCode} should be created and returned in the response */
-	generateQR: boolean;
+	generateQR?: boolean;
 
 	/**
 	 * The number of times that the payment request can be used to create a payment.

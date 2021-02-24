@@ -52,6 +52,9 @@ export interface PaymentInstrument extends PaymentInstrumentIdentifier {
 	/** The suffix (last 4 digits) of the card number. */
 	cardSuffix: string;
 
+	/** The timestamp for when the payment instrument was added. */
+	createdOn: Date;
+
 	/** The timestamp the payment instrument was last updated in the container. */
 	lastUpdated: Date;
 
