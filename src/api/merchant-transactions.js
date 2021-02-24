@@ -1,32 +1,24 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const chain = require("crocks/pointfree/chain");
-const map = require("crocks/pointfree/map");
 const mapProps = require("crocks/helpers/mapProps");
-const pipe = require("crocks/helpers/pipe");
-const resultToAsync = require("crocks/Async/resultToAsync");
+const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
+const { fromData } = require("../transformers/data");
 const {
 	fromMerchantTransactionDetailsDTO,
 	fromMerchantTransactionSummariesDTO
 } = require("../transformers/merchant-transactions");
-const { getPropOrError } = require("../helpers/props");
 const { optionalParam, params } = require("../helpers/params");
 const { requiredParameterError } = require("./api-errors");
 const { toISOString } = require("../helpers/props");
 
 const list = (client) => (page, pageSize, endTime, startTime) => {
-	return pipe(
+	return asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromMerchantTransactionSummariesDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromMerchantTransactionSummariesDTO)
 	)({
 		method: HttpRequestMethod.GET,
 		url: "/merchant/transactions",
@@ -40,7 +32,7 @@ const list = (client) => (page, pageSize, endTime, startTime) => {
 				optionalParam("endTime", endTime),
 				optionalParam("startTime", startTime)
 			]))
-	})
+	}))
 }
 
 const getById = (client) => (transactionId) => {
@@ -48,21 +40,16 @@ const getById = (client) => (transactionId) => {
 		throw requiredParameterError("transactionId");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromMerchantTransactionDetailsDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromMerchantTransactionDetailsDTO)
 	)({
 		method: HttpRequestMethod.GET,
 		url: "/merchant/transactions/:transactionId",
 		pathParams: {
 			transactionId
 		}
-	})
+	}))
 }
 
 module.exports = (client) => {

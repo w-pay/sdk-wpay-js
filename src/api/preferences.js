@@ -1,33 +1,25 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const chain = require("crocks/pointfree/chain");
 const curry = require("crocks/core/curry");
-const map = require("crocks/pointfree/map");
-const pipe = require("crocks/helpers/pipe");
-const resultToAsync = require("crocks/Async/resultToAsync");
+const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { getPropOrError } = require("../helpers/props");
+const { fromData } = require("../transformers/data");
 const { mapToObject } = require("../transformers/map");
 const { objectToMap } = require("../transformers/object");
 const { requiredParameterError } = require("./api-errors");
 
 // getPreferences :: HttpRequest -> HttpApiClient -> () -> Async Error Preferences
 const getPreferences = curry((request, client, _) => {
-	return pipe(
+	return asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(objectToMap),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(objectToMap)
 	)({
 		...request,
 		method: HttpRequestMethod.GET
-	})
+	}))
 });
 
 // getPreferences :: HttpRequest -> HttpApiClient -> Preferences -> Async Error _
@@ -36,9 +28,8 @@ const setPreferences = curry((request, client, preferences) => {
 		throw requiredParameterError("preferences")
 	}
 
-	return pipe(
-		client,
-		asyncToPromise
+	return asyncToPromise(pipeK(
+		client
 	)({
 		...request,
 		method: HttpRequestMethod.POST,
@@ -46,7 +37,7 @@ const setPreferences = curry((request, client, preferences) => {
 			data: mapToObject(preferences),
 			meta: {}
 		}
-	})
+	}))
 })
 
 module.exports = {

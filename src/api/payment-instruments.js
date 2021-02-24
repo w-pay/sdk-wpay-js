@@ -1,15 +1,13 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const chain = require("crocks/pointfree/chain");
-const map = require("crocks/pointfree/map");
-const pipe = require("crocks/helpers/pipe");
-const resultToAsync = require("crocks/Async/resultToAsync");
+const identity = require("crocks/combinators/identity");
+const pipeK = require("crocks/helpers/pipeK");
 
 const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { getPropOrError } = require("../helpers/props");
 const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
+const { fromData } = require("../transformers/data");
 const { fromWalletContentsDTO } = require("../transformers/payment-instruments");
 const { requiredParameterError } = require("./api-errors");
 
@@ -18,19 +16,14 @@ const list = (client) => (wallet) => {
 		throw requiredParameterError("wallet");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		addHeaders(everydayPayWalletHeader(wallet)),
-		chain(client),
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromWalletContentsDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		client,
+		fromData(fromWalletContentsDTO)
 	)({
 		method: HttpRequestMethod.GET,
 		url: "/customer/instruments",
-	})
+	}))
 }
 
 const deleteInstrument = (client) => (instrument) => {
@@ -38,17 +31,16 @@ const deleteInstrument = (client) => (instrument) => {
 		throw requiredParameterError("instrument");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		addHeaders(everydayPayWalletHeader(instrument.wallet)),
-		chain(client),
-		asyncToPromise
+		client
 	)({
 		method: HttpRequestMethod.DELETE,
 		url: "/customer/instruments/:paymentInstrumentId",
 		pathParams: {
 			paymentInstrumentId: instrument.paymentInstrumentId
 		}
-	})
+	}))
 }
 
 const initiateAddition = (client) => (instrument) => {
@@ -56,14 +48,10 @@ const initiateAddition = (client) => (instrument) => {
 		throw requiredParameterError("instrument");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		addHeaders(everydayPayWalletHeader(instrument.wallet)),
-		chain(client),
-		chain(pipe(
-			getPropOrError("data"),
-			resultToAsync
-		)),
-		asyncToPromise
+		client,
+		fromData(identity)
 	)({
 		method: HttpRequestMethod.POST,
 		url: "/customer/instruments",
@@ -73,7 +61,7 @@ const initiateAddition = (client) => (instrument) => {
 			},
 			meta: {}
 		}
-	})
+	}))
 }
 
 module.exports = (client) => {

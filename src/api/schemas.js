@@ -1,14 +1,11 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const chain = require("crocks/pointfree/chain");
-const map = require("crocks/pointfree/map");
-const pipe = require("crocks/helpers/pipe");
-const resultToAsync = require("crocks/Async/resultToAsync");
+const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { getPropOrError } = require("../helpers/props");
+const { fromData } = require("../transformers/data");
 const {
 	fromMerchantSchemaDTO,
 	fromMerchantSchemaSummariesDTO,
@@ -17,39 +14,29 @@ const {
 const { requiredParameterError } = require("./api-errors");
 
 const list = (client) => () =>
-	pipe(
+	asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromMerchantSchemaSummariesDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromMerchantSchemaSummariesDTO)
 	)({
 		method: HttpRequestMethod.GET,
 		url: "/merchant/schema"
-	});
+	}));
 
 const getById = (client) => (schemaId) => {
 	if (!schemaId) {
 		throw requiredParameterError("schemaId")
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromMerchantSchemaDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromMerchantSchemaDTO)
 	)({
 		method: HttpRequestMethod.GET,
 		url: "/merchant/schema/:schemaId",
 		pathParams: {
 			schemaId
 		}
-	})
+	}))
 };
 
 const create = (client) => (schema) => {
@@ -57,14 +44,9 @@ const create = (client) => (schema) => {
 		throw requiredParameterError("schema")
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromMerchantSchemaSummaryDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromMerchantSchemaSummaryDTO)
 	)({
 		method: HttpRequestMethod.POST,
 		url: "/merchant/schema",
@@ -72,7 +54,7 @@ const create = (client) => (schema) => {
 			data: schema,
 			meta: {}
 		}
-	})
+	}))
 };
 
 module.exports = (client) => {

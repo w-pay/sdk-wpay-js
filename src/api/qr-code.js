@@ -1,15 +1,12 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const chain = require("crocks/pointfree/chain");
-const map = require("crocks/pointfree/map");
-const pipe = require("crocks/helpers/pipe");
-const resultToAsync = require("crocks/Async/resultToAsync");
+const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
+const { fromData } = require("../transformers/data");
 const { fromQrDTO } = require("../transformers/qr-code");
-const { getPropOrError } = require("../helpers/props");
 const { requiredParameterError } = require("./api-errors");
 
 // toQrCode :: Object -> Async Error Object
@@ -18,14 +15,9 @@ const createPaymentRequestQRCode = (client) => (details) => {
 		throw requiredParameterError("details");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromQrDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromQrDTO)
 	)({
 		method: HttpRequestMethod.POST,
 		url: "/merchant/qr",
@@ -33,7 +25,7 @@ const createPaymentRequestQRCode = (client) => (details) => {
 			data: details,
 			meta: {}
 		}
-	});
+	}));
 };
 
 const getPaymentRequestQRCodeContent = (client) => (qrCodeId) => {
@@ -41,21 +33,16 @@ const getPaymentRequestQRCodeContent = (client) => (qrCodeId) => {
 		throw requiredParameterError("qrCodeId");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromQrDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromQrDTO)
 	)({
 		method: HttpRequestMethod.GET,
 		url: "/merchant/qr/:qrId",
 		pathParams: {
 			qrId: qrCodeId
 		}
-	})
+	}));
 };
 
 const cancelPaymentQRCode = (client) => (qrCodeId) => {
@@ -63,16 +50,15 @@ const cancelPaymentQRCode = (client) => (qrCodeId) => {
 		throw requiredParameterError("qrCodeId");
 	}
 
-	return pipe(
-		client,
-		asyncToPromise
+	return asyncToPromise(pipeK(
+		client
 	)({
 		method: HttpRequestMethod.DELETE,
 		url: "/merchant/qr/:qrId",
 		pathParams: {
 			qrId: qrCodeId
 		}
-	})
+	}))
 };
 
 module.exports = function(client) {

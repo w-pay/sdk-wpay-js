@@ -1,29 +1,21 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const chain = require("crocks/pointfree/chain");
-const map = require("crocks/pointfree/map");
-const pipe = require("crocks/helpers/pipe");
-const resultToAsync = require("crocks/Async/resultToAsync");
+const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { fromHealthCheckDTO } = require("../transformers/health-check");
-const { getPropOrError } = require("../helpers/props");
+const { fromData } = require("../transformers/data");
 
 const checkHealth = (client) => () =>
-	pipe(
+	asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromHealthCheckDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromHealthCheckDTO)
 	)({
 		method: HttpRequestMethod.GET,
 		url: "/",
-	})
+	}))
 
 module.exports = (client) => {
 	/** @implements {import('../../types/api/Administration').AdministrationApi} */

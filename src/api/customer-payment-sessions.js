@@ -1,19 +1,16 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const chain = require("crocks/pointfree/chain");
-const map = require("crocks/pointfree/map");
 const mapProps = require("crocks/helpers/mapProps");
-const pipe = require("crocks/helpers/pipe");
-const resultToAsync = require("crocks/Async/resultToAsync");
+const pipeK = require("crocks/helpers/pipeK");
 
 const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
-const { toDynamicPayloadDTO } = require("../transformers/dynamic-payload");
+const { fromData } = require("../transformers/data");
 const { fromPaymentSessionDTO } = require("../transformers/payment-session");
-const { getPropOrError } = require("../helpers/props");
 const { requiredParameterError } = require("./api-errors");
+const { toDynamicPayloadDTO } = require("../transformers/dynamic-payload");
 const { toPaymentDetailsDTO } = require("../transformers/payment-details");
 
 const getById = (client) => (paymentSessionId) => {
@@ -21,21 +18,16 @@ const getById = (client) => (paymentSessionId) => {
 		throw requiredParameterError("paymentSessionId");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromPaymentSessionDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromPaymentSessionDTO)
 	)({
 		method: HttpRequestMethod.GET,
 		url: "/customer/payment/session/:paymentSessionId",
 		pathParams: {
 			paymentSessionId
 		}
-	})
+	}))
 }
 
 const getByQRCodeId = (client) => (qrCodeId) => {
@@ -43,21 +35,16 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 		throw requiredParameterError("qrCodeId");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromPaymentSessionDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromPaymentSessionDTO)
 	)({
 		method: HttpRequestMethod.GET,
 		url: "/customer/payment/session/qr/:qrId",
 		pathParams: {
 			qrId: qrCodeId
 		}
-	})
+	}))
 }
 
 const update = (client) => (paymentSessionId, session) => {
@@ -69,9 +56,8 @@ const update = (client) => (paymentSessionId, session) => {
 		throw requiredParameterError("session");
 	}
 
-	return pipe(
-		client,
-		asyncToPromise
+	return asyncToPromise(pipeK(
+		client
 	)({
 		method: HttpRequestMethod.POST,
 		url: "/customer/payment/session/:paymentSessionId",
@@ -84,7 +70,7 @@ const update = (client) => (paymentSessionId, session) => {
 			}, session),
 			meta: {}
 		}
-	})
+	}))
 }
 
 const deletePayment = (client) => (paymentSessionId) => {
@@ -92,16 +78,15 @@ const deletePayment = (client) => (paymentSessionId) => {
 		throw requiredParameterError("paymentSessionId");
 	}
 
-	return pipe(
-		client,
-		asyncToPromise
+	return asyncToPromise(pipeK(
+		client
 	)({
 		method: HttpRequestMethod.DELETE,
 		url: "/customer/payment/session/:paymentSessionId",
 		pathParams: {
 			paymentSessionId
 		}
-	})
+	}))
 }
 
 const preApprove = (client) => (
@@ -119,10 +104,9 @@ const preApprove = (client) => (
 		throw requiredParameterError("primaryInstrument");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		addHeaders(everydayPayWalletHeader(primaryInstrument.wallet)),
-		chain(client),
-		asyncToPromise
+		client
 	)({
 		method: HttpRequestMethod.PUT,
 		url: "/customer/payment/session/:paymentSessionId",
@@ -138,7 +122,7 @@ const preApprove = (client) => (
 			),
 			meta: {}
 		}
-	});
+	}));
 }
 
 module.exports = (client) => {

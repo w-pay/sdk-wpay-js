@@ -1,17 +1,14 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const chain = require("crocks/pointfree/chain");
-const map = require("crocks/pointfree/map");
-const pipe = require("crocks/helpers/pipe");
-const resultToAsync = require("crocks/Async/resultToAsync");
+const pipeK = require("crocks/helpers/pipeK");
 
 const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
 const { fromCustomerPaymentRequestDTO } = require("../transformers/payment-request");
 const { fromCustomerTransactionSummaryDTO } = require("../transformers/customer-transactions");
-const { getPropOrError } = require("../helpers/props");
+const { fromData } = require("../transformers/data");
 const { requiredParameterError } = require("./api-errors");
 const { toPaymentDetailsDTO } = require("../transformers/payment-details");
 
@@ -21,21 +18,16 @@ const getById = (client) => (paymentRequestId) => {
 		throw requiredParameterError("paymentRequestId");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromCustomerPaymentRequestDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromCustomerPaymentRequestDTO)
 	)({
 		method: HttpRequestMethod.GET,
 		url: "/customer/payments/:paymentRequestId",
 		pathParams: {
 			paymentRequestId
 		}
-	})
+	}))
 }
 
 // getByQRCodeId :: HttpApiClient -> String -> Promise CustomerPaymentRequest
@@ -44,21 +36,16 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 		throw requiredParameterError("qrCodeId");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromCustomerPaymentRequestDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		fromData(fromCustomerPaymentRequestDTO)
 	)({
 		method: HttpRequestMethod.GET,
 		url: "/customer/qr/:qrCodeId",
 		pathParams: {
 			qrCodeId
 		}
-	})
+	}))
 };
 
 // returns an uncurried function for data so that defaults can be omitted
@@ -78,15 +65,10 @@ const makePayment = (client) => (
 		throw requiredParameterError("primaryInstrument");
 	}
 
-	return pipe(
+	return asyncToPromise(pipeK(
 		addHeaders(everydayPayWalletHeader(primaryInstrument.wallet)),
-		chain(client),
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromCustomerTransactionSummaryDTO),
-			resultToAsync
-		)),
-		asyncToPromise
+		client,
+		fromData(fromCustomerTransactionSummaryDTO)
 	)({
 		method: HttpRequestMethod.PUT,
 		url: "/customer/payments/:paymentRequestId",
@@ -102,7 +84,7 @@ const makePayment = (client) => (
 			),
 			meta: {}
 		}
-	});
+	}));
 };
 
 module.exports = (client) => {
