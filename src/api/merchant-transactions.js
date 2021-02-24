@@ -9,23 +9,21 @@ const resultToAsync = require("crocks/Async/resultToAsync");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { fromBasketDTO } = require("../transformers/basket");
-const { fromDynamicPayloadDTO } = require("../transformers/dynamic-payload");
+const {
+	fromMerchantTransactionDetailsDTO,
+	fromMerchantTransactionSummariesDTO
+} = require("../transformers/merchant-transactions");
 const { getPropOrError } = require("../helpers/props");
 const { optionalParam, params } = require("../helpers/params");
 const { requiredParameterError } = require("./api-errors");
-const { toDate, toISOString } = require("../helpers/props");
+const { toISOString } = require("../helpers/props");
 
 const list = (client) => (page, pageSize, endTime, startTime) => {
 	return pipe(
 		client,
 		chain(pipe(
 			getPropOrError("data"),
-			map(mapProps({
-				transactions: map(mapProps({
-					executionTime: toDate
-				}))
-			})),
+			map(fromMerchantTransactionSummariesDTO),
 			resultToAsync
 		)),
 		asyncToPromise
@@ -54,12 +52,7 @@ const getById = (client) => (transactionId) => {
 		client,
 		chain(pipe(
 			getPropOrError("data"),
-			map(mapProps({
-				executionTime: toDate,
-				basket: fromBasketDTO,
-				posPayload: fromDynamicPayloadDTO,
-				merchantPayload: fromDynamicPayloadDTO
-			})),
+			map(fromMerchantTransactionDetailsDTO),
 			resultToAsync
 		)),
 		asyncToPromise

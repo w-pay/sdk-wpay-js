@@ -1,9 +1,12 @@
 "use strict";
 
-const { assertThat, is, throws } = require("hamjest");
+const { assertThat, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
+const { body, withData } = require("../matchers/request-body-matchers");
+const { preferences, preferencesDTO } = require("../data/preferences");
+const { preferencesDTOFrom, preferencesFrom } = require("../matchers/preferences-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
 
@@ -36,12 +39,7 @@ describe("Preferences Apis", function() {
 			describe("getPreferences", function() {
 				beforeEach(function() {
 					apiClient.response = {
-						data: {
-							payments: {},
-							preferenceGroup: {
-								preference: "preference value"
-							}
-						},
+						data: preferencesDTO(),
 						meta: {}
 					}
 				});
@@ -56,46 +54,25 @@ describe("Preferences Apis", function() {
 				});
 
 				it("should get preferences", async function() {
-					/** @type Map */
 					const result = await api.get();
 
-					assertThat(result.has("payments"), is(true));
-					assertThat(result.has("preferenceGroup"), is(true));
-
-					const payments = result.get("preferenceGroup");
-					assertThat(payments.get("preference"), is("preference value"));
+					assertThat(result, is(preferencesFrom(apiClient.response.data)));
 				});
 			});
 
 			describe("setPreferences", function() {
-				let preferences;
-
-				beforeEach(function() {
-					const preferenceGroup = new Map();
-					preferenceGroup.set("preference", "value");
-
-					preferences = new Map();
-					preferences.set("preferenceGroup", preferenceGroup);
-				})
-
 				it("should throw error if preferences missing", function() {
 					assertThat(() => api.set(), throws(requiredParameterError("preferences")));
 				});
 
 				it("should set request params", async function() {
-					await api.set(preferences);
+					const prefs = preferences();
+					await api.set(prefs);
 
-					assertThat(apiClient.request, is({
+					assertThat(apiClient.request, hasProperties({
 						method: HttpRequestMethod.POST,
 						url: apiDef.url,
-						body: {
-							data: {
-								preferenceGroup: {
-									preference: "value"
-								}
-							},
-							meta: {}
-						}
+						body: is(body(withData(preferencesDTOFrom(prefs))))
 					}));
 				});
 			});

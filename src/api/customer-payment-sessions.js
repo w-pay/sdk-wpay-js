@@ -10,22 +10,11 @@ const resultToAsync = require("crocks/Async/resultToAsync");
 const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
-const { fromDynamicPayloadDTO, toDynamicPayloadDTO } = require("../transformers/dynamic-payload");
+const { toDynamicPayloadDTO } = require("../transformers/dynamic-payload");
+const { fromPaymentSessionDTO } = require("../transformers/payment-session");
 const { getPropOrError } = require("../helpers/props");
 const { requiredParameterError } = require("./api-errors");
-const { toDate } = require("../helpers/props");
-
-const fromPaymentSessionDTO = mapProps({
-	expiryTime: toDate,
-	merchantInfo: fromDynamicPayloadDTO,
-	customerInfo: fromDynamicPayloadDTO
-});
-
-// toSecondaryInstrument :: SecondaryPaymentInstrument -> Object
-const toSecondaryInstrument = (instrument) => ({
-	instrumentId: instrument.paymentInstrumentId,
-	amount: instrument.amount
-});
+const { toPaymentDetailsDTO } = require("../transformers/payment-details");
 
 const getById = (client) => (paymentSessionId) => {
 	if (!paymentSessionId) {
@@ -130,21 +119,6 @@ const preApprove = (client) => (
 		throw requiredParameterError("primaryInstrument");
 	}
 
-	const body = {
-		data: {
-			primaryInstrumentId: primaryInstrument.paymentInstrumentId,
-			secondaryInstruments: secondaryInstruments
-				? secondaryInstruments.map(toSecondaryInstrument)
-				: [],
-			challengeResponses: challengeResponses ? challengeResponses : []
-		},
-		meta: {}
-	};
-
-	if (clientReference) {
-		body.data.clientReference = clientReference;
-	}
-
 	return pipe(
 		addHeaders(everydayPayWalletHeader(primaryInstrument.wallet)),
 		chain(client),
@@ -155,7 +129,15 @@ const preApprove = (client) => (
 		pathParams: {
 			paymentSessionId
 		},
-		body: body
+		body: {
+			data: toPaymentDetailsDTO(
+				primaryInstrument,
+				secondaryInstruments,
+				clientReference,
+				challengeResponses
+			),
+			meta: {}
+		}
 	});
 }
 

@@ -1,18 +1,22 @@
 "use strict";
 
-const { assertThat, is, throws } = require("hamjest");
+const { v4: uuid } = require("uuid");
+
+const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/payment-instruments");
-const { PaymentInstrumentStatus, Wallet } = require("../../src/model/enums");
 const { X_EVERYDAY_PAY_WALLET } = require("../../src/headers/header-names");
+const { Wallet } = require("../../src/model/enums");
 
-const { requiredParameterError } = require("../matchers/required-parameters");
+const { body, withData } = require("../matchers/request-body-matchers");
 const {
-	paymentInstrumentAdded,
-	walletContents
+	paymentInstrumentAddedFrom,
+	walletContentsFrom
 } = require("../matchers/payment-instrument-matchers");
+const { requiredParameterError } = require("../matchers/required-parameters");
+const { walletContentsDTO } = require("../data/payment-instruments");
 const { StubApiClient } = require("../stub-api-client");
 
 describe("PaymentInstrumentsApi", function() {
@@ -28,52 +32,8 @@ describe("PaymentInstrumentsApi", function() {
 
 	describe("list", function() {
 		beforeEach(function() {
-			const base = {
-				allowed: true,
-				cardSuffix: "1234",
-				lastUpdated: "2021-02-17T06:31:46.358Z",
-				lastUsed: "2021-02-17T06:31:46.358Z",
-				paymentToken: "token",
-				primary: false,
-				status: PaymentInstrumentStatus.UNVERIFIED_PERSISTENT,
-				paymentInstrumentId: "abc123"
-			}
-
-			const creditCard = {
-				...base,
-				cardName: "My Card",
-				cvvValidated: true,
-				expired: true,
-				expiryMonth: "02",
-				expiryYear: "2100",
-				requiresCVV: false,
-				scheme: "visa",
-				updateURL: "http://foobar.com",
-				stepUp: {
-					type: "CAPTURE_CVV",
-					mandatory: false,
-					url: "http://foobar.com"
-				}
-			}
-
-			const giftCard = {
-				...base,
-				programName: "Gift cards",
-				stepUp: {
-					type: "REQUIRE_PASSCODE",
-					mandatory: false
-				}
-			}
-
 			apiClient.response = {
-				data: {
-					creditCards: [ creditCard ],
-					giftCards: [ giftCard ],
-					everydayPay: {
-						creditCards: [ creditCard ],
-						giftCards: [ giftCard ],
-					}
-				},
+				data: walletContentsDTO(),
 				meta: {}
 			}
 		})
@@ -97,7 +57,7 @@ describe("PaymentInstrumentsApi", function() {
 		it("should list payment instruments", async function() {
 			const result = await api.list(Wallet.MERCHANT);
 
-			assertThat(result, is(walletContents()));
+			assertThat(result, is(walletContentsFrom(apiClient.response.data)));
 		});
 	});
 
@@ -129,14 +89,17 @@ describe("PaymentInstrumentsApi", function() {
 
 	describe("initiateAddition", function() {
 		const newPaymentInstrument = {
-			clientReference: "abc123",
+			clientReference: uuid(),
 			wallet: Wallet.MERCHANT
 		}
 
 		beforeEach(function() {
 			apiClient.response = {
-				cardCaptureURL: "http://foo.com",
-				transactionRef: "abc123"
+				data: {
+					cardCaptureURL: "http://foo.com",
+					transactionRef: uuid()
+				},
+				meta: {}
 			}
 		})
 
@@ -147,25 +110,22 @@ describe("PaymentInstrumentsApi", function() {
 		it("should set request params", async function() {
 			await api.initiateAddition(newPaymentInstrument);
 
-			assertThat(apiClient.request, is({
+			assertThat(apiClient.request, hasProperties({
 				method: HttpRequestMethod.POST,
 				url: "/customer/instruments",
 				headers: {
 					[X_EVERYDAY_PAY_WALLET]: "false"
 				},
-				body: {
-					data: {
-						clientReference: newPaymentInstrument.clientReference
-					},
-					meta: {}
-				}
+				body: is(body(withData(equalTo({
+					clientReference: newPaymentInstrument.clientReference
+				}))))
 			}))
 		});
 
 		it("should initiate addon", async function() {
 			const result = await api.initiateAddition(newPaymentInstrument);
 
-			assertThat(result, is(paymentInstrumentAdded()));
+			assertThat(result, is(paymentInstrumentAddedFrom(apiClient.response.data)));
 		});
 	});
 });

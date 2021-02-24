@@ -4,34 +4,23 @@ const { assertThat, is } = require("hamjest");
 
 const { fromBasketDTO, toBasketDTO } = require("../../src/transformers/basket");
 
-const { aNewBasket } = require("../data/test-basket");
+const { aNewBasket, basketDTO } = require("../data/basket");
+const { basketFrom } = require("../matchers/basket-matchers");
 
 describe("Basket Transformers", function () {
 	describe("to DTO", function () {
-		const basket = aNewBasket();
-
 		it("should convert tags from map", function () {
-			const dto = toBasketDTO(basket);
+			const dto = toBasketDTO(aNewBasket());
 
 			assertThat(dto.items[0].tags["property1"], is("string"));
 		});
 	});
 
 	describe("from DTO", function () {
-		const dto = {
-			items: [
-				{
-					tags: {
-						key: "value"
-					}
-				}
-			]
-		};
+		it("should convert dto to basket", function() {
+			const dto = basketDTO();
 
-		it("should convert tags to map", function() {
-			const basket = fromBasketDTO(dto);
-
-			assertThat(basket.items[0].tags.get("key"), is("value"));
+			assertThat(fromBasketDTO(dto), is(basketFrom(dto)));
 		});
 	});
 });

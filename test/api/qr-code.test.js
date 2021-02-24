@@ -1,13 +1,17 @@
 "use strict";
 
-const {  assertThat, is, throws } = require("hamjest");
+const { v4: uuid } = require("uuid");
+
+const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/qr-code");
 const { QRCodePaymentReferenceType } = require("../../src/model/enums");
 
-const { aQrCode } = require("../matchers/qr-code-matcher");
+const { body, withData } = require("../matchers/request-body-matchers");
+const { qrCodeDTO } = require("../data/qr-code");
+const { qrCodeFrom } = require("../matchers/qr-code-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
 
@@ -24,20 +28,13 @@ describe("QRCodeApi", function() {
 
 	describe("createPaymentRequestQRCode", function() {
 		const details = {
-			referenceId: "abc123",
+			referenceId: uuid(),
 			referenceType: QRCodePaymentReferenceType.PAYMENT_REQUEST
 		};
 
 		beforeEach(function() {
 			apiClient.response = {
-				data: {
-					qrId: "abc123def",
-					referenceId: "reference123",
-					referenceType: QRCodePaymentReferenceType.PAYMENT_REQUEST,
-					content: "http://foo.com/code",
-					image: "fadsfadfdasfdasfadfads",
-					expiryTime: "2021-02-17T06:31:46.358Z"
-				},
+				data: qrCodeDTO(),
 				meta: {}
 			}
 		})
@@ -49,36 +46,26 @@ describe("QRCodeApi", function() {
 		it("should set request params", async function() {
 			await api.createPaymentRequestQRCode(details);
 
-			assertThat(apiClient.request, is({
+			assertThat(apiClient.request, hasProperties({
 				method: HttpRequestMethod.POST,
 				url: "/merchant/qr",
-				body: {
-					data: details,
-					meta: {}
-				}
+				body: is(body(withData(equalTo(details))))
 			}));
 		});
 
 		it("should create payment request QR code", async function() {
 			const result = await api.createPaymentRequestQRCode(details);
 
-			assertThat(result, is(aQrCode()));
+			assertThat(result, is(qrCodeFrom(apiClient.response.data)));
 		});
 	});
 
 	describe("getPaymentRequestQRCodeContent", function() {
-		const qrCodeId = "bvfg345vsfgt";
+		const qrCodeId = uuid();
 
 		beforeEach(function() {
 			apiClient.response = {
-				data: {
-					qrId: "abc123def",
-					referenceId: "reference123",
-					referenceType: QRCodePaymentReferenceType.PAYMENT_REQUEST,
-					content: "http://foo.com/code",
-					image: "fadsfadfdasfdasfadfads",
-					expiryTime: "2021-02-17T06:31:46.358Z"
-				},
+				data: qrCodeDTO(),
 				meta: {}
 			}
 		})
@@ -105,12 +92,12 @@ describe("QRCodeApi", function() {
 		it("should get payment request QR code", async function() {
 			const result = await api.getPaymentRequestQRCodeContent(qrCodeId);
 
-			assertThat(result, is(aQrCode()));
+			assertThat(result, is(qrCodeFrom(apiClient.response.data)));
 		});
 	});
 
 	describe("cancelPaymentQRCode", function() {
-		const qrCodeId = "bvfg345vsfgt";
+		const qrCodeId = uuid();
 
 		it("should throw error if qrCodeId is missing", function() {
 			assertThat(() => api.cancelPaymentQRCode(), throws(requiredParameterError("qrCodeId")));

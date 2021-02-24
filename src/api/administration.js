@@ -3,21 +3,20 @@
 const asyncToPromise = require("crocks/Async/asyncToPromise");
 const chain = require("crocks/pointfree/chain");
 const map = require("crocks/pointfree/map");
-const objOf = require("crocks/helpers/objOf");
 const pipe = require("crocks/helpers/pipe");
 const resultToAsync = require("crocks/Async/resultToAsync");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { getPropOrError, toUpperCase } = require("../helpers/props");
+const { fromHealthCheckDTO } = require("../transformers/health-check");
+const { getPropOrError } = require("../helpers/props");
 
 const checkHealth = (client) => () =>
 	pipe(
 		client,
 		chain(pipe(
 			getPropOrError("data"),
-			chain(getPropOrError("healthCheck")),
-			map(pipe(toUpperCase, objOf("result"))),
+			map(fromHealthCheckDTO),
 			resultToAsync
 		)),
 		asyncToPromise

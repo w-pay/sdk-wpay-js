@@ -3,7 +3,6 @@
 const asyncToPromise = require("crocks/Async/asyncToPromise");
 const chain = require("crocks/pointfree/chain");
 const map = require("crocks/pointfree/map");
-const mapProps = require("crocks/helpers/mapProps");
 const pipe = require("crocks/helpers/pipe");
 const resultToAsync = require("crocks/Async/resultToAsync");
 
@@ -11,15 +10,8 @@ const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-cli
 
 const { getPropOrError } = require("../helpers/props");
 const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
+const { fromWalletContentsDTO } = require("../transformers/payment-instruments");
 const { requiredParameterError } = require("./api-errors");
-const { toURL } = require("../helpers/props");
-
-const fromCreditCardDTO = mapProps({
-	updateURL: toURL,
-	stepUp: mapProps({
-		url: toURL
-	})
-});
 
 const list = (client) => (wallet) => {
 	if (!wallet) {
@@ -31,12 +23,7 @@ const list = (client) => (wallet) => {
 		chain(client),
 		chain(pipe(
 			getPropOrError("data"),
-			map(mapProps({
-				creditCards: map(fromCreditCardDTO),
-				everydayPay: mapProps({
-					creditCards: map(fromCreditCardDTO)
-				})
-			})),
+			map(fromWalletContentsDTO),
 			resultToAsync
 		)),
 		asyncToPromise
@@ -72,6 +59,10 @@ const initiateAddition = (client) => (instrument) => {
 	return pipe(
 		addHeaders(everydayPayWalletHeader(instrument.wallet)),
 		chain(client),
+		chain(pipe(
+			getPropOrError("data"),
+			resultToAsync
+		)),
 		asyncToPromise
 	)({
 		method: HttpRequestMethod.POST,

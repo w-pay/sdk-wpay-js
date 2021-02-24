@@ -1,23 +1,32 @@
 "use strict";
 
-const { assertThat, defined, hasProperties, instanceOf, is, not, throws } = require("hamjest");
+const { v4: uuid } = require("uuid");
+
+const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/merchant-payments");
-const { QRCodePaymentReferenceType } = require("../../src/model/enums");
 
-const { aNewBasket } = require("../data/test-basket");
-const { aNewMerchantPayload, aNewPosPayload } = require("../data/test-merchant-payloads");
 const {
-	merchantPaymentDetails,
-	merchantPaymentSummaries
+	aNewPaymentRequest,
+	createPaymentRequestResultDTO
+} = require("../data/payment-request");
+const { basketDTOFrom } = require("../matchers/basket-matchers");
+const { body, withData } = require("../matchers/request-body-matchers");
+const { dynamicPayloadDTOFrom } = require("../matchers/dynamic-payload-matchers");
+const {
+	merchantPaymentDetailsFrom,
+	merchantPaymentSummariesFrom,
+	paymentRequestCreatedFrom
 } = require("../matchers/merchant-payments-matchers");
-const { merchantTransactionSummary } = require("../matchers/merchant-transaction-matchers");
-const { paymentRequestCreated } = require("../matchers/merchant-payments-matchers");
+const {
+	merchantPaymentDetailsDTO,
+	merchantPaymentSummariesDTO
+} = require("../data/merchant-payments");
+const { merchantTransactionSummaryDTO } = require("../data/merchant-transactions");
+const { merchantTransactionSummaryFrom } = require("../matchers/merchant-transaction-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
-const { toBasketDTO } = require("../../src/transformers/basket");
-const { toDynamicPayloadDTO } = require("../../src/transformers/dynamic-payload");
 const { StubApiClient } = require("../stub-api-client");
 
 describe("MerchantPaymentsApi", function() {
@@ -31,23 +40,10 @@ describe("MerchantPaymentsApi", function() {
 		api = apiFactory(apiClient.client());
 	});
 
-	const PAYMENT = {
-		usesRemaining: 1,
-		expiryTime: "2021-02-17T06:31:46.358Z",
-		specificWalletId: "someId",
-		paymentRequestId: "dfnafdfjaf",
-		merchantReferenceId: "dfjkadfjadkfjadk",
-		grossAmount: 123.2
-	};
-
 	describe("listPayments", function() {
 		beforeEach(function() {
 			apiClient.response = {
-				data: {
-					payments: [
-						PAYMENT
-					]
-				},
+				data: merchantPaymentSummariesDTO(),
 				meta: {}
 			}
 		})
@@ -79,33 +75,14 @@ describe("MerchantPaymentsApi", function() {
 		it("should list payments", async function() {
 			const result = await api.listPayments();
 
-			assertThat(result, is(merchantPaymentSummaries()));
+			assertThat(result, is(merchantPaymentSummariesFrom(apiClient.response.data)));
 		});
 	});
 
 	describe("createPaymentRequest", function() {
-		const newPaymentDetails = {
-			merchantReferenceId: "ffddaafaddfa",
-			grossAmount: 1,
-			generateQR: false,
-			basket: aNewBasket(),
-			posPayload: aNewPosPayload(),
-			merchantPayload: aNewMerchantPayload()
-		}
-
 		beforeEach(function() {
 			apiClient.response = {
-				data: {
-					paymentRequestId: "dfkjdfakfa",
-					qr: {
-						qrId: "abc123def",
-						referenceId: "reference123",
-						referenceType: QRCodePaymentReferenceType.PAYMENT_REQUEST,
-						content: "http://foo.com/code",
-						image: "fadsfadfdasfdasfadfads",
-						expiryTime: "2021-02-17T06:31:46.358Z"
-					}
-				},
+				data: createPaymentRequestResultDTO(),
 				meta: {}
 			}
 		})
@@ -118,42 +95,40 @@ describe("MerchantPaymentsApi", function() {
 		});
 
 		it("should set request params", async function() {
-			await api.createPaymentRequest(newPaymentDetails);
+			const request = aNewPaymentRequest();
+			await api.createPaymentRequest(request);
 
 			assertThat(apiClient.request, hasProperties({
 				method: HttpRequestMethod.POST,
 				url: "/merchant/payments",
-				body: hasProperties({
-					data: defined(),
-					meta: defined()
-				})
-			}))
-
-			const data = apiClient.request.body.data;
-
-			assertThat(data.basket.tags, not(instanceOf(Map)));
-			assertThat(data.posPayload.payload, not(instanceOf(Map)));
-			assertThat(data.merchantPayload.payload, not(instanceOf(Map)));
+				body: is(body(withData(hasProperties({
+					merchantReferenceId: is(request.merchantReferenceId),
+					grossAmount: is(request.grossAmount),
+					generateQR: is(request.generateQR),
+					maxUses: is(request.maxUses),
+					timeToLivePayment: is(request.timeToLivePayment),
+					timeToLiveQR: is(request.timeToLiveQR),
+					specificWalletId: is(request.specificWalletId),
+					basket: basketDTOFrom(request.basket),
+					posPayload: dynamicPayloadDTOFrom(request.posPayload),
+					merchantPayload: dynamicPayloadDTOFrom(request.merchantPayload)
+				}))))
+			}));
 		});
 
 		it("should create payment request", async function() {
-			const result = await api.createPaymentRequest(newPaymentDetails);
+			const result = await api.createPaymentRequest(aNewPaymentRequest());
 
-			assertThat(result, is(paymentRequestCreated()));
+			assertThat(result, is(paymentRequestCreatedFrom(apiClient.response.data)));
 		});
 	});
 
 	describe("getPaymentRequestDetailsBy", function() {
-		const paymentRequestId = "dfafafadfajkgks";
+		const paymentRequestId = uuid();
 
 		beforeEach(function() {
 			apiClient.response = {
-				data: {
-					...PAYMENT,
-					basket: toBasketDTO(aNewBasket()),
-					posPayload: toDynamicPayloadDTO(aNewPosPayload()),
-					merchantPayload: toDynamicPayloadDTO(aNewMerchantPayload())
-				},
+				data: merchantPaymentDetailsDTO(),
 				meta: {}
 			}
 		})
@@ -180,12 +155,12 @@ describe("MerchantPaymentsApi", function() {
 		it("should get payment request details", async function() {
 			const result = await api.getPaymentRequestDetailsBy(paymentRequestId);
 
-			assertThat(result, is(merchantPaymentDetails()));
+			assertThat(result, is(merchantPaymentDetailsFrom(apiClient.response.data)));
 		});
 	});
 
 	describe("deletePaymentRequest", function() {
-		const paymentRequestId = "dfafafadfajkgks";
+		const paymentRequestId = uuid();
 
 		it("should throw error when paymentRequestId is missing", function() {
 			assertThat(
@@ -208,23 +183,14 @@ describe("MerchantPaymentsApi", function() {
 	});
 
 	describe("refundTransaction", function() {
-		const transactionId = "fakfjadksjakldfjkalfjafj";
+		const transactionId = uuid();
 		const refundDetails = {
 			reason: "I want a refund"
 		}
 
 		beforeEach(function() {
 			apiClient.response = {
-				data: {
-					walletId: "dfadfadfdas",
-					merchantReferenceId: "rewrewrer",
-					paymentRequestId: "frewerrrre",
-					type: "type",
-					grossAmount: 123.3,
-					executionTime: "2021-02-17T06:31:46.358Z",
-					status: "PROCESSING",
-					transactionId: "dsfdfasdasas"
-				},
+				data: merchantTransactionSummaryDTO(),
 				meta: {}
 			}
 		})
@@ -246,23 +212,20 @@ describe("MerchantPaymentsApi", function() {
 		it("should set request params", async function() {
 			await api.refundTransaction(transactionId, refundDetails);
 
-			assertThat(apiClient.request, is({
+			assertThat(apiClient.request, hasProperties({
 				method: HttpRequestMethod.POST,
 				url: "/merchant/transactions/:transactionId/refund",
 				pathParams: {
 					transactionId
 				},
-				body: {
-					data: refundDetails
-				},
-				meta: {}
+				body: is(body(withData(equalTo(refundDetails))))
 			}))
 		});
 
 		it("should refund transaction", async function() {
 			const result = await api.refundTransaction(transactionId, refundDetails);
 
-			assertThat(result, is(merchantTransactionSummary()));
+			assertThat(result, is(merchantTransactionSummaryFrom(apiClient.response.data)));
 		});
 	});
 });

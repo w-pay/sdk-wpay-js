@@ -3,23 +3,17 @@
 const asyncToPromise = require("crocks/Async/asyncToPromise");
 const chain = require("crocks/pointfree/chain");
 const map = require("crocks/pointfree/map");
-const mapProps = require("crocks/helpers/mapProps");
 const pipe = require("crocks/helpers/pipe");
 const resultToAsync = require("crocks/Async/resultToAsync");
 
 const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
-const { fromBasketDTO } = require("../transformers/basket");
-const { fromTransactionSummaryDTO } = require("../transformers/transaction-summary");
+const { fromCustomerPaymentRequestDTO } = require("../transformers/payment-request");
+const { fromCustomerTransactionSummaryDTO } = require("../transformers/customer-transactions");
 const { getPropOrError } = require("../helpers/props");
 const { requiredParameterError } = require("./api-errors");
-
-// toSecondaryInstrument :: SecondaryPaymentInstrument -> Object
-const toSecondaryInstrument = (instrument) => ({
-	instrumentId: instrument.paymentInstrumentId,
-	amount: instrument.amount
-});
+const { toPaymentDetailsDTO } = require("../transformers/payment-details");
 
 // getById :: HttpApiClient -> String -> Promise CustomerPaymentRequest
 const getById = (client) => (paymentRequestId) => {
@@ -31,7 +25,7 @@ const getById = (client) => (paymentRequestId) => {
 		client,
 		chain(pipe(
 			getPropOrError("data"),
-			map(mapProps({ basket: fromBasketDTO })),
+			map(fromCustomerPaymentRequestDTO),
 			resultToAsync
 		)),
 		asyncToPromise
@@ -54,7 +48,7 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 		client,
 		chain(pipe(
 			getPropOrError("data"),
-			map(mapProps({ basket: fromBasketDTO })),
+			map(fromCustomerPaymentRequestDTO),
 			resultToAsync
 		)),
 		asyncToPromise
@@ -84,27 +78,12 @@ const makePayment = (client) => (
 		throw requiredParameterError("primaryInstrument");
 	}
 
-	const body = {
-		data: {
-			primaryInstrumentId: primaryInstrument.paymentInstrumentId,
-			secondaryInstruments: secondaryInstruments
-				? secondaryInstruments.map(toSecondaryInstrument)
-				: [],
-			challengeResponses: challengeResponses ? challengeResponses : []
-		},
-		meta: {}
-	};
-
-	if (clientReference) {
-		body.data.clientReference = clientReference;
-	}
-
 	return pipe(
 		addHeaders(everydayPayWalletHeader(primaryInstrument.wallet)),
 		chain(client),
 		chain(pipe(
 			getPropOrError("data"),
-			map(fromTransactionSummaryDTO),
+			map(fromCustomerTransactionSummaryDTO),
 			resultToAsync
 		)),
 		asyncToPromise
@@ -114,7 +93,15 @@ const makePayment = (client) => (
 		pathParams: {
 			paymentRequestId
 		},
-		body: body
+		body: {
+			data: toPaymentDetailsDTO(
+				primaryInstrument,
+				secondaryInstruments,
+				clientReference,
+				challengeResponses
+			),
+			meta: {}
+		}
 	});
 };
 

@@ -1,23 +1,25 @@
 "use strict";
 
-const mapProps = require("crocks/helpers/mapProps");
+const { v4: uuid } = require("uuid");
 
-const { assertThat, equalTo, is, throws } = require("hamjest");
+const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/customer-payment-requests");
-const { toBasketDTO } = require("../../src/transformers/basket");
 const { X_EVERYDAY_PAY_WALLET } = require("../../src/headers/header-names");
 
-const { aChallengeResponse } = require("../data/test-challenge-response");
+const { aChallengeResponse } = require("../data/challenge-response");
 const {
 	aSelectedPaymentInstrument,
 	aSecondaryPaymentInstrument
-} = require("../data/test-payment-instrument");
-const { aCustomerPaymentRequest } = require("../data/test-customer-payment-request");
-const { customerPaymentRequest } = require("../matchers/customer-payment-request-matcher");
-const { customerTransactionSummary } = require("../matchers/customer-transactions-matchers");
+} = require("../data/payment-instruments");
+const { body, withData } = require("../matchers/request-body-matchers");
+const { customerPaymentRequestDTO } = require("../data/payment-request");
+const { customerPaymentRequestFrom } = require("../matchers/payment-request-matchers");
+const { customerTransactionSummaryDTO } = require("../data/customer-transactions");
+const { customerTransactionSummaryFrom } = require("../matchers/customer-transactions-matchers");
+const { paymentDetailsDTOFrom } = require("../matchers/payment-instrument-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
 
@@ -32,7 +34,7 @@ describe("CustomerPaymentRequestsApi", function() {
 		api = apiFactory(apiClient.client());
 
 		apiClient.response = {
-			data: mapProps({ basket: toBasketDTO }, aCustomerPaymentRequest()),
+			data: customerPaymentRequestDTO(),
 			meta: {}
 		}
 	})
@@ -43,7 +45,7 @@ describe("CustomerPaymentRequestsApi", function() {
 		});
 
 		it("should set request params", async function() {
-			const paymentRequestId = "abc123";
+			const paymentRequestId = uuid();
 
 			await api.getById(paymentRequestId);
 
@@ -57,18 +59,9 @@ describe("CustomerPaymentRequestsApi", function() {
 		});
 
 		it("should return CustomerPaymentRequest", async function() {
-			const result = await api.getById("abc123");
+			const result = await api.getById(uuid());
 
-			assertThat(result, is(customerPaymentRequest()));
-		});
-
-		it("should ignore missing basket", async function() {
-			delete apiClient.response.data.basket;
-
-			/** @type CustomerPaymentRequest */
-			const result = await api.getById("abc123");
-
-			assertThat(result.basket, is(undefined));
+			assertThat(result, is(customerPaymentRequestFrom(apiClient.response.data)));
 		});
 	});
 
@@ -78,7 +71,7 @@ describe("CustomerPaymentRequestsApi", function() {
 		});
 
 		it("should set request params", async function() {
-			const qrCodeId = "abc123";
+			const qrCodeId = uuid();
 
 			await api.getByQRCodeId(qrCodeId);
 
@@ -92,18 +85,9 @@ describe("CustomerPaymentRequestsApi", function() {
 		});
 
 		it("should return CustomerPaymentRequest", async function() {
-			const result = await api.getByQRCodeId("abc123");
+			const result = await api.getByQRCodeId(uuid());
 
-			assertThat(result, is(customerPaymentRequest()));
-		});
-
-		it("should ignore missing basket", async function() {
-			delete apiClient.response.data.basket;
-
-			/** @type CustomerPaymentRequest */
-			const result = await api.getByQRCodeId("abc123");
-
-			assertThat(result.basket, is(undefined));
+			assertThat(result, is(customerPaymentRequestFrom(apiClient.response.data)));
 		});
 	});
 
@@ -125,78 +109,52 @@ describe("CustomerPaymentRequestsApi", function() {
 
 			await api.makePayment(paymentRequestId, primaryPaymentInstrument);
 
-			assertThat(apiClient.request, is({
+			assertThat(apiClient.request, hasProperties({
 				method: HttpRequestMethod.PUT,
 				url: "/customer/payments/:paymentRequestId",
-				headers: {
+				headers: equalTo({
 					[X_EVERYDAY_PAY_WALLET]: "false"
-				},
+				}),
 				pathParams: {
 					paymentRequestId
 				},
-				body: {
-					data: {
-						primaryInstrumentId: primaryPaymentInstrument.paymentInstrumentId,
-						secondaryInstruments: [],
-						challengeResponses: []
-					},
-					meta: {}
-				}
+				body: is(body(withData(paymentDetailsDTOFrom(primaryPaymentInstrument))))
 			}))
 		});
 
 		it("should set optional parameters", async function() {
-			const secondaryPaymentInstrument = aSecondaryPaymentInstrument();
+			const primaryPaymentInstrument = aSelectedPaymentInstrument();
+			const secondaryPaymentInstruments = [ aSecondaryPaymentInstrument() ];
 			const clientReference = "this is a reference";
-			const challengeResponse = aChallengeResponse();
+			const challengeResponses = [ aChallengeResponse() ];
 
 			await api.makePayment(
-				"abc123",
-				aSelectedPaymentInstrument(),
-				[ secondaryPaymentInstrument ],
+				uuid(),
+				primaryPaymentInstrument,
+				secondaryPaymentInstruments,
 				clientReference,
-				[ challengeResponse ]
+				challengeResponses
 			);
 
-			const data = apiClient.request.body.data;
-
-			assertThat(data.secondaryInstruments, equalTo([
-				{
-					instrumentId: secondaryPaymentInstrument.paymentInstrumentId,
-					amount: secondaryPaymentInstrument.amount
-				}
-			]));
-
-			assertThat(data.clientReference, equalTo(clientReference));
-			assertThat(data.challengeResponses, equalTo([ challengeResponse ]))
+			assertThat(
+				apiClient.request.body,
+				is(body(withData(
+					paymentDetailsDTOFrom(
+						primaryPaymentInstrument,
+						secondaryPaymentInstruments,
+						clientReference,
+						challengeResponses
+					)
+				)))
+			);
 		});
 
 		it("should make a payment", async function() {
-			apiClient.response = {
-				"data": {
-					"transactionId": "63f5b77e-adcb-49a3-9c1c-7ec5a3b9aae7",
-					"merchantId": "10006",
-					"merchantReferenceId": "67a1d6e8-5120-417c-b846-238fa978f467",
-					"clientReference": "12345",
-					"paymentRequestId": "9f7db4ee-a7af-4a3f-a160-42f7202b1f82",
-					"type": "PAYMENT",
-					"grossAmount": 1000.5,
-					"executionTime": "2021-02-17T06:31:47.617Z",
-					"instruments": [
-						{
-							"paymentInstrumentId": "184748",
-							"amount": 1000.5,
-							"paymentTransactionRef": "1000000007538304"
-						}
-					],
-					"status": "APPROVED"
-				},
-				"meta": {}
-			}
+			apiClient.response.data = customerTransactionSummaryDTO();
 
-			const result = await api.makePayment("fhgut738484dfjkskdk", aSelectedPaymentInstrument());
+			const result = await api.makePayment(uuid(), aSelectedPaymentInstrument());
 
-			assertThat(result, is(customerTransactionSummary()))
+			assertThat(result, is(customerTransactionSummaryFrom(apiClient.response.data)))
 		});
 	});
 });

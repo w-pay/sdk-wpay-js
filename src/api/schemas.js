@@ -3,14 +3,17 @@
 const asyncToPromise = require("crocks/Async/asyncToPromise");
 const chain = require("crocks/pointfree/chain");
 const map = require("crocks/pointfree/map");
-const mapProps = require("crocks/helpers/mapProps");
 const pipe = require("crocks/helpers/pipe");
 const resultToAsync = require("crocks/Async/resultToAsync");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { getPropOrError } = require("../helpers/props");
-const { fromSchemaDTO } = require("../transformers/schemas");
+const {
+	fromMerchantSchemaDTO,
+	fromMerchantSchemaSummariesDTO,
+	fromMerchantSchemaSummaryDTO
+} = require("../transformers/merchant-schemas");
 const { requiredParameterError } = require("./api-errors");
 
 const list = (client) => () =>
@@ -18,9 +21,7 @@ const list = (client) => () =>
 		client,
 		chain(pipe(
 			getPropOrError("data"),
-			map(mapProps({
-				schemas: map(fromSchemaDTO)
-			})),
+			map(fromMerchantSchemaSummariesDTO),
 			resultToAsync
 		)),
 		asyncToPromise
@@ -38,7 +39,7 @@ const getById = (client) => (schemaId) => {
 		client,
 		chain(pipe(
 			getPropOrError("data"),
-			map(fromSchemaDTO),
+			map(fromMerchantSchemaDTO),
 			resultToAsync
 		)),
 		asyncToPromise
@@ -60,7 +61,7 @@ const create = (client) => (schema) => {
 		client,
 		chain(pipe(
 			getPropOrError("data"),
-			map(fromSchemaDTO),
+			map(fromMerchantSchemaSummaryDTO),
 			resultToAsync
 		)),
 		asyncToPromise
@@ -68,9 +69,7 @@ const create = (client) => (schema) => {
 		method: HttpRequestMethod.POST,
 		url: "/merchant/schema",
 		body: {
-			data: {
-				schema
-			},
+			data: schema,
 			meta: {}
 		}
 	})

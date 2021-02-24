@@ -9,11 +9,14 @@ const resultToAsync = require("crocks/Async/resultToAsync");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { fromBasketDTO } = require("../transformers/basket");
+const {
+	fromCustomerTransactionDetailsDTO,
+	fromCustomerTransactionSummariesDTO
+} = require("../transformers/customer-transactions");
 const { getPropOrError } = require("../helpers/props");
 const { optionalParam, params } = require("../helpers/params");
 const { requiredParameterError } = require("./api-errors");
-const { toDate, toISOString } = require("../helpers/props");
+const { toISOString } = require("../helpers/props");
 
 const list = (client) => (
 	paymentRequestId,
@@ -26,11 +29,7 @@ const list = (client) => (
 		client,
 		chain(pipe(
 			getPropOrError("data"),
-			map(mapProps({
-				transactions: map(mapProps({
-					executionTime: toDate
-				}))
-			})),
+			map(fromCustomerTransactionSummariesDTO),
 			resultToAsync
 		)),
 		asyncToPromise
@@ -60,10 +59,7 @@ const getById = (client) => (transactionId) => {
 		client,
 		chain(pipe(
 			getPropOrError("data"),
-			map(mapProps({
-				executionTime: toDate,
-				basket: fromBasketDTO
-			})),
+			map(fromCustomerTransactionDetailsDTO),
 			resultToAsync
 		)),
 		asyncToPromise

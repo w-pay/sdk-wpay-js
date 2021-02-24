@@ -13,13 +13,6 @@ const { getPropOrError } = require("../helpers/props");
 const { requiredParameterError } = require("./api-errors");
 
 // toQrCode :: Object -> Async Error Object
-const toQrCode =
-	chain(pipe(
-		getPropOrError("data"),
-		map(fromQrDTO),
-		resultToAsync
-	))
-
 const createPaymentRequestQRCode = (client) => (details) => {
 	if (!details) {
 		throw requiredParameterError("details");
@@ -27,7 +20,11 @@ const createPaymentRequestQRCode = (client) => (details) => {
 
 	return pipe(
 		client,
-		toQrCode,
+		chain(pipe(
+			getPropOrError("data"),
+			map(fromQrDTO),
+			resultToAsync
+		)),
 		asyncToPromise
 	)({
 		method: HttpRequestMethod.POST,
@@ -46,7 +43,11 @@ const getPaymentRequestQRCodeContent = (client) => (qrCodeId) => {
 
 	return pipe(
 		client,
-		toQrCode,
+		chain(pipe(
+			getPropOrError("data"),
+			map(fromQrDTO),
+			resultToAsync
+		)),
 		asyncToPromise
 	)({
 		method: HttpRequestMethod.GET,

@@ -1,79 +1,90 @@
 "use strict";
 
-const {
-	allOf,
-	assertThat,
-	defined,
-	greaterThan,
-	instanceOf,
-	is,
-	not
-} = require("hamjest");
+const { assertThat, equalTo, is } = require("hamjest");
 
-const { blankOrMissingString } = require("./string-matchers");
+const { dateFrom } = require("./date-matchers");
 
-exports.merchantSchemaSummaries = () =>
-	new MerchantSchemaSummariesMatcher();
-
-class MerchantSchemaSummariesMatcher {
+const merchantSchemaSummariesFrom = (dto) => ({
 	matches(item) {
-		const schemaMatcher = new MerchantSummarySchemaMatcher();
 		const schemas = item.schemas;
 
-		assertThat(schemas.length, greaterThan(0));
+		assertThat(schemas.length, is(dto.schemas.length));
 
-		return schemas.reduce((result, it) => result && schemaMatcher.matches(it), true);
-	}
-
-	describeTo(description) {
-		description.append("A list of schemas");
-	}
-
-	describeMismatch(value, description) {
-		description.appendValue(value);
-	}
-}
-
-exports.merchantSchemaSummary = () =>
-	new MerchantSummarySchemaMatcher();
-
-class MerchantSummarySchemaMatcher {
-	matches(item) {
-		assertThat(item.schemaId, not(blankOrMissingString()));
-		assertThat(item.type, not(blankOrMissingString()));
-		assertThat(item.description, not(blankOrMissingString()));
-		assertThat(item.created, is(allOf(defined(), instanceOf(Date))));
+		schemas.forEach((schema, i) => {
+			assertThat(schema, is(merchantSchemaSummaryFrom(dto.schemas[i])));
+		});
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("Merchant Schema Summary");
-	}
+		description.append(`A MerchantSchemaSummaries from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
 
-exports.merchantSchema = () =>
-	new MerchantSchemaMatcher();
-
-class MerchantSchemaMatcher {
+const merchantSchemaSummaryFrom = (dto) => ({
 	matches(item) {
-		assertThat(item.schema, is(defined()));
-		assertThat(item.type, not(blankOrMissingString()));
-		assertThat(item.description, not(blankOrMissingString()));
-		assertThat(item.created, is(allOf(defined(), instanceOf(Date))));
+		assertThat(item.schemaId, is(dto.schemaId));
+		assertThat(item.type, is(dto.type));
+		assertThat(item.description, is(dto.description));
+		assertThat(item.created, is(dateFrom(dto.created)));
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("A Merchant Schema Summary");
-	}
+		description.append(`A MerchantSchemaSummary from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
+});
+
+const merchantSchemaFrom = (dto) => ({
+	matches(item) {
+		assertThat(item.schema, is(equalTo(dto.schema)));
+		assertThat(item.type, is(dto.type));
+		assertThat(item.description, is(dto.description));
+		assertThat(item.created, is(dateFrom(dto.created)));
+
+		return true;
+	},
+
+	describeTo(description) {
+		description.append(`A MerchantSchema from ${JSON.stringify(dto)}`);
+	},
+
+	describeMismatch(value, description) {
+		description.appendValue(value);
+	}
+});
+
+const newMerchantSchemaDTOFrom = (model) => ({
+	matches(item) {
+		assertThat(item.schema, is(equalTo(model.schema)));
+		assertThat(item.type, is(model.type));
+		assertThat(item.description, is(model.description));
+
+		return true;
+	},
+
+	describeTo(description) {
+		description.append(`A NewMerchantSchema from ${JSON.stringify(model)}`);
+	},
+
+	describeMismatch(value, description) {
+		description.appendValue(value);
+	}
+})
+
+module.exports = {
+	merchantSchemaFrom,
+	merchantSchemaSummariesFrom,
+	merchantSchemaSummaryFrom,
+	newMerchantSchemaDTOFrom
 }

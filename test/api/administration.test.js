@@ -1,11 +1,13 @@
 "use strict";
 
-const { assertThat, equalTo, hasProperty, is } = require("hamjest");
+const { assertThat, is } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/administration");
 
+const { healthCheckDTO } = require("../data/health-check");
+const { healthCheckFrom } = require("../matchers/health-check-matchers");
 const { StubApiClient } = require("../stub-api-client");
 
 describe("AdministrationApi", function() {
@@ -19,9 +21,7 @@ describe("AdministrationApi", function() {
 		api = apiFactory(apiClient.client());
 
 		apiClient.response = {
-			data: {
-				healthCheck: "success"
-			},
+			data: healthCheckDTO(),
 			meta: {}
 		}
 	})
@@ -37,6 +37,6 @@ describe("AdministrationApi", function() {
 	it("should return HealthCheck", async function() {
 		const result = await api.checkHealth();
 
-		assertThat(result, hasProperty("result", equalTo("SUCCESS")));
+		assertThat(result, is(healthCheckFrom(healthCheckDTO())));
 	});
 });

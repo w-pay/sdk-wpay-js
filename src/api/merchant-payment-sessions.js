@@ -10,7 +10,7 @@ const resultToAsync = require("crocks/Async/resultToAsync");
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { fromDynamicPayloadDTO, toDynamicPayloadDTO } = require("../transformers/dynamic-payload");
-const { fromQrDTO } = require("../transformers/qr-code");
+const { fromCreatePaymentSessionResultDTO } = require("../transformers/payment-session");
 const { getPropOrError } = require("../helpers/props");
 const { requiredParameterError } = require("./api-errors");
 const { toDate } = require("../helpers/props");
@@ -30,9 +30,7 @@ const create = (client) => (request) => {
 		client,
 		chain(pipe(
 			getPropOrError("data"),
-			map(mapProps({
-				qr: fromQrDTO
-			})),
+			map(fromCreatePaymentSessionResultDTO),
 			resultToAsync
 		)),
 		asyncToPromise

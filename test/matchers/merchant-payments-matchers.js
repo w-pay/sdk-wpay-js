@@ -1,99 +1,92 @@
 "use strict";
 
-const {
-	allOf,
-	assertThat,
-	defined,
-	greaterThanOrEqualTo,
-	instanceOf,
-	is,
-	not
-} = require("hamjest");
+const { assertThat, is } = require("hamjest");
 
-const { blankOrMissingString } = require("./string-matchers");
-const { isBasket } = require("./basket-matcher");
-const { isAQrCode } = require("./qr-code-matcher");
-const { isDynamicPayload } = require("./merchant-payload-matchers");
+const { basketFrom } = require("./basket-matchers");
+const { dateFrom } = require("./date-matchers");
+const { qrCodeFrom } = require("./qr-code-matchers");
+const { dynamicPayloadFrom } = require("./dynamic-payload-matchers");
 
-exports.merchantPaymentSummaries = () =>
-	new MerchantPaymentSummariesMatcher();
+const merchantPaymentSummariesFrom = (dto) => ({
+	matches(actual) {
+		assertThat(actual.payments.length, is(dto.payments.length));
 
-class MerchantPaymentSummariesMatcher {
-	matches(item) {
-		const matcher = new MerchantPaymentSummaryMatcher();
-
-		assertThat(item.payments.length, greaterThanOrEqualTo(1));
-
-		return item.payments.reduce((result, it) => result && matcher.matches(it), true);
-	}
-
-	describeTo(description) {
-		description.append("A list of payments");
-	}
-
-	describeMismatch(value, description) {
-		description.appendValue(value);
-	}
-}
-
-class MerchantPaymentSummaryMatcher {
-	matches(item) {
-		assertThat(item.paymentRequestId, not(blankOrMissingString()));
-		assertThat(item.merchantReferenceId, not(blankOrMissingString()));
-		assertThat(item.grossAmount, is(defined()));
-		assertThat(item.usesRemaining, is(defined()));
-		assertThat(item.expiryTime, is(allOf(defined(), instanceOf(Date))));
-		assertThat(item.specificWalletId, not(blankOrMissingString()));
+		actual.payments.forEach((payment, i) => {
+			assertThat(payment, is(merchantPaymentSummaryFrom(dto.payments[i])));
+		});
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("A merchant payment summary");
-	}
+		description.append(`A MerchantPaymentSummaries from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
 
-exports.merchantPaymentDetails = () =>
-	new MerchantPaymentDetailsMatcher();
-
-class MerchantPaymentDetailsMatcher extends MerchantPaymentSummaryMatcher {
+const merchantPaymentSummaryFrom = (dto) => ({
 	matches(item) {
-		assertThat(item.basket, isBasket());
-		assertThat(item.posPayload, isDynamicPayload());
-		assertThat(item.merchantPayload, isDynamicPayload());
-
-		return super.matches(item);
-	}
-
-	describeTo(description) {
-		description.append("Merchant Payment Details");
-	}
-
-	describeMismatch(value, description) {
-		description.appendValue(value);
-	}
-}
-
-exports.paymentRequestCreated = () =>
-	new CreatePaymentRequestResultMatcher();
-
-class CreatePaymentRequestResultMatcher {
-	matches(item) {
-		assertThat(item.paymentRequestId, not(blankOrMissingString()));
-		assertThat(item.qr, isAQrCode());
+		assertThat(item.paymentRequestId, is(dto.paymentRequestId));
+		assertThat(item.merchantReferenceId, is(dto.merchantReferenceId));
+		assertThat(item.grossAmount, is(dto.grossAmount));
+		assertThat(item.usesRemaining, is(dto.usesRemaining));
+		assertThat(item.expiryTime, is(dateFrom(dto.expiryTime)));
+		assertThat(item.specificWalletId, is(dto.specificWalletId));
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("A payment request result");
-	}
+		description.append(`A MerchantPaymentSummary from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
+})
+
+const merchantPaymentDetailsFrom = (dto) => ({
+	matches(item) {
+		assertThat(item, is(merchantPaymentSummaryFrom(dto)));
+		assertThat(item.basket, basketFrom(dto.basket));
+		assertThat(item.posPayload, dynamicPayloadFrom(dto.posPayload));
+		assertThat(item.merchantPayload, dynamicPayloadFrom(dto.merchantPayload));
+
+		return true;
+	},
+
+	describeTo(description) {
+		description.append(`A MerchantPaymentDetails from ${JSON.stringify(dto)}`);
+	},
+
+	describeMismatch(value, description) {
+		description.appendValue(value);
+	}
+});
+
+const paymentRequestCreatedFrom = (dto) => ({
+	matches(item) {
+		assertThat(item.paymentRequestId, is(dto.paymentRequestId));
+		assertThat(item.qr, qrCodeFrom(dto.qr));
+
+		return true;
+	},
+
+	describeTo(description) {
+		description.append(`A CreatePaymentRequestResult from ${JSON.stringify(dto)}`);
+	},
+
+	describeMismatch(value, description) {
+		description.appendValue(value);
+	}
+})
+
+module.exports = {
+	merchantPaymentDetailsFrom,
+	merchantPaymentSummariesFrom,
+	merchantPaymentSummaryFrom,
+	paymentRequestCreatedFrom
 }
