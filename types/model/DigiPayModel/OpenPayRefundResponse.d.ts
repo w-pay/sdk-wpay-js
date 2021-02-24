@@ -1,45 +1,50 @@
+import { OpenPayExtendedTransactionData } from "./OpenPayPaymentResponse";
+
 /**
- * The JSON request structure of the Openpay Refunds endpoint.
+ * The JSON success response structure of the Openpay Refunds endpoint.
  * 
  * @category Model
  */
-export interface OpenPayRefundRequest {
-    /** 
-     * A merchant application specific reference number. 
+export interface OpenPayRefundResponse {
+    /**
+     * Container reference in the transaction logs. 
      * 
-     * This number should uniquely identify the transaction in the merchant’s system. 
+     * This number uniquely identifies the whole/grouped transaction in the container. 
      */
-    clientReference: string;
-    
-    /** The merchant order number of the transaction. */
-    orderNumber?: string;
+    transactionReceipt: string;
 
-    /** The merchants transaction date and time. The timestamp format is ISO8601. */
-    merchantTransactedAt?: string;
-
-    /** List of refunds */
-    refunds: OpenPayRefund[];
-
-    storeData?: {
-        /** The refund transaction store id. */
-        storeId: string;
-    }
+    /** List of refund response */
+    refundResponses: OpenPayRefundTransactionResponse;
 }
 
-export interface OpenPayRefund {
+export interface OpenPayRefundTransactionResponse {
     /** 
      * Container reference in the transaction logs. 
      * 
-     * This number uniquely identifies the payment transaction in the container.
+     * This number uniquely identifies the openpay transaction in the container.
      */
     paymentTransactionRef: string;
-
-    /** The amount you want to refund. */
+    
+    /** Container reference in the transaction logs. This number uniquely identifies the refund transaction in the container. */
+    refundTransactionRef: string;
+           
+    /** The amount processed in the refund. */
     amount: number;
 
-    /** The GST amount of the amount you want to refund. */
-    gstAmount?: number;
+    /** This array is only included in the response if it is enabled in the consumers API configuration. */
+    extendedTransactionData?: OpenPayExtendedTransactionData;
+        
+    /** 
+     * The external service code (from eg. Openpay). 
+     * 
+     * This property is only included in the response if it is enabled in the consumers API configuration. 
+     */
+    externalServiceCode?: string;
 
-    /** The reason or justification for the refund. */
-    reason?: string;
+    /** 
+     * The external service message (from eg. Openpay). 
+     * 
+     * This property is only included in the response if it is enabled in the consumers API configuration. 
+     */
+    externalServiceMessage?: string;
 }

@@ -1,5 +1,5 @@
-import { OpenPayCompleteRequest } from "../../model/DigiPayModel/OpenPayCompletionRequest";
-import { OpenPayCompleteResponse } from "../../model/DigiPayModel/OpenPayCompletionResponse";
+import { OpenPayCompletionRequest } from "../../model/DigiPayModel/OpenPayCompletionRequest";
+import { OpenPayCompletionResponse } from "../../model/DigiPayModel/OpenPayCompletionResponse";
 import { OpenPayPaymentRequest } from "../../model/DigiPayModel/OpenPayPaymentRequest";
 import { OpenPayPaymentResponse } from "../../model/DigiPayModel/OpenPayPaymentResponse";
 import { OpenPayVoidRequest } from "../../model/DigiPayModel/OpenPayVoidRequest";
@@ -19,7 +19,7 @@ export interface OpenPayApi {
     /**
 	 * Complete pre-authed Openpay payments. This API is IP restricted to allow unauthenticated server side calls.
 	 */
-	complete(completeRequest: OpenPayCompleteRequest): Promise<OpenPayCompleteResponse>
+	complete(completeRequest: OpenPayCompletionRequest): Promise<OpenPayCompletionResponse>
 
     /**
 	 * Void (cancel) pre-authed Openpay payments. This API is IP restricted to allow unauthenticated server side calls.

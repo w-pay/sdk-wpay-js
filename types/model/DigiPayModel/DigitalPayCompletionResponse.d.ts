@@ -1,11 +1,9 @@
-import { OpenPayExtendedTransactionData } from "./OpenPayPaymentResponse";
-
 /**
- * The JSON response structure of the OpenPay Completions endpoint.
+ * The JSON response structure of the Completions endpoint.
  *
  * @category Model
  */
-export interface OpenPayCompletionResponse {
+export interface DigitalPayCompletionResponse {
     /** 
      * Container reference in the transaction logs. 
      * 
@@ -13,11 +11,17 @@ export interface OpenPayCompletionResponse {
      */
 	transactionReceipt: string;
 
-    /** List of completion responses */
-    completionResponses: OpenPayTransactionCompletionResponse[]
+    /** 
+     * A flag to indicate if a split completion was only partially successful,
+     *  
+     * ie. at least 1 of the completions had a successful result. 
+     */
+    partialSuccess: boolean;
+
+    completionResponses: DigitalPayTransactionCompletionResponse[];
 }
 
-export interface OpenPayTransactionCompletionResponse {
+export interface DigitalPayTransactionCompletionResponse {
     /** 
      * Container reference in the transaction logs. 
      * 
@@ -35,6 +39,15 @@ export interface OpenPayTransactionCompletionResponse {
     /** The amount processed in the completion. */
     amount: number;
 
+    /** The error code. Only present if an error occurred during payment. */
+    errorCode: string;
+
+    /** The error message. Only present if an error occurred during payment. */
+    errorMessage: string;
+
+    /** The error detail. Only present if an error occurred during payment. */
+    errorDetail: string;
+
     /** 
      * The external service code (from eg. Webpay). 
      * 
@@ -48,7 +61,4 @@ export interface OpenPayTransactionCompletionResponse {
      * This property is only included in the response if it is enabled in the consumers API configuration. 
      */
     externalServiceMessage: string;
-
-    /** This array is only included in the response if it is enabled in the consumers API configuration. */
-    extendedTransactionData?: OpenPayExtendedTransactionData
 }

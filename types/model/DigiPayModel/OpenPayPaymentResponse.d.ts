@@ -1,4 +1,12 @@
 import { CreditCardStepUp } from "../PaymentInstruments";
+import { 
+    DigitalPayApplePay, 
+    DigitalPayFraudResponse, 
+    DigitalPayGiftCard, 
+    DigitalPayPaymentInstrument, 
+    DigitalPayPayPal, 
+    DigitalPayRecieptData 
+} from "./DigitalPayPaymentResponse";
 
 /**
  * The JSON success response structure of the Payments endpoint.
@@ -21,90 +29,40 @@ export interface OpenPayPaymentResponse {
     partialSuccess: boolean;
 
     /** OpenPay fraud response */
-    fraudResponse: OpenPayFraudResponse;
+    fraudResponse: DigitalPayFraudResponse;
     
     /** OpenPay payment credit card payments */
     creditCards: OpenPayCreditCard[];
     
     /** OpenPay payment gift card payments */
-    giftCards: OpenPayGiftCard[];
+    giftCards: DigitalPayGiftCard[];
 
     /** OpenPay PayPal card payments */
-    payPal: OpenPayPayPal[];
+    payPal: DigitalPayPayPal[];
 
     /** 
      * Android Pay has been replaced by Google Pay. 
      * 
      * This property has been retained for backward compatibility and will always be an empty array. 
      */
-    androidPay: unknown[];
+    androidPay: any[];
 
     /** OpenPay payment Google Pay payments */
     googlePay: OpenPayGooglePay[];
     
     /** OpenPay payment Apple Pay payments */
-    applePay: OpenPayApplePay[];
+    applePay: DigitalPayApplePay[];
     
     /** OpenPay payment unknown payments */
-    unknown: OpenPayPaymentInstrument[];
+    unknown: DigitalPayPaymentInstrument[];
 }
 
-export interface OpenPayStoreData {
-    /** The payment transaction store id. */
-    storeId: string; 
-
-    /** A pin for the payment method id. */
-    pin: string;
-}
-
-export interface OpenPayPayments {
-    /** The payment token. */
-    paymentToken: string;
-
-    /** The amount you want to pay with the payment instrument. */
-    amount: number;
-
-    /** The GST amount of the full amount you want to pay with the payment instrument. */
-    gstAmount?: number;
-}
-
-export interface OpenPayFraudResponse {
-    /** The fraud check client id. Will be null if the fraud check was skipped. */
-    clientId: string;
-    
-    /** The fraud check reason code. Will be null if the fraud check was skipped. */
-    reasonCode: string;
-
-    /** The fraud check decision. Will be null if the fraud check was skipped. */
-    decision: string;
-}
-
-export interface OpenPayPaymentInstrument {
-    /** The credit card payment instrument id. */
-    paymentInstrumentId: string;
-
-    /** The credit card payment token. The payment token is a unique identifier for the payment instrument. */
-    paymentToken: string;
-        
-    /** Container reference in the transaction logs. This number uniquely identifies the credit card transaction in the container. */
-    paymentTransactionRef: string;
-    
-    /** The error code. Only present if an error occurred during payment. */
-    errorCode: string;
-
-    /** The error message. Only present if an error occurred during payment. */
-    errorMessage: string;
-
-    /** The error detail. Only present if an error occurred during payment. */
-    errorDetail: string;
-}
-
-export interface OpenPayCreditCard {
+export interface OpenPayCreditCard extends DigitalPayPaymentInstrument {
     /** Only present if an error occurred during payment. */
     stepUp?: CreditCardStepUp;
 
     /** This object is only included in the response if it is enabled in the consumers API configuration. */
-    receiptData?: OpenPayRecieptData;
+    receiptData?: DigitalPayRecieptData;
                 
     /** This array is only included in the response if it is enabled in the consumers API configuration. */
     extendedTransactionData?: OpenPayExtendedTransactionData[];
@@ -131,48 +89,8 @@ export interface OpenPayCreditCard {
     handlingInstructions?: OpenPayHandlingInstructions;
 }
 
-export interface OpenPayGiftCard {
-    /** Only present if an error occurred during payment. */
-    stepUp?: CreditCardStepUp;
 
-    /** This object is only included in the response if it is enabled in the consumers API configuration. */
-    receiptData?: OpenPayRecieptData;
-                
-    /** 
-     * The external service code (from eg. Webpay). 
-     * 
-     * This property is only included in the response if it is enabled in the consumers API configuration. 
-     */
-    externalServiceCode?: string;
-    
-    /** 
-     * The external service message (from eg. Webpay). 
-     * 
-     * This property is only included in the response if it is enabled in the consumers API configuration. 
-     */
-    externalServiceMessage?: string;
-}
-
-export interface OpenPayPayPal {
-    /** This object is only included in the response if it is enabled in the consumers API configuration. */
-    receiptData?: OpenPayRecieptData;
-                
-    /** 
-     * The external service code (from eg. Webpay). 
-     * 
-     * This property is only included in the response if it is enabled in the consumers API configuration. 
-     */
-    externalServiceCode?: string;
-    
-    /** 
-     * The external service message (from eg. Webpay). 
-     * 
-     * This property is only included in the response if it is enabled in the consumers API configuration. 
-     */
-    externalServiceMessage?: string;
-}
-
-export interface OpenPayGooglePay {
+export interface OpenPayGooglePay extends DigitalPayPaymentInstrument  {
     /** Only present if an error occurred during payment. */
     stepUp?: CreditCardStepUp;
                 
@@ -194,31 +112,12 @@ export interface OpenPayGooglePay {
     externalServiceMessage?: string;
 }
 
-export interface OpenPayApplePay {
-    /** Only present if an error occurred during payment. */
-    stepUp?: CreditCardStepUp;
-}
-
 export interface OpenPayHandlingInstructions {
     /** The handling instruction message. */
     instructionMessage: string;
 
     /** The handling instruction code. */
     instructionCode: OpenPayInstructionCode;
-}
-
-export interface OpenPayRecieptData {
-    /** The suffix (last 4 digits) of the credit card number used in the WebPay transaction. */
-    cardSuffix: string;
-    
-    /** The credit card scheme. */
-    scheme: string;
-
-    /** The month of the expiry date of the credit card. */
-    expiryMonth: string;
-
-    /** The year of the expiry date of the credit card. */
-    expiryYear: string;
 }
 
 export interface OpenPayExtendedTransactionData {

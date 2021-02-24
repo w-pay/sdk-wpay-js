@@ -21,8 +21,8 @@ export interface TransactionSummary extends Payment {
 	/** The current status of the transactions */
 	status: TransactionSummaryPaymentStatus;
 
-	/** The error detail returned by downstream processes when the payment is REJECTED */
-	statusDetail?: any;
+	/** Array of transaction responses returned by downstream processes */
+	subTransactions?: any[];
 
 	/** The reason provided for the refund. Only provided for REFUND transactions */
 	refundReason?: string;

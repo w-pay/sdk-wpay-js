@@ -1,11 +1,9 @@
-import { DigitalPayCompletionRequest } from "./DigitalPayCompletionRequest";
-
 /**
- * The JSON request structure of the OpenPay Completions endpoint.
+ * The JSON request structure of the Completions endpoint.
  *
  * @category Model
  */
-export interface OpenPayCompletionRequest {
+export interface DigitalPayCompletionRequest {
 	/** 
      * A merchant application specific reference number. 
      * 
@@ -16,14 +14,11 @@ export interface OpenPayCompletionRequest {
     /** The merchant order number of the transaction. */
     orderNumber: string;
 
-    /** The merchants transaction date and time. The timestamp format is ISO8601. */
-    merchantTransactedAt: string;
-    
     /** List of completions */
-    completions: OpenPayCompletion[];
+    completions: DigitalPayCompletion[];
 }
 
-export interface OpenPayCompletion {
+export interface DigitalPayCompletion {
     /** 
      * Container reference in the transaction logs. 
      * 
@@ -33,7 +28,4 @@ export interface OpenPayCompletion {
 
     /** The amount you want to process in the completion. */
     amount: number;
-
-    /** The GST amount of the amount you want to process in the completion. */
-    gstAmount?: number;
 }

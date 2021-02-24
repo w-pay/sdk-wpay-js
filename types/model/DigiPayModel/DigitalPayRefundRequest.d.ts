@@ -1,9 +1,9 @@
 /**
- * The JSON request structure of the Openpay Refunds endpoint.
+ * The JSON request structure of the Refunds endpoint.
  * 
  * @category Model
  */
-export interface OpenPayRefundRequest {
+export interface DigitalPayRefundRequest {
     /** 
      * A merchant application specific reference number. 
      * 
@@ -12,21 +12,13 @@ export interface OpenPayRefundRequest {
     clientReference: string;
     
     /** The merchant order number of the transaction. */
-    orderNumber?: string;
-
-    /** The merchants transaction date and time. The timestamp format is ISO8601. */
-    merchantTransactedAt?: string;
+    orderNumber: string;
 
     /** List of refunds */
-    refunds: OpenPayRefund[];
-
-    storeData?: {
-        /** The refund transaction store id. */
-        storeId: string;
-    }
+    refunds: DigitalPayRefund[];
 }
 
-export interface OpenPayRefund {
+export interface DigitalPayRefund {
     /** 
      * Container reference in the transaction logs. 
      * 
@@ -36,10 +28,4 @@ export interface OpenPayRefund {
 
     /** The amount you want to refund. */
     amount: number;
-
-    /** The GST amount of the amount you want to refund. */
-    gstAmount?: number;
-
-    /** The reason or justification for the refund. */
-    reason?: string;
 }
