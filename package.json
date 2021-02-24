@@ -8,17 +8,17 @@
     "node": "~12.18"
   },
   "scripts": {
+    "build": "npm run check && npm run pack",
+    "check": "tsc types/**/*.ts --noEmit",
     "dist": "npm run test:node && npm run build && npm run test:pack",
     "doc": "rm -rf docs && jsdoc -c ./jsdoc.config.json -d docs",
     "lint": "eslint src test",
-    "build": "npm run check && npm run pack",
-    "check": "tsc types/**/*.ts --noEmit",
     "pack": "webpack --mode production",
     "test:node": "find test/ -name *.test.js | xargs mocha --timeout 1000",
     "test:pack": "npm run test:pack:customer && npm run test:pack:merchant && npm run test:pack:all",
+    "test:pack:all": "karma start test/webpack/all/karma.config.js --single-run",
     "test:pack:customer": "karma start test/webpack/customer/karma.config.js --single-run",
-    "test:pack:merchant": "karma start test/webpack/merchant/karma.config.js --single-run",
-    "test:pack:all": "karma start test/webpack/all/karma.config.js --single-run"
+    "test:pack:merchant": "karma start test/webpack/merchant/karma.config.js --single-run"
   },
   "files": [
     "src",
