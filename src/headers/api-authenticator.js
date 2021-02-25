@@ -13,7 +13,7 @@ const toApiAuthenticator = (token) => {
 	if (token === undefined || token === null) {
 		return {
 			authenticate: () => Promise.resolve("")
-		}
+		};
 	}
 
 	if (typeof token === "string") {
@@ -23,8 +23,8 @@ const toApiAuthenticator = (token) => {
 	}
 
 	return token;
-}
+};
 
 module.exports = {
 	toApiAuthenticator
-}
+};

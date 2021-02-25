@@ -6,7 +6,7 @@ function givenHttpResult(response) {
 	return {
 		request: {},
 		response
-	}
+	};
 }
 
 function givenHttpResponse(body = {}, headers = {}, statusCode = 200) {
@@ -17,11 +17,11 @@ function givenHttpResponse(body = {}, headers = {}, statusCode = 200) {
 	return {
 		statusCode,
 		headers,
-		body: ((typeof body) === "object") ? JSON.stringify(body) : body
-	}
+		body: typeof body === "object" ? JSON.stringify(body) : body
+	};
 }
 
 module.exports = {
 	givenHttpResponse,
 	givenHttpResult
-}
+};

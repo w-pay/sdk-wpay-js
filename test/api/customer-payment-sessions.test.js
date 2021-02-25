@@ -1,243 +1,238 @@
 "use strict";
 
-const {
-	allOf,
-	assertThat,
-	defined,
-	equalTo,
-	hasProperties,
-	instanceOf,
-	is,
-	not,
-	throws
-} = require("hamjest");
+const { v4: uuid } = require("uuid");
+
+const { assertThat, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/customer-payment-sessions");
 const { X_EVERYDAY_PAY_WALLET } = require("../../src/headers/header-names");
 
-const { aChallengeResponse } = require("../data/test-challenge-response");
+const { aChallengeResponse } = require("../data/challenge-response");
+const {
+	aCustomerUpdatePaymentSessionRequest,
+	paymentSessionDTO
+} = require("../data/payment-session");
 const {
 	aSecondaryPaymentInstrument,
 	aSelectedPaymentInstrument
-} = require("../data/test-payment-instrument");
-const { paymentSession } = require("../matchers/payment-session-matchers");
+} = require("../data/payment-instruments");
+const { body, withData } = require("../matchers/request-body-matchers");
+const { objFrom } = require("../matchers/map-matchers");
+const { paymentDetailsDTOFrom } = require("../matchers/payment-instrument-matchers");
+const { paymentSessionFrom } = require("../matchers/payment-session-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
-const { TestCustomerUpdatePaymentSessionRequest } =
-	require("../data/test-update-payment-session-request");
 
-const session = {
-	paymentSessionId: "fadfadsads",
-	paymentRequestId: undefined,
-	merchantId: "fadddasfdasf",
-	walletId: undefined,
-	expiryTime: "2021-02-17T06:31:46.358Z",
-	location: "location",
-	merchantInfo: {
-		schemaId: "abc",
-		payload: {}
-	},
-	customerInfo: {
-		schemaId: "abc",
-		payload: {}
-	}
-}
-
-describe("CustomerPaymentSessionsApi", function() {
+describe("CustomerPaymentSessionsApi", function () {
 	let apiClient;
 
 	let api;
 
-	beforeEach(function() {
-		apiClient = new StubApiClient()
+	beforeEach(function () {
+		apiClient = new StubApiClient();
 
 		api = apiFactory(apiClient.client());
-	})
+	});
 
-	describe("getById", function() {
-		beforeEach(function() {
+	describe("getById", function () {
+		beforeEach(function () {
 			apiClient.response = {
-				data: session,
+				data: paymentSessionDTO(),
 				meta: {}
-			}
+			};
 		});
 
-		const paymentSessionId = "fdjfadfaj2312";
+		const paymentSessionId = uuid();
 
-		it("should throw error when paymentSessionId is missing", function() {
+		it("should throw error when paymentSessionId is missing", function () {
 			assertThat(() => api.getById(), throws(requiredParameterError("paymentSessionId")));
 		});
 
-		it("should set request params", async function() {
+		it("should set request params", async function () {
 			await api.getById(paymentSessionId);
 
-			assertThat(apiClient.request, is({
-				method: HttpRequestMethod.GET,
-				url: "/customer/payment/session/:paymentSessionId",
-				pathParams: {
-					paymentSessionId
-				}
-			}))
+			assertThat(
+				apiClient.request,
+				is({
+					method: HttpRequestMethod.GET,
+					url: "/customer/payment/session/:paymentSessionId",
+					pathParams: {
+						paymentSessionId
+					}
+				})
+			);
 		});
 
-		it("should get payment session", async function() {
+		it("should get payment session", async function () {
 			const result = await api.getById(paymentSessionId);
 
-			assertThat(result, is(paymentSession()));
+			assertThat(result, is(paymentSessionFrom(apiClient.response.data)));
 		});
 	});
 
-	describe("getByQRCodeId", function() {
-		const qrCodeId = "dgjkkadsgkadfslg;d";
+	describe("getByQRCodeId", function () {
+		const qrCodeId = uuid();
 
-		beforeEach(function() {
+		beforeEach(function () {
 			apiClient.response = {
-				data: session,
+				data: paymentSessionDTO(),
 				meta: {}
-			}
+			};
 		});
 
-		it("should throw error when qrCodeId is missing", function() {
+		it("should throw error when qrCodeId is missing", function () {
 			assertThat(() => api.getByQRCodeId(), throws(requiredParameterError("qrCodeId")));
 		});
 
-		it("should set request params", async function() {
+		it("should set request params", async function () {
 			await api.getByQRCodeId(qrCodeId);
 
-			assertThat(apiClient.request, is({
-				method: HttpRequestMethod.GET,
-				url: "/customer/payment/session/qr/:qrId",
-				pathParams: {
-					qrId: qrCodeId
-				}
-			}))
+			assertThat(
+				apiClient.request,
+				is({
+					method: HttpRequestMethod.GET,
+					url: "/customer/payment/session/qr/:qrId",
+					pathParams: {
+						qrId: qrCodeId
+					}
+				})
+			);
 		});
 
-		it("should get payment session", async function() {
+		it("should get payment session", async function () {
 			const result = await api.getByQRCodeId(qrCodeId);
 
-			assertThat(result, is(paymentSession()));
+			assertThat(result, is(paymentSessionFrom(apiClient.response.data)));
 		});
 	});
 
-	describe("update", function() {
-		const paymentSessionId = "fdjfadfaj2312";
-		const session = new TestCustomerUpdatePaymentSessionRequest()
+	describe("update", function () {
+		const paymentSessionId = uuid();
+		const session = aCustomerUpdatePaymentSessionRequest();
 
-		it("should throw error when paymentSessionId is missing", function() {
+		it("should throw error when paymentSessionId is missing", function () {
 			assertThat(() => api.update(), throws(requiredParameterError("paymentSessionId")));
 		});
 
-		it("should throw error when session is missing", function() {
+		it("should throw error when session is missing", function () {
 			assertThat(() => api.update(paymentSessionId), throws(requiredParameterError("session")));
 		});
 
-		it("should set request params", async function() {
+		it("should set request params", async function () {
 			await api.update(paymentSessionId, session);
 
-			assertThat(apiClient.request, hasProperties({
-				method: HttpRequestMethod.POST,
-				url: "/customer/payment/session/:paymentSessionId",
-				pathParams: {
-					paymentSessionId
-				},
-				body: hasProperties({
-					data: defined(),
-					meta: {}
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.POST,
+					url: "/customer/payment/session/:paymentSessionId",
+					pathParams: {
+						paymentSessionId
+					},
+					body: is(
+						body(
+							withData(
+								hasProperties({
+									customerInfo: hasProperties({
+										schemaId: is(session.customerInfo.schemaId),
+										payload: objFrom(session.customerInfo.payload)
+									})
+								})
+							)
+						)
+					)
 				})
-			}));
-
-			assertThat(apiClient.request.body.data.customerInfo.payload, allOf(
-				defined(),
-				not(instanceOf(Map))
-			))
+			);
 		});
 	});
 
-	describe("delete", function() {
-		const paymentSessionId = "fdjfadfaj2312";
+	describe("delete", function () {
+		const paymentSessionId = uuid();
 
-		it("should throw error when paymentSessionId is missing", function() {
+		it("should throw error when paymentSessionId is missing", function () {
 			assertThat(() => api.delete(), throws(requiredParameterError("paymentSessionId")));
 		});
 
-		it("should set request params", async function() {
+		it("should set request params", async function () {
 			await api.delete(paymentSessionId);
 
-			assertThat(apiClient.request, is({
-				method: HttpRequestMethod.DELETE,
-				url: "/customer/payment/session/:paymentSessionId",
-				pathParams: {
-					paymentSessionId
-				}
-			}))
+			assertThat(
+				apiClient.request,
+				is({
+					method: HttpRequestMethod.DELETE,
+					url: "/customer/payment/session/:paymentSessionId",
+					pathParams: {
+						paymentSessionId
+					}
+				})
+			);
 		});
 	});
 
-	describe("preApprove", function() {
-		const paymentSessionId = "fdjfadfaj2312";
+	describe("preApprove", function () {
+		const paymentSessionId = uuid();
 		const primaryInstrument = aSelectedPaymentInstrument();
 
-		it("should throw error when paymentSessionId is missing", function() {
+		it("should throw error when paymentSessionId is missing", function () {
 			assertThat(() => api.preApprove(), throws(requiredParameterError("paymentSessionId")));
 		});
 
-		it("should throw error when primaryInstrument is missing", function() {
+		it("should throw error when primaryInstrument is missing", function () {
 			assertThat(
 				() => api.preApprove(paymentSessionId),
 				throws(requiredParameterError("primaryInstrument"))
 			);
 		});
 
-		it("should set request params", async function() {
+		it("should set request params", async function () {
 			await api.preApprove(paymentSessionId, primaryInstrument);
 
-			assertThat(apiClient.request, is({
-				method: HttpRequestMethod.PUT,
-				url: "/customer/payment/session/:paymentSessionId",
-				headers: {
-					[X_EVERYDAY_PAY_WALLET]: "false"
-				},
-				pathParams: {
-					paymentSessionId
-				},
-				body: {
-					data: {
-						primaryInstrumentId: primaryInstrument.paymentInstrumentId,
-						secondaryInstruments: [],
-						challengeResponses: []
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.PUT,
+					url: "/customer/payment/session/:paymentSessionId",
+					headers: {
+						[X_EVERYDAY_PAY_WALLET]: "false"
 					},
-					meta: {}
-				}
-			}));
+					pathParams: {
+						paymentSessionId
+					},
+					body: is(body(withData(paymentDetailsDTOFrom(primaryInstrument))))
+				})
+			);
 		});
 
-		it("should set optional request params", async function() {
-			const secondaryPaymentInstrument = aSecondaryPaymentInstrument();
+		it("should set optional request params", async function () {
+			const secondaryPaymentInstruments = [aSecondaryPaymentInstrument()];
 			const clientReference = "this is a reference";
-			const challengeResponse = aChallengeResponse();
+			const challengeResponses = [aChallengeResponse()];
 
 			await api.preApprove(
 				paymentSessionId,
 				primaryInstrument,
-				[ secondaryPaymentInstrument ],
+				secondaryPaymentInstruments,
 				clientReference,
-				[ challengeResponse ]
+				challengeResponses
 			);
 
-			const data = apiClient.request.body.data;
-
-			assertThat(data.secondaryInstruments, equalTo([
-				{
-					instrumentId: secondaryPaymentInstrument.paymentInstrumentId,
-					amount: secondaryPaymentInstrument.amount
-				}
-			]));
-
-			assertThat(data.clientReference, equalTo(clientReference));
-			assertThat(data.challengeResponses, equalTo([ challengeResponse ]))
+			assertThat(
+				apiClient.request.body,
+				is(
+					body(
+						withData(
+							paymentDetailsDTOFrom(
+								primaryInstrument,
+								secondaryPaymentInstruments,
+								clientReference,
+								challengeResponses
+							)
+						)
+					)
+				)
+			);
 		});
 	});
 });

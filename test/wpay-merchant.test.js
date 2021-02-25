@@ -12,7 +12,7 @@ const options = {
 describe("WPay Merchant", function () {
 	let stubHttpClient;
 
-	beforeEach(function() {
+	beforeEach(function () {
 		stubHttpClient = new StubHttpClient();
 
 		stubHttpClient.response.body = JSON.stringify({
@@ -20,7 +20,7 @@ describe("WPay Merchant", function () {
 				healthCheck: "success"
 			},
 			meta: {}
-		})
+		});
 	});
 
 	it("should not add merchant id header when no id given", async function () {
@@ -32,10 +32,10 @@ describe("WPay Merchant", function () {
 	});
 
 	it("should add merchant id header when id given", async function () {
-		const sdk = createMerchantSDK(
-			stubHttpClient.factory(),
-			{ ...options, merchantId: "12345465" }
-		);
+		const sdk = createMerchantSDK(stubHttpClient.factory(), {
+			...options,
+			merchantId: "12345465"
+		});
 
 		await sdk.admin.checkHealth();
 

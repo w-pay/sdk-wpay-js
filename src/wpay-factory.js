@@ -9,8 +9,9 @@ const { defaultHeaders } = require("./headers/default-headers");
 const { resultHandler } = require("./api/result-handler");
 
 const createApiClient = (httpClient, options) => {
-	const headers = defaultHeaders(options)
-		.either((err) => { throw err }, identity);
+	const headers = defaultHeaders(options).either((err) => {
+		throw err;
+	}, identity);
 
 	return pipeK(
 		// TODO: Test for this
@@ -19,9 +20,9 @@ const createApiClient = (httpClient, options) => {
 		jsonMarshaller(),
 		httpClient(),
 		resultHandler()
-	)
-}
+	);
+};
 
 module.exports = {
 	createApiClient
-}
+};

@@ -13,7 +13,7 @@ const getPropOrError = curry((prop, obj) =>
 const toDate = (s) => new Date(s);
 
 // toISOString :: Date -> String
-const toISOString = (d) => d.toISOString()
+const toISOString = (d) => d.toISOString();
 
 // toUpperCase :: String -> String
 const toUpperCase = (s) => s.toUpperCase();
@@ -27,4 +27,4 @@ module.exports = {
 	toISOString,
 	toUpperCase,
 	toURL
-}
+};

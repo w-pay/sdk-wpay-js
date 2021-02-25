@@ -13,5 +13,5 @@ export interface WPayOptions {
 	 */
 	baseUrl: string;
 
-	accessToken?: ApiTokenType
+	accessToken?: ApiTokenType;
 }

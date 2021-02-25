@@ -5,10 +5,7 @@ class ApiException extends Error {}
 
 /** @implements {import('../../types/api/ApiErrors').JsonParsingException} */
 class JsonParsingException extends ApiException {
-	constructor(
-		message,
-		details
-	) {
+	constructor(message, details) {
 		super(message);
 
 		this.details = details;
@@ -17,13 +14,9 @@ class JsonParsingException extends ApiException {
 
 /** @implements {import('../../types/api/ApiErrors').HttpErrorException} */
 class HttpErrorException extends ApiException {
-	constructor(
-		statusCode,
-		responseHeaders,
-		responseBody
-	) {
+	constructor(statusCode, responseHeaders, responseBody) {
 		super(
-			(function() {
+			(function () {
 				switch (statusCode) {
 					case 400:
 						return "Invalid Input";
@@ -49,4 +42,4 @@ module.exports = {
 	JsonParsingException,
 	HttpErrorException,
 	requiredParameterError
-}
+};
