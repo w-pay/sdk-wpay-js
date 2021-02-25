@@ -1,171 +1,146 @@
 "use strict";
 
-const { assertThat, is, throws } = require("hamjest");
+const { v4: uuid } = require("uuid");
+
+const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/payment-instruments");
-const { PaymentInstrumentStatus, Wallet } = require("../../src/model/enums");
 const { X_EVERYDAY_PAY_WALLET } = require("../../src/headers/header-names");
+const { Wallet } = require("../../src/model/enums");
 
-const { requiredParameterError } = require("../matchers/required-parameters");
+const { body, withData } = require("../matchers/request-body-matchers");
 const {
-	paymentInstrumentAdded,
-	walletContents
+	paymentInstrumentAddedFrom,
+	walletContentsFrom
 } = require("../matchers/payment-instrument-matchers");
+const { requiredParameterError } = require("../matchers/required-parameters");
+const { walletContentsDTO } = require("../data/payment-instruments");
 const { StubApiClient } = require("../stub-api-client");
 
-describe("PaymentInstrumentsApi", function() {
+describe("PaymentInstrumentsApi", function () {
 	let apiClient;
 
 	let api;
 
-	beforeEach(function() {
-		apiClient = new StubApiClient()
+	beforeEach(function () {
+		apiClient = new StubApiClient();
 
 		api = apiFactory(apiClient.client());
 	});
 
-	describe("list", function() {
-		beforeEach(function() {
-			const base = {
-				allowed: true,
-				cardSuffix: "1234",
-				lastUpdated: "2021-02-17T06:31:46.358Z",
-				lastUsed: "2021-02-17T06:31:46.358Z",
-				paymentToken: "token",
-				primary: false,
-				status: PaymentInstrumentStatus.UNVERIFIED_PERSISTENT,
-				paymentInstrumentId: "abc123"
-			}
-
-			const creditCard = {
-				...base,
-				cardName: "My Card",
-				cvvValidated: true,
-				expired: true,
-				expiryMonth: "02",
-				expiryYear: "2100",
-				requiresCVV: false,
-				scheme: "visa",
-				updateURL: "http://foobar.com",
-				stepUp: {
-					type: "CAPTURE_CVV",
-					mandatory: false,
-					url: "http://foobar.com"
-				}
-			}
-
-			const giftCard = {
-				...base,
-				programName: "Gift cards",
-				stepUp: {
-					type: "REQUIRE_PASSCODE",
-					mandatory: false
-				}
-			}
-
+	describe("list", function () {
+		beforeEach(function () {
 			apiClient.response = {
-				data: {
-					creditCards: [ creditCard ],
-					giftCards: [ giftCard ],
-					everydayPay: {
-						creditCards: [ creditCard ],
-						giftCards: [ giftCard ],
-					}
-				},
+				data: walletContentsDTO(),
 				meta: {}
-			}
-		})
+			};
+		});
 
-		it("should throw error if wallet is missing", function() {
+		it("should throw error if wallet is missing", function () {
 			assertThat(() => api.list(), throws(requiredParameterError("wallet")));
 		});
 
-		it("should set request params", async function() {
+		it("should set request params", async function () {
 			await api.list(Wallet.EVERYDAY_PAY);
 
-			assertThat(apiClient.request, is({
-				method: HttpRequestMethod.GET,
-				url: "/customer/instruments",
-				headers: {
-					[X_EVERYDAY_PAY_WALLET]: "true"
-				}
-			}))
+			assertThat(
+				apiClient.request,
+				is({
+					method: HttpRequestMethod.GET,
+					url: "/customer/instruments",
+					headers: {
+						[X_EVERYDAY_PAY_WALLET]: "true"
+					}
+				})
+			);
 		});
 
-		it("should list payment instruments", async function() {
+		it("should list payment instruments", async function () {
 			const result = await api.list(Wallet.MERCHANT);
 
-			assertThat(result, is(walletContents()));
+			assertThat(result, is(walletContentsFrom(apiClient.response.data)));
 		});
 	});
 
-	describe("delete", function() {
+	describe("delete", function () {
 		const instrument = {
 			paymentInstrumentId: "dfadfdagaeg",
 			wallet: Wallet.MERCHANT
-		}
+		};
 
-		it("should throw error if instrument is missing", function() {
+		it("should throw error if instrument is missing", function () {
 			assertThat(() => api.delete(), throws(requiredParameterError("instrument")));
 		});
 
-		it("should set request params", async function() {
+		it("should set request params", async function () {
 			await api.delete(instrument);
 
-			assertThat(apiClient.request, is({
-				method: HttpRequestMethod.DELETE,
-				url: "/customer/instruments/:paymentInstrumentId",
-				headers: {
-					[X_EVERYDAY_PAY_WALLET]: "false"
-				},
-				pathParams: {
-					paymentInstrumentId: instrument.paymentInstrumentId
-				}
-			}));
+			assertThat(
+				apiClient.request,
+				is({
+					method: HttpRequestMethod.DELETE,
+					url: "/customer/instruments/:paymentInstrumentId",
+					headers: {
+						[X_EVERYDAY_PAY_WALLET]: "false"
+					},
+					pathParams: {
+						paymentInstrumentId: instrument.paymentInstrumentId
+					}
+				})
+			);
 		});
 	});
 
-	describe("initiateAddition", function() {
+	describe("initiateAddition", function () {
 		const newPaymentInstrument = {
-			clientReference: "abc123",
+			clientReference: uuid(),
 			wallet: Wallet.MERCHANT
-		}
+		};
 
-		beforeEach(function() {
+		beforeEach(function () {
 			apiClient.response = {
-				cardCaptureURL: "http://foo.com",
-				transactionRef: "abc123"
-			}
-		})
+				data: {
+					cardCaptureURL: "http://foo.com",
+					transactionRef: uuid()
+				},
+				meta: {}
+			};
+		});
 
-		it("should throw error if instrument is missing", function() {
+		it("should throw error if instrument is missing", function () {
 			assertThat(() => api.initiateAddition(), throws(requiredParameterError("instrument")));
 		});
 
-		it("should set request params", async function() {
+		it("should set request params", async function () {
 			await api.initiateAddition(newPaymentInstrument);
 
-			assertThat(apiClient.request, is({
-				method: HttpRequestMethod.POST,
-				url: "/customer/instruments",
-				headers: {
-					[X_EVERYDAY_PAY_WALLET]: "false"
-				},
-				body: {
-					data: {
-						clientReference: newPaymentInstrument.clientReference
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.POST,
+					url: "/customer/instruments",
+					headers: {
+						[X_EVERYDAY_PAY_WALLET]: "false"
 					},
-					meta: {}
-				}
-			}))
+					body: is(
+						body(
+							withData(
+								equalTo({
+									clientReference: newPaymentInstrument.clientReference
+								})
+							)
+						)
+					)
+				})
+			);
 		});
 
-		it("should initiate addon", async function() {
+		it("should initiate addon", async function () {
 			const result = await api.initiateAddition(newPaymentInstrument);
 
-			assertThat(result, is(paymentInstrumentAdded()));
+			assertThat(result, is(paymentInstrumentAddedFrom(apiClient.response.data)));
 		});
 	});
 });

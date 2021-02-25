@@ -7,22 +7,24 @@ const { mapToObject } = require("./map");
 const { objectToMap } = require("./object");
 
 // fromBasketDTO :: a -> Basket
-const fromBasketDTO =
-	mapProps({
-		items: map(mapProps({
+const fromBasketDTO = mapProps({
+	items: map(
+		mapProps({
 			tags: objectToMap
-		}))
-	});
+		})
+	)
+});
 
 // toBasketDTO :: Basket -> a
-const toBasketDTO =
-	mapProps({
-		items: map(mapProps({
+const toBasketDTO = mapProps({
+	items: map(
+		mapProps({
 			tags: mapToObject
-		}))
-	});
+		})
+	)
+});
 
 module.exports = {
 	fromBasketDTO,
 	toBasketDTO
-}
+};

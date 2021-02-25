@@ -1,4 +1,5 @@
 import { DynamicPayload } from "./DynamicPayload";
+import { QRCode } from "./QRCode";
 
 /**
  * Request containing the details of the {@link PaymentSession}
@@ -39,4 +40,17 @@ export interface CreatePaymentSessionRequest {
 
 	/** The ID of the associated payment request */
 	paymentRequestId?: string;
+}
+
+/**
+ * The result of creating a {@link PaymentSession}
+ *
+ * @category Model
+ */
+export interface CreatePaymentSessionResult {
+	/** The ID of the new {@link PaymentSession} */
+	paymentSessionId: string;
+
+	/** A {@link QRCode} that is associated to the {@link PaymentSession} */
+	qr?: QRCode;
 }

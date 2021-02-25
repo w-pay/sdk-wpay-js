@@ -1,19 +1,13 @@
 module.exports = {
-	"parserOptions": {
-		"parser": "@typescript-eslint/parser"
-	},
-	"plugins": [
-		"@typescript-eslint"
-	],
-	"extends": [
+	extends: [
 		"eslint:recommended",
-		"plugin:@typescript-eslint/recommended",
 		"prettier"
 	],
-	"env": {
-		"node": true
+	env: {
+		node: true,
+		es2020: true
 	},
-	"rules": {
-		"@typescript-eslint/no-explicit-any": "off"
+	rules: {
+		"no-unused-vars": [ "error" , { args: "all", argsIgnorePattern: "^_$" } ]
 	}
 }

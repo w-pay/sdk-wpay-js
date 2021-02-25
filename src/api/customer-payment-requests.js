@@ -1,25 +1,16 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const chain = require("crocks/pointfree/chain");
-const map = require("crocks/pointfree/map");
-const mapProps = require("crocks/helpers/mapProps");
-const pipe = require("crocks/helpers/pipe");
-const resultToAsync = require("crocks/Async/resultToAsync");
+const pipeK = require("crocks/helpers/pipeK");
 
 const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
-const { fromBasketDTO } = require("../transformers/basket");
-const { fromTransactionSummaryDTO } = require("../transformers/transaction-summary");
-const { getPropOrError } = require("../helpers/props");
+const { fromCustomerPaymentRequestDTO } = require("../transformers/payment-request");
+const { fromCustomerTransactionSummaryDTO } = require("../transformers/customer-transactions");
+const { fromData } = require("../transformers/data");
 const { requiredParameterError } = require("./api-errors");
-
-// toSecondaryInstrument :: SecondaryPaymentInstrument -> Object
-const toSecondaryInstrument = (instrument) => ({
-	instrumentId: instrument.paymentInstrumentId,
-	amount: instrument.amount
-});
+const { toPaymentDetailsDTO } = require("../transformers/payment-details");
 
 // getById :: HttpApiClient -> String -> Promise CustomerPaymentRequest
 const getById = (client) => (paymentRequestId) => {
@@ -27,22 +18,19 @@ const getById = (client) => (paymentRequestId) => {
 		throw requiredParameterError("paymentRequestId");
 	}
 
-	return pipe(
-		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(mapProps({ basket: fromBasketDTO })),
-			resultToAsync
-		)),
-		asyncToPromise
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/customer/payments/:paymentRequestId",
-		pathParams: {
-			paymentRequestId
-		}
-	})
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromCustomerPaymentRequestDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/customer/payments/:paymentRequestId",
+			pathParams: {
+				paymentRequestId
+			}
+		})
+	);
+};
 
 // getByQRCodeId :: HttpApiClient -> String -> Promise CustomerPaymentRequest
 const getByQRCodeId = (client) => (qrCodeId) => {
@@ -50,21 +38,18 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 		throw requiredParameterError("qrCodeId");
 	}
 
-	return pipe(
-		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(mapProps({ basket: fromBasketDTO })),
-			resultToAsync
-		)),
-		asyncToPromise
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/customer/qr/:qrCodeId",
-		pathParams: {
-			qrCodeId
-		}
-	})
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromCustomerPaymentRequestDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/customer/qr/:qrCodeId",
+			pathParams: {
+				qrCodeId
+			}
+		})
+	);
 };
 
 // returns an uncurried function for data so that defaults can be omitted
@@ -84,38 +69,28 @@ const makePayment = (client) => (
 		throw requiredParameterError("primaryInstrument");
 	}
 
-	const body = {
-		data: {
-			primaryInstrumentId: primaryInstrument.paymentInstrumentId,
-			secondaryInstruments: secondaryInstruments
-				? secondaryInstruments.map(toSecondaryInstrument)
-				: [],
-			challengeResponses: challengeResponses ? challengeResponses : []
-		},
-		meta: {}
-	};
-
-	if (clientReference) {
-		body.data.clientReference = clientReference;
-	}
-
-	return pipe(
-		addHeaders(everydayPayWalletHeader(primaryInstrument.wallet)),
-		chain(client),
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromTransactionSummaryDTO),
-			resultToAsync
-		)),
-		asyncToPromise
-	)({
-		method: HttpRequestMethod.PUT,
-		url: "/customer/payments/:paymentRequestId",
-		pathParams: {
-			paymentRequestId
-		},
-		body: body
-	});
+	return asyncToPromise(
+		pipeK(
+			addHeaders(everydayPayWalletHeader(primaryInstrument.wallet)),
+			client,
+			fromData(fromCustomerTransactionSummaryDTO)
+		)({
+			method: HttpRequestMethod.PUT,
+			url: "/customer/payments/:paymentRequestId",
+			pathParams: {
+				paymentRequestId
+			},
+			body: {
+				data: toPaymentDetailsDTO(
+					primaryInstrument,
+					secondaryInstruments,
+					clientReference,
+					challengeResponses
+				),
+				meta: {}
+			}
+		})
+	);
 };
 
 module.exports = (client) => {
@@ -125,4 +100,4 @@ module.exports = (client) => {
 		getByQRCodeId: getByQRCodeId(client),
 		makePayment: makePayment(client)
 	};
-}
+};

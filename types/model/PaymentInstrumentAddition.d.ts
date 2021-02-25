@@ -11,3 +11,16 @@ export interface PaymentInstrumentAddition {
 	/** The unique reference for this interaction as defined by the client application */
 	clientReference: string;
 }
+
+/**
+ * The result of trying to initiate the addition of a new {@link PaymentInstrument}
+ *
+ * @category Model
+ */
+export interface PaymentInstrumentAdditionResult {
+	/** The URL of an iframe. This iframe is used to capture a credit card number, expiry and CVV */
+	cardCaptureURL: string;
+
+	/** Container reference in the transaction logs. This number uniquely identifies the transaction in the container */
+	transactionRef?: string;
+}

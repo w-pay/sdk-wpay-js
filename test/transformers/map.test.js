@@ -4,9 +4,9 @@ const { assertThat, equalTo, is } = require("hamjest");
 
 const { mapToObject } = require("../../src/transformers/map");
 
-describe("Map transformers", function() {
-	describe("Map to object", function() {
-		it("should convert a map to an object", function() {
+describe("Map transformers", function () {
+	describe("Map to object", function () {
+		it("should convert a map to an object", function () {
 			const map = new Map();
 			map.set("a", 1);
 			map.set("b", "foo");

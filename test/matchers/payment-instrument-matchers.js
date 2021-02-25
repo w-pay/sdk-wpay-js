@@ -1,168 +1,197 @@
-const {
-	allOf,
-	assertThat,
-	defined,
-	greaterThanOrEqualTo,
-	instanceOf,
-	is,
-	not
-} = require("hamjest");
+const { assertThat, defined, is } = require("hamjest");
 
-const { blankOrMissingString } = require("./string-matchers");
+const { challengeResponseFrom } = require("./challenge-response-matchers");
+const { dateFrom } = require("./date-matchers");
+const { uppercase } = require("./string-matchers");
+const { urlFrom } = require("./url-matches");
 
-exports.walletContents = () =>
-	new WalletContentsMatcher();
+const paymentDetailsDTOFrom = (
+	primaryPaymentInstrument,
+	secondaryInstruments = [],
+	clientReference = undefined,
+	challengeResponses = []
+) => ({
+	matches(actual) {
+		assertThat(actual.primaryInstrumentId, is(primaryPaymentInstrument.paymentInstrumentId));
 
-exports.hasPaymentInstruments = hasPaymentInstruments = () =>
-	new PaymentInstrumentMatcher();
+		assertThat(actual.secondaryInstruments.length, is(secondaryInstruments.length));
+		actual.secondaryInstruments.forEach((instrument, i) => {
+			assertThat(instrument, is(secondaryInstrumentDTOFrom(secondaryInstruments[i])));
+		});
 
-exports.hasCards = hasCards = (matcher) =>
-	new CardsMatcher(matcher);
+		assertThat(actual.clientReference, is(clientReference));
 
-exports.creditCard = creditCard = () =>
-	new CreditCardMatcher();
-
-exports.giftCard = giftCard = () =>
-	new GiftCardMatcher();
-
-exports.paymentInstrumentAdded = () =>
-	new PaymentInstrumentAdditionResultMatcher();
-
-class WalletContentsMatcher {
-	matches(item) {
-		assertThat(item.creditCards, hasCards(creditCard()));
-		assertThat(item.giftCards, hasCards(giftCard()));
-		assertThat(item.everydayPay, hasPaymentInstruments());
+		assertThat(actual.challengeResponses.length, is(challengeResponses.length));
+		actual.challengeResponses.forEach((response, i) => {
+			assertThat(response, is(challengeResponseFrom(challengeResponses[i])));
+		});
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("A list of all payments instruments");
-	}
+		description.append(
+			`Payment details containing ${JSON.stringify({
+				primaryPaymentInstrument,
+				secondaryInstruments,
+				clientReference,
+				challengeResponses
+			})}`
+		);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
 
-class PaymentInstrumentMatcher {
+const secondaryInstrumentDTOFrom = (model) => ({
 	matches(item) {
-		assertThat(item.creditCards, hasCards(creditCard()));
-		assertThat(item.giftCards, hasCards(giftCard()));
+		assertThat(item.instrumentId, is(model.paymentInstrumentId));
+		assertThat(item.amount, is(model.amount));
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("A list of payment instruments");
-	}
+		description.append(`A SecondaryInstrumentDTO from ${JSON.stringify(model)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
 
-class CardsMatcher {
-	constructor(matcher) {
-		this.matcher = matcher;
-	}
+const walletContentsFrom = (dto) => ({
+	matches(item) {
+		assertThat(item, hasPaymentInstrumentsFrom(dto));
+		assertThat(item.everydayPay, hasPaymentInstrumentsFrom(dto.everydayPay));
 
-	matches(list) {
-		assertThat(list, is(defined()));
-		assertThat(list.length, greaterThanOrEqualTo(1));
-
-		return list.reduce((result, item) => result && this.matcher.matches(item), true);
-	}
+		return true;
+	},
 
 	describeTo(description) {
-		description.append("A list of cards with at least one card");
-	}
+		description.append(`WalletContents from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
 
-class CreditCardMatcher {
+const hasPaymentInstrumentsFrom = (dto) => ({
+	matches(item) {
+		assertThat(item.creditCards, is(defined()));
+		item.creditCards.forEach((card, i) => {
+			assertThat(card, is(creditCardFrom(dto.creditCards[i])));
+		});
+
+		assertThat(item.giftCards, is(defined()));
+		item.giftCards.forEach((card, i) => {
+			assertThat(card, is(giftCardFrom(dto.giftCards[i])));
+		});
+
+		return true;
+	},
+
+	describeTo(description) {
+		description.append(`PaymentInstruments from ${JSON.stringify(dto)}`);
+	},
+
+	describeMismatch(value, description) {
+		description.appendValue(value);
+	}
+});
+
+const creditCardFrom = (dto) => ({
 	matches(card) {
-		assertThat(card.allowed, is(defined()));
-		assertThat(card.cardName, not(blankOrMissingString()));
-		assertThat(card.cardSuffix, not(blankOrMissingString()));
-		assertThat(card.cvvValidated, is(defined()));
-		assertThat(card.expired, is(defined()));
-		assertThat(card.expiryMonth, not(blankOrMissingString()));
-		assertThat(card.expiryYear, not(blankOrMissingString()));
-		assertThat(card.lastUpdated, is(defined()));
-		assertThat(card.lastUsed, is(defined()));
-		assertThat(card.paymentInstrumentId, not(blankOrMissingString()));
-		assertThat(card.paymentToken, not(blankOrMissingString()));
-		assertThat(card.primary, is(defined()));
-		assertThat(card.requiresCVV, is(defined()));
-		assertThat(card.scheme, not(blankOrMissingString()));
-		assertThat(card.status, is(defined()));
-		assertThat(card.updateURL, is(allOf(defined(), instanceOf(URL))));
+		assertThat(card.allowed, is(dto.allowed));
+		assertThat(card.cardName, is(dto.cardName));
+		assertThat(card.cardSuffix, is(dto.cardSuffix));
+		assertThat(card.cvvValidated, is(dto.cvvValidated));
+		assertThat(card.expired, is(dto.expired));
+		assertThat(card.expiryMonth, is(dto.expiryMonth));
+		assertThat(card.expiryYear, is(dto.expiryYear));
+		assertThat(card.lastUpdated, is(dateFrom(dto.lastUpdated)));
+		assertThat(card.lastUsed, is(dateFrom(dto.lastUsed)));
+		assertThat(card.paymentInstrumentId, is(dto.paymentInstrumentId));
+		assertThat(card.paymentToken, is(dto.paymentToken));
+		assertThat(card.primary, is(dto.primary));
+		assertThat(card.requiresCVV, is(dto.requiresCVV));
+		assertThat(card.scheme, is(dto.scheme));
+		assertThat(card.status, is(uppercase(dto.status)));
+		assertThat(card.updateURL, is(urlFrom(dto.updateURL)));
 
 		const stepUp = card.stepUp;
 		assertThat(stepUp, is(defined()));
-		assertThat(stepUp.mandatory, is(defined()));
-		assertThat(stepUp.type, not(blankOrMissingString()));
-		assertThat(stepUp.url, is(allOf(defined(), instanceOf(URL))));
+		assertThat(stepUp.mandatory, is(dto.stepUp.mandatory));
+		assertThat(stepUp.type, is(dto.stepUp.type));
+		assertThat(stepUp.url, is(urlFrom(dto.stepUp.url)));
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("A Credit Card");
-	}
+		description.append(`A CreditCard from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
 
-class GiftCardMatcher {
+const giftCardFrom = (dto) => ({
 	matches(card) {
-		assertThat(card.allowed, is(defined()));
-		assertThat(card.cardSuffix, not(blankOrMissingString()));
-		assertThat(card.lastUpdated, is(defined()));
-		assertThat(card.lastUsed, is(defined()));
-		assertThat(card.paymentInstrumentId, not(blankOrMissingString()));
-		assertThat(card.paymentToken, not(blankOrMissingString()));
-		assertThat(card.primary, is(defined()));
-		assertThat(card.status, is(defined()));
-		assertThat(card.programName, not(blankOrMissingString()));
+		assertThat(card.allowed, is(dto.allowed));
+		assertThat(card.cardSuffix, is(dto.cardSuffix));
+		assertThat(card.lastUpdated, is(dateFrom(dto.lastUpdated)));
+		assertThat(card.lastUsed, is(dateFrom(dto.lastUsed)));
+		assertThat(card.paymentInstrumentId, is(dto.paymentInstrumentId));
+		assertThat(card.paymentToken, is(dto.paymentToken));
+		assertThat(card.primary, is(dto.primary));
+		assertThat(card.status, is(uppercase(dto.status)));
+		assertThat(card.programName, is(dto.programName));
 
 		const stepUp = card.stepUp;
 		assertThat(stepUp, is(defined()));
-		assertThat(stepUp.mandatory, is(defined()));
-		assertThat(stepUp.type, not(blankOrMissingString()));
+		assertThat(stepUp.mandatory, is(dto.stepUp.mandatory));
+		assertThat(stepUp.type, is(dto.stepUp.type));
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("A Gift Card");
-	}
+		description.append(`A GiftCard from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
 
-class PaymentInstrumentAdditionResultMatcher {
+const paymentInstrumentAddedFrom = (dto) => ({
 	matches(item) {
-		assertThat(item.cardCaptureURL, not(blankOrMissingString()));
-		assertThat(item.transactionRef, not(blankOrMissingString()));
+		assertThat(item.cardCaptureURL, is(dto.cardCaptureURL));
+		assertThat(item.transactionRef, is(dto.transactionRef));
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("A successful payment instrument addition result");
-	}
+		description.append(`A PaymentInstrumentAdditionResult from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
+
+module.exports = {
+	creditCardFrom,
+	giftCardFrom,
+	hasPaymentInstrumentsFrom,
+	paymentDetailsDTOFrom,
+	paymentInstrumentAddedFrom,
+	secondaryInstrumentDTOFrom,
+	walletContentsFrom
+};

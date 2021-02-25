@@ -12,12 +12,8 @@ const safe = require("crocks/Maybe/safe");
 
 // optionalParam = String -> a -> Object
 const optionalParam = curry((name, prop) =>
-	pipe(
-		safe(isDefined),
-		map(objOf(name)),
-		option({})
-	)(prop)
-)
+	pipe(safe(isDefined), map(objOf(name)), option({}))(prop)
+);
 
 // params = [ Objects ] -> Object
 const params = mreduce(Assign);
@@ -25,4 +21,4 @@ const params = mreduce(Assign);
 module.exports = {
 	optionalParam,
 	params
-}
+};

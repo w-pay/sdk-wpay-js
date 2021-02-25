@@ -3,4 +3,4 @@
 module.exports = {
 	...require("./common-index"),
 	...require("./wpay-customer")
-}
+};

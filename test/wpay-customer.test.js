@@ -12,7 +12,7 @@ const options = {
 describe("WPay Customer", function () {
 	let stubHttpClient;
 
-	beforeEach(function() {
+	beforeEach(function () {
 		stubHttpClient = new StubHttpClient();
 
 		stubHttpClient.response.body = JSON.stringify({
@@ -20,7 +20,7 @@ describe("WPay Customer", function () {
 				healthCheck: "success"
 			},
 			meta: {}
-		})
+		});
 	});
 
 	it("should not add wallet id header when no id given", async function () {
@@ -31,11 +31,11 @@ describe("WPay Customer", function () {
 		assertThat(stubHttpClient.request.headers, hasProperty(X_WALLET_ID, not(defined())));
 	});
 
-	it("should add wallet id header when id given", async function() {
-		const sdk = createCustomerSDK(
-			stubHttpClient.factory(),
-			{ ...options, walletId: "1234567" }
-		)
+	it("should add wallet id header when id given", async function () {
+		const sdk = createCustomerSDK(stubHttpClient.factory(), {
+			...options,
+			walletId: "1234567"
+		});
 
 		await sdk.admin.checkHealth();
 

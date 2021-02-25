@@ -1,76 +1,62 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const chain = require("crocks/pointfree/chain");
-const map = require("crocks/pointfree/map");
 const mapProps = require("crocks/helpers/mapProps");
-const pipe = require("crocks/helpers/pipe");
-const resultToAsync = require("crocks/Async/resultToAsync");
+const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { fromBasketDTO } = require("../transformers/basket");
-const { fromDynamicPayloadDTO } = require("../transformers/dynamic-payload");
-const { getPropOrError } = require("../helpers/props");
+const { fromData } = require("../transformers/data");
+const {
+	fromMerchantTransactionDetailsDTO,
+	fromMerchantTransactionSummariesDTO
+} = require("../transformers/merchant-transactions");
 const { optionalParam, params } = require("../helpers/params");
 const { requiredParameterError } = require("./api-errors");
-const { toDate, toISOString } = require("../helpers/props");
+const { toISOString } = require("../helpers/props");
 
 const list = (client) => (page, pageSize, endTime, startTime) => {
-	return pipe(
-		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(mapProps({
-				transactions: map(mapProps({
-					executionTime: toDate
-				}))
-			})),
-			resultToAsync
-		)),
-		asyncToPromise
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/merchant/transactions",
-		queryParams: mapProps({
-				startTime: toISOString,
-				endTime: toISOString
-			},
-			params([
-				optionalParam("page", page),
-				optionalParam("pageSize", pageSize),
-				optionalParam("endTime", endTime),
-				optionalParam("startTime", startTime)
-			]))
-	})
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantTransactionSummariesDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/merchant/transactions",
+			queryParams: mapProps(
+				{
+					startTime: toISOString,
+					endTime: toISOString
+				},
+				params([
+					optionalParam("page", page),
+					optionalParam("pageSize", pageSize),
+					optionalParam("endTime", endTime),
+					optionalParam("startTime", startTime)
+				])
+			)
+		})
+	);
+};
 
 const getById = (client) => (transactionId) => {
 	if (!transactionId) {
 		throw requiredParameterError("transactionId");
 	}
 
-	return pipe(
-		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(mapProps({
-				executionTime: toDate,
-				basket: fromBasketDTO,
-				posPayload: fromDynamicPayloadDTO,
-				merchantPayload: fromDynamicPayloadDTO
-			})),
-			resultToAsync
-		)),
-		asyncToPromise
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/merchant/transactions/:transactionId",
-		pathParams: {
-			transactionId
-		}
-	})
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantTransactionDetailsDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/merchant/transactions/:transactionId",
+			pathParams: {
+				transactionId
+			}
+		})
+	);
+};
 
 module.exports = (client) => {
 	/** @implements {import('../../types/api/MerchantTransactions').MerchantTransactionsApi} */
@@ -78,4 +64,4 @@ module.exports = (client) => {
 		list: list(client),
 		getById: getById(client)
 	};
-}
+};

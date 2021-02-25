@@ -1,24 +1,26 @@
-const { assertThat, instanceOf, is } = require("hamjest");
+const { assertThat, is } = require("hamjest");
 
-const { fromQrDTO } = require("../../src/transformers/qr-code");
+const { fromQrDTO, toQrDTO } = require("../../src/transformers/qr-code");
 
-describe("QR code transformers", function() {
-	describe("from DTO", function() {
-		const dto = {
-			referenceType: "payment_request",
-			expiryTime: "2021-02-17T06:31:46.358Z"
-		}
+const { aQRCode, qrCodeDTO } = require("../data/qr-code");
+const { isoStringFrom } = require("../matchers/date-matchers");
+const { qrCodeFrom } = require("../matchers/qr-code-matchers");
 
-		it("should ensure case of referenceType", function() {
-			const qr = fromQrDTO(dto);
+describe("QR code transformers", function () {
+	describe("to DTO", function () {
+		it("should serialise expiry time", function () {
+			const qrCode = aQRCode();
+			const dto = toQrDTO(qrCode);
 
-			assertThat(qr.referenceType, is("PAYMENT_REQUEST"));
+			assertThat(dto.expiryTime, is(isoStringFrom(qrCode.expiryTime)));
 		});
+	});
 
-		it("should parse date of expiry time", function() {
-			const qr = fromQrDTO(dto);
+	describe("from DTO", function () {
+		it("should convert dto to qr code", function () {
+			const dto = qrCodeDTO();
 
-			assertThat(qr.expiryTime, is(instanceOf(Date)));
+			assertThat(fromQrDTO(dto), is(qrCodeFrom(dto)));
 		});
 	});
 });

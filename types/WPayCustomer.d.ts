@@ -17,7 +17,7 @@ import { WPayOptions } from "./WPayOptions";
 export function createCustomerSDK(
 	httpClient: HttpClientFactory,
 	options: WPayCustomerOptions
-): WPayCustomerApi
+): WPayCustomerApi;
 
 /**
  * Defines the API operations that the SDK can use to call the WPay Customer API

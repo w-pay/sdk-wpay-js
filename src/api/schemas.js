@@ -1,79 +1,66 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const chain = require("crocks/pointfree/chain");
-const map = require("crocks/pointfree/map");
-const mapProps = require("crocks/helpers/mapProps");
-const pipe = require("crocks/helpers/pipe");
-const resultToAsync = require("crocks/Async/resultToAsync");
+const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { getPropOrError } = require("../helpers/props");
-const { fromSchemaDTO } = require("../transformers/schemas");
+const { fromData } = require("../transformers/data");
+const {
+	fromMerchantSchemaDTO,
+	fromMerchantSchemaSummariesDTO,
+	fromMerchantSchemaSummaryDTO
+} = require("../transformers/merchant-schemas");
 const { requiredParameterError } = require("./api-errors");
 
 const list = (client) => () =>
-	pipe(
-		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(mapProps({
-				schemas: map(fromSchemaDTO)
-			})),
-			resultToAsync
-		)),
-		asyncToPromise
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/merchant/schema"
-	});
+	asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantSchemaSummariesDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/merchant/schema"
+		})
+	);
 
 const getById = (client) => (schemaId) => {
 	if (!schemaId) {
-		throw requiredParameterError("schemaId")
+		throw requiredParameterError("schemaId");
 	}
 
-	return pipe(
-		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromSchemaDTO),
-			resultToAsync
-		)),
-		asyncToPromise
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/merchant/schema/:schemaId",
-		pathParams: {
-			schemaId
-		}
-	})
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantSchemaDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/merchant/schema/:schemaId",
+			pathParams: {
+				schemaId
+			}
+		})
+	);
 };
 
 const create = (client) => (schema) => {
 	if (!schema) {
-		throw requiredParameterError("schema")
+		throw requiredParameterError("schema");
 	}
 
-	return pipe(
-		client,
-		chain(pipe(
-			getPropOrError("data"),
-			map(fromSchemaDTO),
-			resultToAsync
-		)),
-		asyncToPromise
-	)({
-		method: HttpRequestMethod.POST,
-		url: "/merchant/schema",
-		body: {
-			data: {
-				schema
-			},
-			meta: {}
-		}
-	})
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantSchemaSummaryDTO)
+		)({
+			method: HttpRequestMethod.POST,
+			url: "/merchant/schema",
+			body: {
+				data: schema,
+				meta: {}
+			}
+		})
+	);
 };
 
 module.exports = (client) => {
@@ -83,4 +70,4 @@ module.exports = (client) => {
 		getById: getById(client),
 		create: create(client)
 	};
-}
+};

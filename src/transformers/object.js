@@ -10,8 +10,8 @@ const objectToMap = (obj) => {
 
 		return map.set(key, obj[key]);
 	}, new Map());
-}
+};
 
 module.exports = {
 	objectToMap
-}
+};
