@@ -1,75 +1,75 @@
-const { allOf, assertThat, defined,  greaterThan, instanceOf, is, not } = require("hamjest");
+const { assertThat, is } = require("hamjest");
 
-const { blankOrMissingString } = require("./string-matchers");
+const { basketFrom } = require("./basket-matchers");
+const { dateFrom } = require("./date-matchers");
+const { dynamicPayloadFrom } = require("./dynamic-payload-matchers");
+const { uppercase } = require("./string-matchers");
 
-exports.merchantTransactionSummaries = () =>
-	new MerchantTransactionsSummariesMatcher();
-
-class MerchantTransactionsSummariesMatcher {
+const merchantTransactionSummariesFrom = (dto) => ({
 	matches(item) {
-		const transactionMatcher = new MerchantTransactionSummaryMatcher();
+		assertThat(item.transactions.length, is(dto.transactions.length));
 
-		assertThat(item.transactions.length, greaterThan(0));
-
-		return item.transactions.reduce(
-			(result, it) => result && transactionMatcher.matches(it),
-			true
-		);
-	}
-
-	describeTo(description) {
-		description.append("A list of merchant transactions");
-	}
-
-	describeMismatch(value, description) {
-		description.appendValue(value);
-	}
-}
-
-exports.merchantTransactionSummary = () =>
-	new MerchantTransactionSummaryMatcher();
-
-class MerchantTransactionSummaryMatcher {
-	matches(item) {
-		assertThat(item.walletId, not(blankOrMissingString()));
-		assertThat(item.merchantReferenceId, not(blankOrMissingString()));
-		assertThat(item.paymentRequestId, not(blankOrMissingString()));
-		assertThat(item.type, is(defined()));
-		assertThat(item.grossAmount, is(defined()));
-		assertThat(item.executionTime, is(allOf(defined(), instanceOf(Date))));
-		assertThat(item.status, is(defined()));
-		assertThat(item.transactionId, not(blankOrMissingString()));
-		assertThat(item.clientReference, blankOrMissingString());
+		item.transactions.forEach((transaction, i) => {
+			assertThat(transaction, is(merchantTransactionSummaryFrom(dto.transactions[i])));
+		});
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("A Merchant Transaction Summary");
-	}
+		description.append(`A MerchantTransactionSummaries from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
 
-exports.merchantTransactionDetails = () =>
-	new MerchantTransactionDetailsMatcher();
-
-class MerchantTransactionDetailsMatcher {
+const merchantTransactionSummaryFrom = (dto) => ({
 	matches(item) {
-		assertThat(item.basket, is(defined()));
-		assertThat(item.posPayload, is(defined()));
-		assertThat(item.merchantPayload, is(defined()));
+		assertThat(item.walletId, is(dto.walletId));
+		assertThat(item.merchantReferenceId, is(dto.merchantReferenceId));
+		assertThat(item.paymentRequestId, is(dto.paymentRequestId));
+		assertThat(item.type, is(uppercase(dto.type)));
+		assertThat(item.grossAmount, is(dto.grossAmount));
+		assertThat(item.executionTime, is(dateFrom(dto.executionTime)));
+		assertThat(item.status, is(uppercase(dto.status)));
+		assertThat(item.transactionId, is(dto.transactionId));
+		assertThat(item.clientReference, is(dto.clientReference));
 
-		return new MerchantTransactionSummaryMatcher().matches(item);
-	}
+		return true;
+	},
 
 	describeTo(description) {
-		description.append("A Merchant Transaction Summary");
-	}
+		description.append(`A MerchantTransactionSummary from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
+
+const merchantTransactionDetailsFrom = (dto) => ({
+	matches(item) {
+		assertThat(item, is(merchantTransactionSummaryFrom(dto)));
+		assertThat(item.basket, is(basketFrom(dto.basket)));
+		assertThat(item.posPayload, is(dynamicPayloadFrom(dto.posPayload)));
+		assertThat(item.merchantPayload, is(dynamicPayloadFrom(dto.merchantPayload)));
+
+		return true;
+	},
+
+	describeTo(description) {
+		description.append(`A MerchantTransactionSummary from ${JSON.stringify(dto)}`);
+	},
+
+	describeMismatch(value, description) {
+		description.appendValue(value);
+	}
+});
+
+module.exports = {
+	merchantTransactionDetailsFrom,
+	merchantTransactionSummariesFrom,
+	merchantTransactionSummaryFrom
+};

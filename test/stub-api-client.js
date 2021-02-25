@@ -9,23 +9,23 @@ class StubApiClient {
 		this.response = {
 			statusCode: 200,
 			statusMessage: "OK",
-			headers: {},
+			headers: {}
 		};
 	}
 
 	factory() {
-		return () => this.client()
+		return () => this.client();
 	}
 
 	client() {
 		return (request) => {
 			this.request = request;
 
-			return Async.of(this.response)
-		}
+			return Async.of(this.response);
+		};
 	}
 }
 
 module.exports = {
 	StubApiClient
-}
+};

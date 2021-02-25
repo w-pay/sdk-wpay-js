@@ -9,12 +9,12 @@ class StubHttpClient {
 		this.response = {
 			statusCode: 200,
 			statusMessage: "OK",
-			headers: {},
+			headers: {}
 		};
 	}
 
 	factory() {
-		return () => this.client()
+		return () => this.client();
 	}
 
 	client() {
@@ -25,10 +25,10 @@ class StubHttpClient {
 				request,
 				response: this.response
 			});
-		}
+		};
 	}
 }
 
 module.exports = {
 	StubHttpClient
-}
+};

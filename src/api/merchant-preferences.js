@@ -4,11 +4,11 @@ const { getPreferences, setPreferences } = require("./preferences");
 
 const getPrefs = getPreferences({
 	url: "/merchant/preferences"
-})
+});
 
 const setPrefs = setPreferences({
-	url: "/merchant/preferences",
-})
+	url: "/merchant/preferences"
+});
 
 module.exports = (client) => {
 	/** @implements {import('../../types/api/CustomerPreferences').CustomerPreferencesApi} */
@@ -16,4 +16,4 @@ module.exports = (client) => {
 		get: getPrefs(client),
 		set: setPrefs(client)
 	};
-}
+};

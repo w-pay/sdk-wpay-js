@@ -4,9 +4,9 @@ const { assertThat, defined, is } = require("hamjest");
 
 const { objectToMap } = require("../../src/transformers/object");
 
-describe("Object transformers", function() {
-	describe("Object to Map", function() {
-		it("should convert an object to a map", function() {
+describe("Object transformers", function () {
+	describe("Object to Map", function () {
+		it("should convert an object to a map", function () {
 			const obj = {
 				a: 1,
 				b: "foo",
@@ -15,7 +15,7 @@ describe("Object transformers", function() {
 				e: {
 					x: 0
 				}
-			}
+			};
 
 			const map = objectToMap(obj);
 

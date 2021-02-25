@@ -1,6 +1,8 @@
 import { Basket } from "./Basket";
 import { MerchantPayload } from "./MerchantPayload";
 import { PosPayload } from "./PosPayload";
+import { QRCode } from "./QRCode";
+import { QRCodePaymentReferenceType } from "./QRCodePaymentReferenceType";
 
 /**
  * The details of the payment to be created.
@@ -63,4 +65,39 @@ export interface NewPaymentRequest {
 
 	/** Optional extra details from the merchant. */
 	merchantPayload?: MerchantPayload;
+}
+
+/**
+ * The result from creating a new Payment Request.
+ *
+ * @category Model
+ */
+export interface CreatePaymentRequestResult {
+	/** The ID of the new Payment Request */
+	paymentRequestId: string;
+
+	/** A {@link QRCode} that is associated to the Payment Request */
+	qr?: QRCode;
+}
+
+/**
+ * Request to create a new {@link QRCode} for a Payment Request
+ *
+ * @category Model
+ */
+export interface NewPaymentRequestQRCode {
+	/** The ID of the payment request linked to this {@link QRCode} */
+	referenceId: string;
+
+	/** The type of ID held in {@link NewPaymentRequestQRCode.referenceId} */
+	referenceType: QRCodePaymentReferenceType;
+
+	/**
+	 * The time in seconds that the QR code should remain valid.
+	 *
+	 * After this time any use of the QR code by a customer will fail to return any data.
+	 *
+	 * If absent, the API will default value to 0 which indicates that the code will not expire until it is deleted.
+	 */
+	timeToLive: number;
 }

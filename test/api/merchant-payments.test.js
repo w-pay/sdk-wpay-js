@@ -1,268 +1,255 @@
 "use strict";
 
-const { assertThat, defined, hasProperties, instanceOf, is, not, throws } = require("hamjest");
+const { v4: uuid } = require("uuid");
+
+const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/merchant-payments");
-const { QRCodePaymentReferenceType } = require("../../src/model/enums");
 
-const { aNewBasket } = require("../data/test-basket");
-const { aNewMerchantPayload, aNewPosPayload } = require("../data/test-merchant-payloads");
 const {
-	merchantPaymentDetails,
-	merchantPaymentSummaries
+	aNewPaymentRequest,
+	createPaymentRequestResultDTO
+} = require("../data/payment-request");
+const { basketDTOFrom } = require("../matchers/basket-matchers");
+const { body, withData } = require("../matchers/request-body-matchers");
+const { dynamicPayloadDTOFrom } = require("../matchers/dynamic-payload-matchers");
+const {
+	merchantPaymentDetailsFrom,
+	merchantPaymentSummariesFrom,
+	paymentRequestCreatedFrom
 } = require("../matchers/merchant-payments-matchers");
-const { merchantTransactionSummary } = require("../matchers/merchant-transaction-matchers");
-const { paymentRequestCreated } = require("../matchers/merchant-payments-matchers");
+const {
+	merchantPaymentDetailsDTO,
+	merchantPaymentSummariesDTO
+} = require("../data/merchant-payments");
+const { merchantTransactionSummaryDTO } = require("../data/merchant-transactions");
+const { merchantTransactionSummaryFrom } = require("../matchers/merchant-transaction-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
-const { toBasketDTO } = require("../../src/transformers/basket");
-const { toDynamicPayloadDTO } = require("../../src/transformers/dynamic-payload");
 const { StubApiClient } = require("../stub-api-client");
 
-describe("MerchantPaymentsApi", function() {
+describe("MerchantPaymentsApi", function () {
 	let apiClient;
 
 	let api;
 
-	beforeEach(function() {
-		apiClient = new StubApiClient()
+	beforeEach(function () {
+		apiClient = new StubApiClient();
 
 		api = apiFactory(apiClient.client());
 	});
 
-	const PAYMENT = {
-		usesRemaining: 1,
-		expiryTime: "2021-02-17T06:31:46.358Z",
-		specificWalletId: "someId",
-		paymentRequestId: "dfnafdfjaf",
-		merchantReferenceId: "dfjkadfjadkfjadk",
-		grossAmount: 123.2
-	};
-
-	describe("listPayments", function() {
-		beforeEach(function() {
+	describe("listPayments", function () {
+		beforeEach(function () {
 			apiClient.response = {
-				data: {
-					payments: [
-						PAYMENT
-					]
-				},
+				data: merchantPaymentSummariesDTO(),
 				meta: {}
-			}
-		})
-
-		it("should set request params", async function() {
-			await api.listPayments();
-
-			assertThat(apiClient.request, is({
-				method: HttpRequestMethod.GET,
-				url: "/merchant/payments",
-				queryParams: {}
-			}));
+			};
 		});
 
-		it("should pass optional params", async function() {
+		it("should set request params", async function () {
+			await api.listPayments();
+
+			assertThat(
+				apiClient.request,
+				is({
+					method: HttpRequestMethod.GET,
+					url: "/merchant/payments",
+					queryParams: {}
+				})
+			);
+		});
+
+		it("should pass optional params", async function () {
 			const type = "pos";
 			const page = 1;
 			const pageSize = 10;
 
 			await api.listPayments(type, page, pageSize);
 
-			assertThat(apiClient.request.queryParams, is({
-				type,
-				page,
-				pageSize
-			}));
+			assertThat(
+				apiClient.request.queryParams,
+				is({
+					type,
+					page,
+					pageSize
+				})
+			);
 		});
 
-		it("should list payments", async function() {
+		it("should list payments", async function () {
 			const result = await api.listPayments();
 
-			assertThat(result, is(merchantPaymentSummaries()));
+			assertThat(result, is(merchantPaymentSummariesFrom(apiClient.response.data)));
 		});
 	});
 
-	describe("createPaymentRequest", function() {
-		const newPaymentDetails = {
-			merchantReferenceId: "ffddaafaddfa",
-			grossAmount: 1,
-			generateQR: false,
-			basket: aNewBasket(),
-			posPayload: aNewPosPayload(),
-			merchantPayload: aNewMerchantPayload()
-		}
-
-		beforeEach(function() {
+	describe("createPaymentRequest", function () {
+		beforeEach(function () {
 			apiClient.response = {
-				data: {
-					paymentRequestId: "dfkjdfakfa",
-					qr: {
-						qrId: "abc123def",
-						referenceId: "reference123",
-						referenceType: QRCodePaymentReferenceType.PAYMENT_REQUEST,
-						content: "http://foo.com/code",
-						image: "fadsfadfdasfdasfadfads",
-						expiryTime: "2021-02-17T06:31:46.358Z"
-					}
-				},
+				data: createPaymentRequestResultDTO(),
 				meta: {}
-			}
-		})
+			};
+		});
 
-		it("should throw error when paymentRequest is missing", function() {
+		it("should throw error when paymentRequest is missing", function () {
 			assertThat(
 				() => api.createPaymentRequest(),
 				throws(requiredParameterError("paymentRequest"))
 			);
 		});
 
-		it("should set request params", async function() {
-			await api.createPaymentRequest(newPaymentDetails);
+		it("should set request params", async function () {
+			const request = aNewPaymentRequest();
+			await api.createPaymentRequest(request);
 
-			assertThat(apiClient.request, hasProperties({
-				method: HttpRequestMethod.POST,
-				url: "/merchant/payments",
-				body: hasProperties({
-					data: defined(),
-					meta: defined()
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.POST,
+					url: "/merchant/payments",
+					body: is(
+						body(
+							withData(
+								hasProperties({
+									merchantReferenceId: is(request.merchantReferenceId),
+									grossAmount: is(request.grossAmount),
+									generateQR: is(request.generateQR),
+									maxUses: is(request.maxUses),
+									timeToLivePayment: is(request.timeToLivePayment),
+									timeToLiveQR: is(request.timeToLiveQR),
+									specificWalletId: is(request.specificWalletId),
+									basket: basketDTOFrom(request.basket),
+									posPayload: dynamicPayloadDTOFrom(request.posPayload),
+									merchantPayload: dynamicPayloadDTOFrom(request.merchantPayload)
+								})
+							)
+						)
+					)
 				})
-			}))
-
-			const data = apiClient.request.body.data;
-
-			assertThat(data.basket.tags, not(instanceOf(Map)));
-			assertThat(data.posPayload.payload, not(instanceOf(Map)));
-			assertThat(data.merchantPayload.payload, not(instanceOf(Map)));
+			);
 		});
 
-		it("should create payment request", async function() {
-			const result = await api.createPaymentRequest(newPaymentDetails);
+		it("should create payment request", async function () {
+			const result = await api.createPaymentRequest(aNewPaymentRequest());
 
-			assertThat(result, is(paymentRequestCreated()));
+			assertThat(result, is(paymentRequestCreatedFrom(apiClient.response.data)));
 		});
 	});
 
-	describe("getPaymentRequestDetailsBy", function() {
-		const paymentRequestId = "dfafafadfajkgks";
+	describe("getPaymentRequestDetailsBy", function () {
+		const paymentRequestId = uuid();
 
-		beforeEach(function() {
+		beforeEach(function () {
 			apiClient.response = {
-				data: {
-					...PAYMENT,
-					basket: toBasketDTO(aNewBasket()),
-					posPayload: toDynamicPayloadDTO(aNewPosPayload()),
-					merchantPayload: toDynamicPayloadDTO(aNewMerchantPayload())
-				},
+				data: merchantPaymentDetailsDTO(),
 				meta: {}
-			}
-		})
+			};
+		});
 
-		it("should throw error when paymentRequestId is missing", function() {
+		it("should throw error when paymentRequestId is missing", function () {
 			assertThat(
 				() => api.getPaymentRequestDetailsBy(),
 				throws(requiredParameterError("paymentRequestId"))
 			);
 		});
 
-		it("should set request params", async function() {
+		it("should set request params", async function () {
 			await api.getPaymentRequestDetailsBy(paymentRequestId);
 
-			assertThat(apiClient.request, is({
-				method: HttpRequestMethod.GET,
-				url: "/merchant/payments/:paymentRequestId",
-				pathParams: {
-					paymentRequestId
-				}
-			}));
+			assertThat(
+				apiClient.request,
+				is({
+					method: HttpRequestMethod.GET,
+					url: "/merchant/payments/:paymentRequestId",
+					pathParams: {
+						paymentRequestId
+					}
+				})
+			);
 		});
 
-		it("should get payment request details", async function() {
+		it("should get payment request details", async function () {
 			const result = await api.getPaymentRequestDetailsBy(paymentRequestId);
 
-			assertThat(result, is(merchantPaymentDetails()));
+			assertThat(result, is(merchantPaymentDetailsFrom(apiClient.response.data)));
 		});
 	});
 
-	describe("deletePaymentRequest", function() {
-		const paymentRequestId = "dfafafadfajkgks";
+	describe("deletePaymentRequest", function () {
+		const paymentRequestId = uuid();
 
-		it("should throw error when paymentRequestId is missing", function() {
+		it("should throw error when paymentRequestId is missing", function () {
 			assertThat(
 				() => api.deletePaymentRequest(),
 				throws(requiredParameterError("paymentRequestId"))
 			);
 		});
 
-		it("should set request params", async function() {
+		it("should set request params", async function () {
 			await api.deletePaymentRequest(paymentRequestId);
 
-			assertThat(apiClient.request, is({
-				method: HttpRequestMethod.DELETE,
-				url: "/merchant/payments/paymentRequestId",
-				pathParams: {
-					paymentRequestId
-				}
-			}));
+			assertThat(
+				apiClient.request,
+				is({
+					method: HttpRequestMethod.DELETE,
+					url: "/merchant/payments/paymentRequestId",
+					pathParams: {
+						paymentRequestId
+					}
+				})
+			);
 		});
 	});
 
-	describe("refundTransaction", function() {
-		const transactionId = "fakfjadksjakldfjkalfjafj";
+	describe("refundTransaction", function () {
+		const transactionId = uuid();
 		const refundDetails = {
 			reason: "I want a refund"
-		}
+		};
 
-		beforeEach(function() {
+		beforeEach(function () {
 			apiClient.response = {
-				data: {
-					walletId: "dfadfadfdas",
-					merchantReferenceId: "rewrewrer",
-					paymentRequestId: "frewerrrre",
-					type: "type",
-					grossAmount: 123.3,
-					executionTime: "2021-02-17T06:31:46.358Z",
-					status: "PROCESSING",
-					transactionId: "dsfdfasdasas"
-				},
+				data: merchantTransactionSummaryDTO(),
 				meta: {}
-			}
-		})
+			};
+		});
 
-		it("should throw error when transactionId is missing", function() {
+		it("should throw error when transactionId is missing", function () {
 			assertThat(
 				() => api.refundTransaction(),
 				throws(requiredParameterError("transactionId"))
 			);
 		});
 
-		it("should throw error when refundDetails is missing", function() {
+		it("should throw error when refundDetails is missing", function () {
 			assertThat(
 				() => api.refundTransaction(transactionId),
 				throws(requiredParameterError("refundDetails"))
 			);
 		});
 
-		it("should set request params", async function() {
+		it("should set request params", async function () {
 			await api.refundTransaction(transactionId, refundDetails);
 
-			assertThat(apiClient.request, is({
-				method: HttpRequestMethod.POST,
-				url: "/merchant/transactions/:transactionId/refund",
-				pathParams: {
-					transactionId
-				},
-				body: {
-					data: refundDetails
-				},
-				meta: {}
-			}))
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.POST,
+					url: "/merchant/transactions/:transactionId/refund",
+					pathParams: {
+						transactionId
+					},
+					body: is(body(withData(equalTo(refundDetails))))
+				})
+			);
 		});
 
-		it("should refund transaction", async function() {
+		it("should refund transaction", async function () {
 			const result = await api.refundTransaction(transactionId, refundDetails);
 
-			assertThat(result, is(merchantTransactionSummary()));
+			assertThat(result, is(merchantTransactionSummaryFrom(apiClient.response.data)));
 		});
 	});
 });

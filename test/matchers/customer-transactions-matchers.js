@@ -1,110 +1,97 @@
 "use strict";
 
-const {
-	allOf,
-	assertThat,
-	defined,
-	greaterThan,
-	greaterThanOrEqualTo,
-	hasItems,
-	instanceOf,
-	is,
-	not
-} = require("hamjest");
+const { assertThat, is } = require("hamjest");
 
-const { blankOrMissingString } = require("./string-matchers");
-const { isBasket } = require("./basket-matcher");
+const { basketFrom } = require("./basket-matchers");
+const { dateFrom } = require("./date-matchers");
+const { uppercase } = require("./string-matchers");
 
-exports.customerTransactionSummaries = () =>
-	new CustomerTransactionsSummariesMatcher();
-
-class CustomerTransactionsSummariesMatcher {
+const customerTransactionSummaryFrom = (dto) => ({
 	matches(actual) {
-		const transactionMatcher = new CustomerTransactionSummaryMatcher();
+		assertThat(actual.merchantId, is(dto.merchantId));
+		assertThat(actual.merchantReferenceId, is(dto.merchantReferenceId));
+		assertThat(actual.paymentRequestId, is(dto.paymentRequestId));
+		assertThat(actual.type, is(uppercase(dto.type)));
+		assertThat(actual.grossAmount, is(dto.grossAmount));
+		assertThat(actual.executionTime, is(dateFrom(dto.executionTime)));
+		assertThat(actual.status, is(uppercase(dto.status)));
+		assertThat(actual.instruments.length, is(dto.instruments.length));
+		assertThat(actual.transactionId, is(dto.transactionId));
+		assertThat(actual.clientReference, is(dto.clientReference));
 
-		assertThat(actual.transactions.length, greaterThan(0));
-
-		return actual.transactions.reduce(
-			(result, it) => result && transactionMatcher.matches(it),
-			true
-		);
-	}
-
-	describeTo(description) {
-		description.append("A list of customer transaction summaries");
-	}
-
-	describeMismatch(value, description) {
-		description.appendValue(value);
-	}
-}
-
-exports.customerTransactionSummary = () =>
-	new CustomerTransactionSummaryMatcher();
-
-class CustomerTransactionSummaryMatcher {
-	matches(actual) {
-		assertThat(actual.merchantId, not(blankOrMissingString()));
-		assertThat(actual.merchantReferenceId, not(blankOrMissingString()));
-		assertThat(actual.paymentRequestId, not(blankOrMissingString()));
-		assertThat(actual.type, is(defined()));
-		assertThat(actual.grossAmount, is(defined()));
-		assertThat(actual.executionTime, is(allOf(defined(), instanceOf(Date))));
-		assertThat(actual.status, is(defined()));
-		assertThat(actual.instruments.length, greaterThanOrEqualTo(1));
-		assertThat(actual.instruments, hasItems(withCustomerPaymentInstruments()));
-		assertThat(actual.transactionId, not(blankOrMissingString()));
-		assertThat(actual.clientReference, not(blankOrMissingString()));
+		actual.instruments.forEach((instrument, i) => {
+			assertThat(instrument, is(customerPaymentInstrumentFrom(dto.instruments[i])));
+		});
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("A Customer Transaction Summary");
-	}
+		description.append(`A CustomerTransactionSummary from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
 
-exports.customerTransactionDetails = () =>
-	new CustomerTransactionDetailsMatcher();
+const customerTransactionSummariesFrom = (dto) => ({
+	matches(actual) {
+		assertThat(actual.transactions.length, is(dto.transactions.length));
 
-class CustomerTransactionDetailsMatcher {
-	matches(item) {
-		const summaryMatcher = new CustomerTransactionSummaryMatcher();
-
-		assertThat(item.basket, isBasket());
-
-		return summaryMatcher.matches(item);
-	}
-
-	describeTo(description) {
-		description.append("Details on a customer transaction");
-	}
-
-	describeMismatch(value, description) {
-		description.appendValue(value);
-	}
-}
-
-const withCustomerPaymentInstruments = exports.withCustomerPaymentInstruments = () =>
-	new CustomerPaymentInstrumentsMatcher();
-
-class CustomerPaymentInstrumentsMatcher {
-	matches(item) {
-		assertThat(item.paymentInstrumentId, not(blankOrMissingString()));
-		assertThat(item.amount, is(defined()));
+		actual.transactions.forEach((transaction, i) => {
+			assertThat(transaction, is(customerTransactionSummaryFrom(dto.transactions[i])));
+		});
 
 		return true;
-	}
+	},
 
 	describeTo(description) {
-		description.append("Customer Transaction Summary with instruments");
-	}
+		description.append(`A CustomerTransactionSummaries from ${JSON.stringify(dto)}`);
+	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-}
+});
+
+const customerTransactionDetailsFrom = (dto) => ({
+	matches(item) {
+		assertThat(item, is(customerTransactionSummaryFrom(dto)));
+		assertThat(item.basket, basketFrom(dto.basket));
+
+		return true;
+	},
+
+	describeTo(description) {
+		description.append(`A CustomerTransactionDetails from ${JSON.stringify(dto)}`);
+	},
+
+	describeMismatch(value, description) {
+		description.appendValue(value);
+	}
+});
+
+const customerPaymentInstrumentFrom = (dto) => ({
+	matches(item) {
+		assertThat(item.paymentInstrumentId, is(dto.paymentInstrumentId));
+		assertThat(item.amount, is(dto.amount));
+
+		return true;
+	},
+
+	describeTo(description) {
+		description.append(`A CustomerTransactionSummary from ${JSON.stringify(dto)}`);
+	},
+
+	describeMismatch(value, description) {
+		description.appendValue(value);
+	}
+});
+
+module.exports = {
+	customerPaymentInstrumentFrom,
+	customerTransactionDetailsFrom,
+	customerTransactionSummaryFrom,
+	customerTransactionSummariesFrom
+};
