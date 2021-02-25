@@ -1,3 +1,6 @@
+import { InitiateCardCaptureRequest } from "../../model/WalletManagementModel/InitiateCardCaptureRequest";
+import { InitiateCardCaptureResponse } from "../../model/WalletManagementModel/InitiateCardCaptureResponse";
+
 /**
  * @category API
  */
@@ -19,27 +22,4 @@ export interface Cards {
 	guestInitCapture(
 		initiateCardCaptureRequest: InitiateCardCaptureRequest
 	): Promise<InitiateCardCaptureResponse>;
-}
-
-/**
- * The JSON request structure of the Initiate Card Capture endpoint.
- *
- * @category Model
- */
-interface InitiateCardCaptureRequest {
-	/* A merchant application specific reference number. This number should uniquely identify the transaction in the merchant’s system. */
-	clientReference: string;
-}
-
-/**
- * The JSON response structure of the Initiate Card Capture endpoint.
- *
- * @category Model
- */
-interface InitiateCardCaptureResponse {
-	/* The URL of an iframe. This iframe is used to capture a credit card number, expiry and CVV. */
-	cardCaptureURL: string;
-
-	/* Container reference in the transaction logs. This number uniquely identifies the transaction in the container. */
-	transactionRef: string;
 }
