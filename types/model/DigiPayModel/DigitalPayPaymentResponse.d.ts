@@ -46,7 +46,7 @@ export interface DigitalPayPaymentResponse {
 	applePay: DigitalPayApplePay[];
 
 	/** DigitalPay payment unknown payments */
-	unknown: DigtalPayPaymentInstrument[];
+	unknown: DigitalPayPaymentInstrument[];
 }
 
 export interface DigitalPayFraudResponse {
@@ -110,6 +110,14 @@ export interface DigitalPayCreditCard extends DigitalPayPaymentInstrument {
 	 * Only present if no error occurred during payment.
 	 */
 	handlingInstructions?: DigitalPayHandlingInstructions;
+}
+
+export interface DigitalPayHandlingInstructions {
+	/** The handling instruction code. */
+	instructionCode: DigitalPayInstructionCode;
+
+	/** The handling instruction message. */
+	instructionMessage: string;
 }
 
 export interface DigitalPayGiftCard extends DigitalPayPaymentInstrument {
@@ -213,4 +221,10 @@ export enum DigitalPayExtendedTransactionDataFieldName {
 	TOKEN = "token",
 	MID = "mid",
 	TERMINA_ID = "terminalId"
+}
+
+export enum DigitalPayInstructionCode {
+	"INSTRUCTION_100" = "100",
+	"INSTRUCTION_110" = "110",
+	"INSTRUCTION_120" = "120"
 }

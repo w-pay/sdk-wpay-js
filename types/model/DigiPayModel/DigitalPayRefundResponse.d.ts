@@ -12,7 +12,7 @@ export interface DigitalPayRefundResponse {
 	transactionReceipt: string;
 
 	/** A flag to indicate if a split refund was only partially successful, ie. at least 1 of the refunds had a successful result. */
-	partialSuccess: booelan;
+	partialSuccess: boolean;
 
 	/** List of refund response */
 	refundResponses: DigitalPayRefundTransactionResponse;

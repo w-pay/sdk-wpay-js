@@ -1,3 +1,4 @@
+import { DigitalPayPaymentRequest, DigitalPayPaymentResponse } from "../../model";
 import { DigitalPayCompletionRequest } from "../../model/DigiPayModel/DigitalPayCompletionRequest";
 import { DigitalPayCompletionResponse } from "../../model/DigiPayModel/DigitalPayCompletionResponse";
 import { DigitalPayRefundRequest } from "../../model/DigiPayModel/DigitalPayRefundRequest";
