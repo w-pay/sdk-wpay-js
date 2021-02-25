@@ -9,8 +9,8 @@ const { X_EVERYDAY_PAY_WALLET } = require("./header-names");
 const everydayPayWalletHeader = (wallet) =>
 	constantHeaders({
 		[X_EVERYDAY_PAY_WALLET]: (wallet === Wallet.EVERYDAY_PAY).toString()
-	})
+	});
 
 module.exports = {
 	everydayPayWalletHeader
-}
+};

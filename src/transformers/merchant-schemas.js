@@ -5,27 +5,23 @@ const mapProps = require("crocks/helpers/mapProps");
 
 const { toDate } = require("../helpers/props");
 
-const fromMerchantSchemaSummaryDTO =
-	mapProps({
-		created: toDate
-	})
+const fromMerchantSchemaSummaryDTO = mapProps({
+	created: toDate
+});
 
-const fromMerchantSchemaSummariesDTO =
-	mapProps({
-		schemas: map(fromMerchantSchemaSummaryDTO)
-	})
+const fromMerchantSchemaSummariesDTO = mapProps({
+	schemas: map(fromMerchantSchemaSummaryDTO)
+});
 
-const fromMerchantSchemaDTO =
-	mapProps({
-		created: toDate
-	})
+const fromMerchantSchemaDTO = mapProps({
+	created: toDate
+});
 
-const toNewMerchantSchemaDTO =
-	mapProps({})
+const toNewMerchantSchemaDTO = mapProps({});
 
 module.exports = {
 	fromMerchantSchemaSummariesDTO,
 	fromMerchantSchemaSummaryDTO,
 	fromMerchantSchemaDTO,
 	toNewMerchantSchemaDTO
-}
+};

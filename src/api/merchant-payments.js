@@ -19,74 +19,83 @@ const { toBasketDTO } = require("../transformers/basket");
 const { toDynamicPayloadDTO } = require("../transformers/dynamic-payload");
 
 const listPayments = (client) => (type, page, pageSize) => {
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromMerchantPaymentSummariesDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/merchant/payments",
-		queryParams: params([
-			optionalParam("type", type),
-			optionalParam("page", page),
-			optionalParam("pageSize", pageSize)
-		])
-	}))
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantPaymentSummariesDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/merchant/payments",
+			queryParams: params([
+				optionalParam("type", type),
+				optionalParam("page", page),
+				optionalParam("pageSize", pageSize)
+			])
+		})
+	);
+};
 
 const createPaymentRequest = (client) => (paymentRequest) => {
 	if (!paymentRequest) {
 		throw requiredParameterError("paymentRequest");
 	}
 
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromCreatePaymentRequestResultDTO)
-	)({
-		method: HttpRequestMethod.POST,
-		url: "/merchant/payments",
-		body: {
-			data: mapProps({
-				basket: toBasketDTO,
-				posPayload: toDynamicPayloadDTO,
-				merchantPayload: toDynamicPayloadDTO
-			}, paymentRequest),
-			meta: {}
-		}
-	}))
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromCreatePaymentRequestResultDTO)
+		)({
+			method: HttpRequestMethod.POST,
+			url: "/merchant/payments",
+			body: {
+				data: mapProps(
+					{
+						basket: toBasketDTO,
+						posPayload: toDynamicPayloadDTO,
+						merchantPayload: toDynamicPayloadDTO
+					},
+					paymentRequest
+				),
+				meta: {}
+			}
+		})
+	);
 };
 
 const getPaymentRequestDetailsBy = (client) => (paymentRequestId) => {
 	if (!paymentRequestId) {
-		throw requiredParameterError("paymentRequestId")
+		throw requiredParameterError("paymentRequestId");
 	}
 
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromMerchantPaymentDetailsDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/merchant/payments/:paymentRequestId",
-		pathParams: {
-			paymentRequestId
-		}
-	}))
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantPaymentDetailsDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/merchant/payments/:paymentRequestId",
+			pathParams: {
+				paymentRequestId
+			}
+		})
+	);
+};
 
 const deletePaymentRequest = (client) => (paymentRequestId) => {
 	if (!paymentRequestId) {
 		throw requiredParameterError("paymentRequestId");
 	}
 
-	return asyncToPromise(pipeK(
-		client
-	)({
-		method: HttpRequestMethod.DELETE,
-		url: "/merchant/payments/paymentRequestId",
-		pathParams: {
-			paymentRequestId
-		}
-	}))
-}
+	return asyncToPromise(
+		pipeK(client)({
+			method: HttpRequestMethod.DELETE,
+			url: "/merchant/payments/paymentRequestId",
+			pathParams: {
+				paymentRequestId
+			}
+		})
+	);
+};
 
 const refundTransaction = (client) => (transactionId, refundDetails) => {
 	if (!transactionId) {
@@ -97,21 +106,23 @@ const refundTransaction = (client) => (transactionId, refundDetails) => {
 		throw requiredParameterError("refundDetails");
 	}
 
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromMerchantTransactionSummaryDTO)
-	)({
-		method: HttpRequestMethod.POST,
-		url: "/merchant/transactions/:transactionId/refund",
-		pathParams: {
-			transactionId
-		},
-		body: {
-			data: refundDetails,
-			meta: {}
-		},
-	}))
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantTransactionSummaryDTO)
+		)({
+			method: HttpRequestMethod.POST,
+			url: "/merchant/transactions/:transactionId/refund",
+			pathParams: {
+				transactionId
+			},
+			body: {
+				data: refundDetails,
+				meta: {}
+			}
+		})
+	);
+};
 
 module.exports = (client) => {
 	/** @implements {import('../../types/api/MerchantPayments').MerchantPaymentsApi} */
@@ -122,4 +133,4 @@ module.exports = (client) => {
 		deletePaymentRequest: deletePaymentRequest(client),
 		refundTransaction: refundTransaction(client)
 	};
-}
+};

@@ -15,49 +15,49 @@ const { optionalParam, params } = require("../helpers/params");
 const { requiredParameterError } = require("./api-errors");
 const { toISOString } = require("../helpers/props");
 
-const list = (client) => (
-	paymentRequestId,
-	page,
-	pageSize,
-	endTime,
-	startTime
-) => {
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromCustomerTransactionSummariesDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/customer/transactions",
-		queryParams: mapProps({
-			startTime: toISOString,
-			endTime: toISOString
-		},
-		params([
-			optionalParam("paymentRequestId", paymentRequestId),
-			optionalParam("page", page),
-			optionalParam("pageSize", pageSize),
-			optionalParam("endTime", endTime),
-			optionalParam("startTime", startTime)
-		]))
-	}))
-}
+const list = (client) => (paymentRequestId, page, pageSize, endTime, startTime) => {
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromCustomerTransactionSummariesDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/customer/transactions",
+			queryParams: mapProps(
+				{
+					startTime: toISOString,
+					endTime: toISOString
+				},
+				params([
+					optionalParam("paymentRequestId", paymentRequestId),
+					optionalParam("page", page),
+					optionalParam("pageSize", pageSize),
+					optionalParam("endTime", endTime),
+					optionalParam("startTime", startTime)
+				])
+			)
+		})
+	);
+};
 
 const getById = (client) => (transactionId) => {
 	if (!transactionId) {
 		throw requiredParameterError("transactionId");
 	}
 
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromCustomerTransactionDetailsDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/customer/transactions/:transactionId",
-		pathParams: {
-			transactionId
-		}
-	}));
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromCustomerTransactionDetailsDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/customer/transactions/:transactionId",
+			pathParams: {
+				transactionId
+			}
+		})
+	);
+};
 
 module.exports = (client) => {
 	/** @implements {import('../../types/api/CustomerTransactions').CustomerTransactionsApi} */
@@ -65,4 +65,4 @@ module.exports = (client) => {
 		list: list(client),
 		getById: getById(client)
 	};
-}
+};

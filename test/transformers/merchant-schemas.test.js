@@ -22,36 +22,30 @@ const {
 	newMerchantSchemaDTOFrom
 } = require("../matchers/merchant-schemas-matcher");
 
-describe("Merchant Schemas Transformers", function() {
-	describe("MerchantSchemaSummaries", function() {
-		describe("from DTO", function() {
-			it("should convert from DTO", function() {
+describe("Merchant Schemas Transformers", function () {
+	describe("MerchantSchemaSummaries", function () {
+		describe("from DTO", function () {
+			it("should convert from DTO", function () {
 				const dto = merchantSchemaSummariesDTO();
 
-				assertThat(
-					fromMerchantSchemaSummariesDTO(dto),
-					is(merchantSchemaSummariesFrom(dto))
-				);
+				assertThat(fromMerchantSchemaSummariesDTO(dto), is(merchantSchemaSummariesFrom(dto)));
 			});
 		});
 	});
 
-	describe("MerchantSchemaSummary", function() {
-		describe("from DTO", function() {
-			it("should convert from DTO", function() {
+	describe("MerchantSchemaSummary", function () {
+		describe("from DTO", function () {
+			it("should convert from DTO", function () {
 				const dto = merchantSchemaSummaryDTO();
 
-				assertThat(
-					fromMerchantSchemaSummaryDTO(dto),
-					is(merchantSchemaSummaryFrom(dto))
-				);
+				assertThat(fromMerchantSchemaSummaryDTO(dto), is(merchantSchemaSummaryFrom(dto)));
 			});
 		});
 	});
 
-	describe("MerchantSchema", function() {
-		describe("from DTO", function() {
-			it("should convert from DTO", function() {
+	describe("MerchantSchema", function () {
+		describe("from DTO", function () {
+			it("should convert from DTO", function () {
 				const dto = merchantSchemaDTO();
 
 				assertThat(fromMerchantSchemaDTO(dto), is(merchantSchemaFrom(dto)));
@@ -59,9 +53,9 @@ describe("Merchant Schemas Transformers", function() {
 		});
 	});
 
-	describe("NewMerchantSchema", function() {
-		describe("to DTO", function() {
-			it("should convert to DTO", function() {
+	describe("NewMerchantSchema", function () {
+		describe("to DTO", function () {
+			it("should convert to DTO", function () {
 				const schema = aNewMerchantSchema();
 
 				assertThat(toNewMerchantSchemaDTO(schema), is(newMerchantSchemaDTOFrom(schema)));

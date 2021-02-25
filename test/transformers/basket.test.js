@@ -17,7 +17,7 @@ describe("Basket Transformers", function () {
 	});
 
 	describe("from DTO", function () {
-		it("should convert dto to basket", function() {
+		it("should convert dto to basket", function () {
 			const dto = basketDTO();
 
 			assertThat(fromBasketDTO(dto), is(basketFrom(dto)));

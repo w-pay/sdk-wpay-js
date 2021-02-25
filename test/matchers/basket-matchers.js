@@ -13,7 +13,7 @@ exports.basketFrom = (dto) => ({
 
 		items.forEach((item, i) => {
 			assertThat(item, is(basketItemFrom(dto.items[i])));
-		})
+		});
 
 		return true;
 	},
@@ -36,7 +36,7 @@ exports.basketDTOFrom = (model) => ({
 
 		items.forEach((item, i) => {
 			assertThat(item, is(basketItemDTOFrom(model.items[i])));
-		})
+		});
 
 		return true;
 	},
@@ -60,7 +60,7 @@ const basketItemFrom = (dto) => ({
 		assertThat(actual.unitMeasure, is(dto.unitMeasure));
 		assertThat(actual.totalPrice, is(dto.totalPrice));
 		assertThat(actual.tags, is(defined()));
-		assertThat(actual.tags, is(mapFrom(dto.tags)))
+		assertThat(actual.tags, is(mapFrom(dto.tags)));
 
 		return true;
 	},
@@ -84,7 +84,7 @@ const basketItemDTOFrom = (model) => ({
 		assertThat(actual.unitMeasure, is(model.unitMeasure));
 		assertThat(actual.totalPrice, is(model.totalPrice));
 		assertThat(actual.tags, is(defined()));
-		assertThat(actual.tags, is(objFrom(model.tags)))
+		assertThat(actual.tags, is(objFrom(model.tags)));
 
 		return true;
 	},

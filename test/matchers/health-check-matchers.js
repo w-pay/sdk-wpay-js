@@ -18,4 +18,4 @@ exports.healthCheckFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});

@@ -21,59 +21,65 @@ const apiDefs = [
 		apiFactory: require("../../src/api/merchant-preferences"),
 		url: "/merchant/preferences"
 	}
-]
+];
 
-describe("Preferences Apis", function() {
+describe("Preferences Apis", function () {
 	apiDefs.forEach((apiDef) => {
-		describe(`${apiDef.name}`, function() {
+		describe(`${apiDef.name}`, function () {
 			let apiClient;
 
 			let api;
 
-			beforeEach(function() {
-				apiClient = new StubApiClient()
+			beforeEach(function () {
+				apiClient = new StubApiClient();
 
 				api = apiDef.apiFactory(apiClient.client());
 			});
 
-			describe("getPreferences", function() {
-				beforeEach(function() {
+			describe("getPreferences", function () {
+				beforeEach(function () {
 					apiClient.response = {
 						data: preferencesDTO(),
 						meta: {}
-					}
+					};
 				});
 
-				it("should set request params", async function() {
+				it("should set request params", async function () {
 					await api.get();
 
-					assertThat(apiClient.request, is({
-						method: HttpRequestMethod.GET,
-						url: apiDef.url
-					}));
+					assertThat(
+						apiClient.request,
+						is({
+							method: HttpRequestMethod.GET,
+							url: apiDef.url
+						})
+					);
 				});
 
-				it("should get preferences", async function() {
+				it("should get preferences", async function () {
 					const result = await api.get();
 
 					assertThat(result, is(preferencesFrom(apiClient.response.data)));
 				});
 			});
 
-			describe("setPreferences", function() {
-				it("should throw error if preferences missing", function() {
+			describe("setPreferences", function () {
+				it("should throw error if preferences missing", function () {
 					assertThat(() => api.set(), throws(requiredParameterError("preferences")));
 				});
 
-				it("should set request params", async function() {
+				it("should set request params", async function () {
 					const prefs = preferences();
 					await api.set(prefs);
 
-					assertThat(apiClient.request, hasProperties({
-						method: HttpRequestMethod.POST,
-						url: apiDef.url,
-						body: is(body(withData(preferencesDTOFrom(prefs))))
-					}));
+					assertThat(
+						apiClient.request,
+						hasProperties({
+							method: HttpRequestMethod.POST,
+							url: apiDef.url,
+							body: is(body(withData(preferencesDTOFrom(prefs))))
+						})
+					);
 				});
 			});
 		});

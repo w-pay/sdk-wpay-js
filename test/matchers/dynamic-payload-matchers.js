@@ -36,4 +36,4 @@ exports.dynamicPayloadDTOFrom = (model) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});

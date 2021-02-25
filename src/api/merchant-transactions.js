@@ -16,41 +16,47 @@ const { requiredParameterError } = require("./api-errors");
 const { toISOString } = require("../helpers/props");
 
 const list = (client) => (page, pageSize, endTime, startTime) => {
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromMerchantTransactionSummariesDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/merchant/transactions",
-		queryParams: mapProps({
-				startTime: toISOString,
-				endTime: toISOString
-			},
-			params([
-				optionalParam("page", page),
-				optionalParam("pageSize", pageSize),
-				optionalParam("endTime", endTime),
-				optionalParam("startTime", startTime)
-			]))
-	}))
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantTransactionSummariesDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/merchant/transactions",
+			queryParams: mapProps(
+				{
+					startTime: toISOString,
+					endTime: toISOString
+				},
+				params([
+					optionalParam("page", page),
+					optionalParam("pageSize", pageSize),
+					optionalParam("endTime", endTime),
+					optionalParam("startTime", startTime)
+				])
+			)
+		})
+	);
+};
 
 const getById = (client) => (transactionId) => {
 	if (!transactionId) {
 		throw requiredParameterError("transactionId");
 	}
 
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromMerchantTransactionDetailsDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/merchant/transactions/:transactionId",
-		pathParams: {
-			transactionId
-		}
-	}))
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantTransactionDetailsDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/merchant/transactions/:transactionId",
+			pathParams: {
+				transactionId
+			}
+		})
+	);
+};
 
 module.exports = (client) => {
 	/** @implements {import('../../types/api/MerchantTransactions').MerchantTransactionsApi} */
@@ -58,4 +64,4 @@ module.exports = (client) => {
 		list: list(client),
 		getById: getById(client)
 	};
-}
+};

@@ -19,42 +19,42 @@ const {
 	customerTransactionSummariesFrom
 } = require("../matchers/customer-transactions-matchers");
 
-describe("Customer Transactions Transformers", function() {
-	describe("CustomerTransactionSummaries", function() {
-		describe("from DTO", function() {
-			it("should convert dto", function() {
+describe("Customer Transactions Transformers", function () {
+	describe("CustomerTransactionSummaries", function () {
+		describe("from DTO", function () {
+			it("should convert dto", function () {
 				const dto = customerTransactionSummariesDTO();
 
 				assertThat(
 					fromCustomerTransactionSummariesDTO(dto),
 					is(customerTransactionSummariesFrom(dto))
-				)
+				);
 			});
 		});
 	});
 
-	describe("CustomerTransactionSummary", function() {
-		describe("from DTO", function() {
-			it("should convert dto", function() {
+	describe("CustomerTransactionSummary", function () {
+		describe("from DTO", function () {
+			it("should convert dto", function () {
 				const dto = customerTransactionSummaryDTO();
 
 				assertThat(
 					fromCustomerTransactionSummaryDTO(dto),
 					is(customerTransactionSummaryFrom(dto))
-				)
+				);
 			});
 		});
 	});
 
-	describe("CustomerTransactionDetails", function() {
-		describe("from DTO", function() {
-			it("should convert dto", function() {
+	describe("CustomerTransactionDetails", function () {
+		describe("from DTO", function () {
+			it("should convert dto", function () {
 				const dto = customerTransactionDetailsDTO();
 
 				assertThat(
 					fromCustomerTransactionDetailsDTO(dto),
 					is(customerTransactionDetailsFrom(dto))
-				)
+				);
 			});
 		});
 	});

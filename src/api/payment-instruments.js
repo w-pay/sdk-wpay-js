@@ -16,53 +16,59 @@ const list = (client) => (wallet) => {
 		throw requiredParameterError("wallet");
 	}
 
-	return asyncToPromise(pipeK(
-		addHeaders(everydayPayWalletHeader(wallet)),
-		client,
-		fromData(fromWalletContentsDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/customer/instruments",
-	}))
-}
+	return asyncToPromise(
+		pipeK(
+			addHeaders(everydayPayWalletHeader(wallet)),
+			client,
+			fromData(fromWalletContentsDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/customer/instruments"
+		})
+	);
+};
 
 const deleteInstrument = (client) => (instrument) => {
 	if (!instrument) {
 		throw requiredParameterError("instrument");
 	}
 
-	return asyncToPromise(pipeK(
-		addHeaders(everydayPayWalletHeader(instrument.wallet)),
-		client
-	)({
-		method: HttpRequestMethod.DELETE,
-		url: "/customer/instruments/:paymentInstrumentId",
-		pathParams: {
-			paymentInstrumentId: instrument.paymentInstrumentId
-		}
-	}))
-}
+	return asyncToPromise(
+		pipeK(
+			addHeaders(everydayPayWalletHeader(instrument.wallet)),
+			client
+		)({
+			method: HttpRequestMethod.DELETE,
+			url: "/customer/instruments/:paymentInstrumentId",
+			pathParams: {
+				paymentInstrumentId: instrument.paymentInstrumentId
+			}
+		})
+	);
+};
 
 const initiateAddition = (client) => (instrument) => {
 	if (!instrument) {
 		throw requiredParameterError("instrument");
 	}
 
-	return asyncToPromise(pipeK(
-		addHeaders(everydayPayWalletHeader(instrument.wallet)),
-		client,
-		fromData(identity)
-	)({
-		method: HttpRequestMethod.POST,
-		url: "/customer/instruments",
-		body: {
-			data: {
-				clientReference: instrument.clientReference
-			},
-			meta: {}
-		}
-	}))
-}
+	return asyncToPromise(
+		pipeK(
+			addHeaders(everydayPayWalletHeader(instrument.wallet)),
+			client,
+			fromData(identity)
+		)({
+			method: HttpRequestMethod.POST,
+			url: "/customer/instruments",
+			body: {
+				data: {
+					clientReference: instrument.clientReference
+				},
+				meta: {}
+			}
+		})
+	);
+};
 
 module.exports = (client) => {
 	/** @implements {import('../../types/api/PaymentInstruments').PaymentInstrumentsApi} */
@@ -71,4 +77,4 @@ module.exports = (client) => {
 		delete: deleteInstrument(client),
 		initiateAddition: initiateAddition(client)
 	};
-}
+};

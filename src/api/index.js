@@ -16,4 +16,4 @@ module.exports = {
 	schemas: require("./schemas"),
 
 	handlers: require("./result-handler")
-}
+};

@@ -46,7 +46,7 @@ const merchantPaymentSummaryFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const merchantPaymentDetailsFrom = (dto) => ({
 	matches(item) {
@@ -82,11 +82,11 @@ const paymentRequestCreatedFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 module.exports = {
 	merchantPaymentDetailsFrom,
 	merchantPaymentSummariesFrom,
 	merchantPaymentSummaryFrom,
 	paymentRequestCreatedFrom
-}
+};

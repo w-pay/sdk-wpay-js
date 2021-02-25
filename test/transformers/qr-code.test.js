@@ -6,9 +6,9 @@ const { aQRCode, qrCodeDTO } = require("../data/qr-code");
 const { isoStringFrom } = require("../matchers/date-matchers");
 const { qrCodeFrom } = require("../matchers/qr-code-matchers");
 
-describe("QR code transformers", function() {
-	describe("to DTO", function() {
-		it("should serialise expiry time", function() {
+describe("QR code transformers", function () {
+	describe("to DTO", function () {
+		it("should serialise expiry time", function () {
 			const qrCode = aQRCode();
 			const dto = toQrDTO(qrCode);
 
@@ -16,8 +16,8 @@ describe("QR code transformers", function() {
 		});
 	});
 
-	describe("from DTO", function() {
-		it("should convert dto to qr code", function() {
+	describe("from DTO", function () {
+		it("should convert dto to qr code", function () {
 			const dto = qrCodeDTO();
 
 			assertThat(fromQrDTO(dto), is(qrCodeFrom(dto)));

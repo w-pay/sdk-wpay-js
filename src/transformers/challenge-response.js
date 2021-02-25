@@ -4,9 +4,8 @@ const mapProps = require("crocks/helpers/mapProps");
 
 const { toUpperCase } = require("../helpers/props");
 
-exports.toChallengeResponseDTO = (dto) => dto
+exports.toChallengeResponseDTO = (dto) => dto;
 
-exports.fromChallengeResponseDTO =
-	mapProps({
-		type: toUpperCase
-	})
+exports.fromChallengeResponseDTO = mapProps({
+	type: toUpperCase
+});

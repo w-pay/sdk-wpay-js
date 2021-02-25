@@ -18,11 +18,11 @@ exports.toPaymentDetailsDTO = (
 			? secondaryInstruments.map(toSecondaryInstrument)
 			: [],
 		challengeResponses: challengeResponses ? challengeResponses : []
-	}
+	};
 
 	if (clientReference) {
 		dto.clientReference = clientReference;
 	}
 
 	return dto;
-}
+};

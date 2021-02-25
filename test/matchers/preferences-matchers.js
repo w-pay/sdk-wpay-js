@@ -34,4 +34,4 @@ exports.preferencesDTOFrom = (model) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});

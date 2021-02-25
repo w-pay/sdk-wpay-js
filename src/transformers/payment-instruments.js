@@ -6,28 +6,29 @@ const mapProps = require("crocks/helpers/mapProps");
 
 const { toDate, toUpperCase, toURL } = require("../helpers/props");
 
-const fromPaymentInstrumentDTO =
+const fromPaymentInstrumentDTO = mapProps({
+	lastUpdated: toDate,
+	lastUsed: toDate,
+	status: toUpperCase
+});
+
+const fromCreditCardDTO = compose(
+	fromPaymentInstrumentDTO,
 	mapProps({
-		lastUpdated: toDate,
-		lastUsed: toDate,
-		status: toUpperCase
-	})
-
-const fromCreditCardDTO = compose(fromPaymentInstrumentDTO, mapProps({
-	updateURL: toURL,
-	stepUp: mapProps({
-		url: toURL
-	})
-}));
-
-const fromGiftCardDTO = fromPaymentInstrumentDTO
-
-exports.fromWalletContentsDTO =
-	mapProps({
-		creditCards: map(fromCreditCardDTO),
-		giftCards: map(fromGiftCardDTO),
-		everydayPay: mapProps({
-			creditCards: map(fromCreditCardDTO),
-			giftCards: map(fromGiftCardDTO),
+		updateURL: toURL,
+		stepUp: mapProps({
+			url: toURL
 		})
 	})
+);
+
+const fromGiftCardDTO = fromPaymentInstrumentDTO;
+
+exports.fromWalletContentsDTO = mapProps({
+	creditCards: map(fromCreditCardDTO),
+	giftCards: map(fromGiftCardDTO),
+	everydayPay: mapProps({
+		creditCards: map(fromCreditCardDTO),
+		giftCards: map(fromGiftCardDTO)
+	})
+});

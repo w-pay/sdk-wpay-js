@@ -9,9 +9,10 @@ const pipe = require("crocks/helpers/pipe");
 const { getPropOrError } = require("../helpers/props");
 const { toUpperCase } = require("../helpers/props");
 
-exports.fromHealthCheckDTO =
-	pipe(
-		getPropOrError("healthCheck"),
-		map(pipe(toUpperCase, objOf("result"))),
-		either((err) => { throw err }, identity)
-	)
+exports.fromHealthCheckDTO = pipe(
+	getPropOrError("healthCheck"),
+	map(pipe(toUpperCase, objOf("result"))),
+	either((err) => {
+		throw err;
+	}, identity)
+);

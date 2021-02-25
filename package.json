@@ -8,10 +8,11 @@
     "node": "~12.18"
   },
   "scripts": {
-    "build": "npm run check && npm run pack",
-    "check": "tsc types/**/*.ts --noEmit",
+    "build": "npm run checks && npm run pack",
+    "checks": "tsc types/**/*.ts --noEmit && npm run format",
     "dist": "npm run test:node && npm run build && npm run test:pack",
     "doc": "rm -rf docs && jsdoc -c ./jsdoc.config.json -d docs",
+    "format": "npx prettier -w --config .prettierrc.js src/ test/ types/",
     "lint": "eslint src test",
     "pack": "webpack --mode production",
     "test:node": "find test/ -name *.test.js | xargs mocha --timeout 1000",

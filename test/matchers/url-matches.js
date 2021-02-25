@@ -16,4 +16,4 @@ exports.urlFrom = (str) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});

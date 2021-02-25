@@ -9,17 +9,19 @@ const { fromHealthCheckDTO } = require("../transformers/health-check");
 const { fromData } = require("../transformers/data");
 
 const checkHealth = (client) => () =>
-	asyncToPromise(pipeK(
-		client,
-		fromData(fromHealthCheckDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/",
-	}))
+	asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromHealthCheckDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/"
+		})
+	);
 
 module.exports = (client) => {
 	/** @implements {import('../../types/api/Administration').AdministrationApi} */
 	return {
 		checkHealth: checkHealth(client)
 	};
-}
+};

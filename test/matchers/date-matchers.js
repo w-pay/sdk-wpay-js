@@ -34,4 +34,4 @@ exports.isoStringFrom = (date) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});

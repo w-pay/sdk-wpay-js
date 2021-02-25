@@ -14,8 +14,7 @@ const merchantTransactionSummariesFrom = (dto) => ({
 		});
 
 		return true;
-
-		},
+	},
 
 	describeTo(description) {
 		description.append(`A MerchantTransactionSummaries from ${JSON.stringify(dto)}`);
@@ -24,7 +23,7 @@ const merchantTransactionSummariesFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const merchantTransactionSummaryFrom = (dto) => ({
 	matches(item) {
@@ -48,7 +47,7 @@ const merchantTransactionSummaryFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const merchantTransactionDetailsFrom = (dto) => ({
 	matches(item) {
@@ -67,10 +66,10 @@ const merchantTransactionDetailsFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 module.exports = {
 	merchantTransactionDetailsFrom,
 	merchantTransactionSummariesFrom,
 	merchantTransactionSummaryFrom
-}
+};

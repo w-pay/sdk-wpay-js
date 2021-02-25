@@ -12,23 +12,14 @@ const tryCatch = require("crocks/Result/tryCatch");
 const { getPropOrError } = require("../helpers/props");
 
 // transform :: (Object -> Object) -> Object -> Async Error Object
-const transform = curry((fn, obj) =>
-	pipe(
-		tryCatch(fn),
-		resultToAsync
-	)(obj)
-);
+const transform = curry((fn, obj) => pipe(tryCatch(fn), resultToAsync)(obj));
 
 // fromData :: (Object -> Object) -> Object -> Async Error Object
 const fromData = curry((fn, obj) =>
-	pipe(
-		getPropOrError("data"),
-		map(transform(fn)),
-		either(Async.Rejected, identity)
-	)(obj)
-)
+	pipe(getPropOrError("data"), map(transform(fn)), either(Async.Rejected, identity))(obj)
+);
 
 module.exports = {
 	transform,
 	fromData: fromData
-}
+};

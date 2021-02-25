@@ -25,7 +25,7 @@ const customerTransactionSummaryDTO = () => ({
 });
 
 const customerTransactionSummariesDTO = () => ({
-	transactions: [ customerTransactionSummaryDTO() ]
+	transactions: [customerTransactionSummaryDTO()]
 });
 
 const customerTransactionDetailsDTO = () => ({
@@ -37,4 +37,4 @@ module.exports = {
 	customerTransactionDetailsDTO,
 	customerTransactionSummariesDTO,
 	customerTransactionSummaryDTO
-}
+};

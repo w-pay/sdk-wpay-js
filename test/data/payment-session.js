@@ -9,47 +9,47 @@ exports.aCreatePaymentSessionRequest = () => ({
 	location: "somewhere",
 	merchantInfo: {
 		schemaId: uuid(),
-		payload: (function() {
+		payload: (function () {
 			const payload = new Map();
 
 			payload.set("merchantInfoKey", "some value");
 
-			return payload
-		}())
+			return payload;
+		})()
 	}
-})
+});
 
 exports.createPaymentSessionResultDTO = () => ({
 	paymentSessionId: uuid(),
 	qr: qrCodeDTO()
-})
+});
 
 exports.aCustomerUpdatePaymentSessionRequest = () => ({
 	customerInfo: {
 		schemaId: uuid(),
-		payload: (function() {
+		payload: (function () {
 			const payload = new Map();
 
 			payload.set("customerInfoKey", "some value");
 
-			return payload
-		}())
+			return payload;
+		})()
 	}
-})
+});
 
 exports.aMerchantUpdatePaymentSessionRequest = () => ({
 	paymentRequestId: uuid(),
 	merchantInfo: {
 		schemaId: uuid(),
-		payload: (function() {
+		payload: (function () {
 			const payload = new Map();
 
 			payload.set("merchantInfoKey", "some value");
 
-			return payload
-		}())
+			return payload;
+		})()
 	}
-})
+});
 
 exports.paymentSessionDTO = () => ({
 	paymentSessionId: uuid(),
@@ -70,4 +70,4 @@ exports.paymentSessionDTO = () => ({
 			customerInfoKey: "some value"
 		}
 	}
-})
+});

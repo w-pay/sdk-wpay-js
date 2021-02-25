@@ -30,18 +30,20 @@ const paymentDetailsDTOFrom = (
 	},
 
 	describeTo(description) {
-		description.append(`Payment details containing ${JSON.stringify({
-			primaryPaymentInstrument,
-			secondaryInstruments,
-			clientReference,
-			challengeResponses
-		})}`);
+		description.append(
+			`Payment details containing ${JSON.stringify({
+				primaryPaymentInstrument,
+				secondaryInstruments,
+				clientReference,
+				challengeResponses
+			})}`
+		);
 	},
 
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const secondaryInstrumentDTOFrom = (model) => ({
 	matches(item) {
@@ -58,11 +60,11 @@ const secondaryInstrumentDTOFrom = (model) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const walletContentsFrom = (dto) => ({
 	matches(item) {
-		assertThat(item, hasPaymentInstrumentsFrom(dto))
+		assertThat(item, hasPaymentInstrumentsFrom(dto));
 		assertThat(item.everydayPay, hasPaymentInstrumentsFrom(dto.everydayPay));
 
 		return true;
@@ -75,19 +77,19 @@ const walletContentsFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const hasPaymentInstrumentsFrom = (dto) => ({
 	matches(item) {
 		assertThat(item.creditCards, is(defined()));
 		item.creditCards.forEach((card, i) => {
 			assertThat(card, is(creditCardFrom(dto.creditCards[i])));
-		})
+		});
 
 		assertThat(item.giftCards, is(defined()));
 		item.giftCards.forEach((card, i) => {
 			assertThat(card, is(giftCardFrom(dto.giftCards[i])));
-		})
+		});
 
 		return true;
 	},
@@ -99,7 +101,7 @@ const hasPaymentInstrumentsFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const creditCardFrom = (dto) => ({
 	matches(card) {
@@ -136,7 +138,7 @@ const creditCardFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const giftCardFrom = (dto) => ({
 	matches(card) {
@@ -165,7 +167,7 @@ const giftCardFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const paymentInstrumentAddedFrom = (dto) => ({
 	matches(item) {
@@ -182,7 +184,7 @@ const paymentInstrumentAddedFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 module.exports = {
 	creditCardFrom,
@@ -192,4 +194,4 @@ module.exports = {
 	paymentInstrumentAddedFrom,
 	secondaryInstrumentDTOFrom,
 	walletContentsFrom
-}
+};

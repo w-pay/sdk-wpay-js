@@ -6,19 +6,16 @@ const { fromBasketDTO, toBasketDTO } = require("./basket");
 const { fromQrDTO } = require("./qr-code");
 const { toDynamicPayloadDTO } = require("./dynamic-payload");
 
-exports.fromCreatePaymentRequestResultDTO =
-	mapProps({
-		qr: fromQrDTO
-	})
+exports.fromCreatePaymentRequestResultDTO = mapProps({
+	qr: fromQrDTO
+});
 
-exports.fromCustomerPaymentRequestDTO =
-	mapProps({
-		basket: fromBasketDTO
-	})
+exports.fromCustomerPaymentRequestDTO = mapProps({
+	basket: fromBasketDTO
+});
 
-exports.toNewPaymentRequestDTO =
-	mapProps({
-		basket: toBasketDTO,
-		posPayload: toDynamicPayloadDTO,
-		merchantPayload: toDynamicPayloadDTO
-	})
+exports.toNewPaymentRequestDTO = mapProps({
+	basket: toBasketDTO,
+	posPayload: toDynamicPayloadDTO,
+	merchantPayload: toDynamicPayloadDTO
+});

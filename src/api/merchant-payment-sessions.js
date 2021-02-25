@@ -17,37 +17,44 @@ const create = (client) => (request) => {
 		throw requiredParameterError("request");
 	}
 
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromCreatePaymentSessionResultDTO)
-	)({
-		method: HttpRequestMethod.POST,
-		url: "/merchant/payment/session",
-		body: {
-			data: mapProps({
-				merchantInfo: toDynamicPayloadDTO
-			}, request),
-			meta: {}
-		}
-	}))
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromCreatePaymentSessionResultDTO)
+		)({
+			method: HttpRequestMethod.POST,
+			url: "/merchant/payment/session",
+			body: {
+				data: mapProps(
+					{
+						merchantInfo: toDynamicPayloadDTO
+					},
+					request
+				),
+				meta: {}
+			}
+		})
+	);
+};
 
 const getById = (client) => (paymentSessionId) => {
 	if (!paymentSessionId) {
 		throw requiredParameterError("paymentSessionId");
 	}
 
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromPaymentSessionDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/merchant/payment/session/:paymentSessionId",
-		pathParams: {
-			paymentSessionId
-		}
-	}))
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromPaymentSessionDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/merchant/payment/session/:paymentSessionId",
+			pathParams: {
+				paymentSessionId
+			}
+		})
+	);
+};
 
 const update = (client) => (paymentSessionId, session) => {
 	if (!paymentSessionId) {
@@ -58,38 +65,41 @@ const update = (client) => (paymentSessionId, session) => {
 		throw requiredParameterError("session");
 	}
 
-	return asyncToPromise(pipeK(
-		client
-	)({
-		method: HttpRequestMethod.POST,
-		url: "/merchant/payment/session/:paymentSessionId",
-		pathParams: {
-			paymentSessionId
-		},
-		body: {
-			data: mapProps({
-				merchantInfo: toDynamicPayloadDTO
-			}, session),
-			meta: {}
-		}
-	}))
-}
+	return asyncToPromise(
+		pipeK(client)({
+			method: HttpRequestMethod.POST,
+			url: "/merchant/payment/session/:paymentSessionId",
+			pathParams: {
+				paymentSessionId
+			},
+			body: {
+				data: mapProps(
+					{
+						merchantInfo: toDynamicPayloadDTO
+					},
+					session
+				),
+				meta: {}
+			}
+		})
+	);
+};
 
 const deletePaymentSession = (client) => (paymentSessionId) => {
 	if (!paymentSessionId) {
 		throw requiredParameterError("paymentSessionId");
 	}
 
-	return asyncToPromise(pipeK(
-		client
-	)({
-		method: HttpRequestMethod.DELETE,
-		url: "/merchant/payment/session/:paymentSessionId",
-		pathParams: {
-			paymentSessionId
-		}
-	}))
-}
+	return asyncToPromise(
+		pipeK(client)({
+			method: HttpRequestMethod.DELETE,
+			url: "/merchant/payment/session/:paymentSessionId",
+			pathParams: {
+				paymentSessionId
+			}
+		})
+	);
+};
 
 module.exports = (client) => {
 	/** @implements {import('../../types/api/MerchantPaymentSessions').MerchantPaymentSessionsApi} */
@@ -99,4 +109,4 @@ module.exports = (client) => {
 		update: update(client),
 		delete: deletePaymentSession(client)
 	};
-}
+};

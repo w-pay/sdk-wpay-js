@@ -20,9 +20,9 @@ const mapFrom = (obj) => ({
 			}
 
 			return a === b;
-		}
+		};
 
-		return keys.reduce((acc, key) => acc && equalProps(key), true)
+		return keys.reduce((acc, key) => acc && equalProps(key), true);
 	},
 
 	describeTo(description) {
@@ -32,7 +32,7 @@ const mapFrom = (obj) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const objFrom = (map) => ({
 	matches(actual) {
@@ -49,7 +49,7 @@ const objFrom = (map) => ({
 			}
 
 			return a === b;
-		}
+		};
 
 		map.forEach((value, key) => result && equalValues(actual[key], value));
 
@@ -63,9 +63,9 @@ const objFrom = (map) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 module.exports = {
 	mapFrom,
 	objFrom
-}
+};

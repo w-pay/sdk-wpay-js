@@ -17,9 +17,9 @@ const createCustomerSDK = (httpClient, options) => {
 		preferences: api.customerPreferences(client),
 		transactions: api.customerTransactions(client),
 		options
-	}
-}
+	};
+};
 
 module.exports = {
 	createCustomerSDK
-}
+};

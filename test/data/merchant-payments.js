@@ -6,7 +6,7 @@ const { merchantPayloadDTO, posPayloadDTO } = require("./dynamic-payloads");
 const { basketDTO } = require("./basket");
 
 const merchantPaymentSummariesDTO = () => ({
-	payments: [ merchantPaymentSummaryDTO() ]
+	payments: [merchantPaymentSummaryDTO()]
 });
 
 const merchantPaymentSummaryDTO = () => ({
@@ -23,10 +23,10 @@ const merchantPaymentDetailsDTO = () => ({
 	basket: basketDTO(),
 	posPayload: posPayloadDTO(),
 	merchantPayload: merchantPayloadDTO()
-})
+});
 
 module.exports = {
 	merchantPaymentDetailsDTO,
 	merchantPaymentSummariesDTO,
 	merchantPaymentSummaryDTO
-}
+};

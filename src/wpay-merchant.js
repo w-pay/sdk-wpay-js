@@ -18,9 +18,9 @@ const createMerchantSDK = (httpClient, options) => {
 		schemas: api.schemas(client),
 		transactions: api.merchantTransactions(client),
 		options
-	}
-}
+	};
+};
 
 module.exports = {
 	createMerchantSDK
-}
+};

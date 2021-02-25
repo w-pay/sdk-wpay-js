@@ -17,7 +17,7 @@ const body = (dataMatcher, metaMatcher = withEmptyMeta()) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const withData = (matcher) => ({
 	matches(actual) {
@@ -34,7 +34,7 @@ const withData = (matcher) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const withEmptyMeta = () => ({
 	matches(actual) {
@@ -51,10 +51,10 @@ const withEmptyMeta = () => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 module.exports = {
 	body,
 	withData,
 	withEmptyMeta
-}
+};

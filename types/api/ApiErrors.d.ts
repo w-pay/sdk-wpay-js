@@ -8,12 +8,9 @@ export class ApiException extends Error {}
  */
 export class JsonParsingException extends ApiException {
 	/** @var details Additional details about why the parsing failed. Is implementation specific. */
-	public readonly details?: Map<string, any>
+	public readonly details?: Map<string, any>;
 
-	constructor(
-		message: string,
-		details?: Map<string, any>
-	)
+	constructor(message: string, details?: Map<string, any>);
 }
 
 /**
@@ -24,9 +21,5 @@ export class HttpErrorException extends ApiException {
 	public readonly responseHeaders: Map<string, string[]>;
 	public readonly responseBody: string;
 
-	constructor(
-		statusCode: number,
-		responseHeaders: Map<string, string[]>,
-		responseBody: string
-	)
+	constructor(statusCode: number, responseHeaders: Map<string, string[]>, responseBody: string);
 }

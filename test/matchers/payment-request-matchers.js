@@ -21,7 +21,7 @@ exports.createPaymentRequestResultFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 exports.customerPaymentRequestFrom = (dto) => ({
 	matches(actual) {
@@ -41,7 +41,7 @@ exports.customerPaymentRequestFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 exports.newPaymentRequestDTOFrom = (model) => ({
 	matches(actual) {

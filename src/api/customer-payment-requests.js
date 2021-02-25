@@ -18,17 +18,19 @@ const getById = (client) => (paymentRequestId) => {
 		throw requiredParameterError("paymentRequestId");
 	}
 
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromCustomerPaymentRequestDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/customer/payments/:paymentRequestId",
-		pathParams: {
-			paymentRequestId
-		}
-	}))
-}
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromCustomerPaymentRequestDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/customer/payments/:paymentRequestId",
+			pathParams: {
+				paymentRequestId
+			}
+		})
+	);
+};
 
 // getByQRCodeId :: HttpApiClient -> String -> Promise CustomerPaymentRequest
 const getByQRCodeId = (client) => (qrCodeId) => {
@@ -36,16 +38,18 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 		throw requiredParameterError("qrCodeId");
 	}
 
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromCustomerPaymentRequestDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/customer/qr/:qrCodeId",
-		pathParams: {
-			qrCodeId
-		}
-	}))
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromCustomerPaymentRequestDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/customer/qr/:qrCodeId",
+			pathParams: {
+				qrCodeId
+			}
+		})
+	);
 };
 
 // returns an uncurried function for data so that defaults can be omitted
@@ -65,26 +69,28 @@ const makePayment = (client) => (
 		throw requiredParameterError("primaryInstrument");
 	}
 
-	return asyncToPromise(pipeK(
-		addHeaders(everydayPayWalletHeader(primaryInstrument.wallet)),
-		client,
-		fromData(fromCustomerTransactionSummaryDTO)
-	)({
-		method: HttpRequestMethod.PUT,
-		url: "/customer/payments/:paymentRequestId",
-		pathParams: {
-			paymentRequestId
-		},
-		body: {
-			data: toPaymentDetailsDTO(
-				primaryInstrument,
-				secondaryInstruments,
-				clientReference,
-				challengeResponses
-			),
-			meta: {}
-		}
-	}));
+	return asyncToPromise(
+		pipeK(
+			addHeaders(everydayPayWalletHeader(primaryInstrument.wallet)),
+			client,
+			fromData(fromCustomerTransactionSummaryDTO)
+		)({
+			method: HttpRequestMethod.PUT,
+			url: "/customer/payments/:paymentRequestId",
+			pathParams: {
+				paymentRequestId
+			},
+			body: {
+				data: toPaymentDetailsDTO(
+					primaryInstrument,
+					secondaryInstruments,
+					clientReference,
+					challengeResponses
+				),
+				meta: {}
+			}
+		})
+	);
 };
 
 module.exports = (client) => {
@@ -94,4 +100,4 @@ module.exports = (client) => {
 		getByQRCodeId: getByQRCodeId(client),
 		makePayment: makePayment(client)
 	};
-}
+};

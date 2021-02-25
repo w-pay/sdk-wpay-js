@@ -9,13 +9,13 @@ exports.aNewBasket = () => ({
 			unitPrice: 2.1,
 			unitMeasure: "EACH",
 			totalPrice: 6.3,
-			tags: (function() {
+			tags: (function () {
 				const tags = new Map();
 				tags.set("property1", "string");
 				tags.set("property2", "string");
 
 				return tags;
-			}())
+			})()
 		}
 	]
 });
@@ -35,4 +35,4 @@ exports.basketDTO = () => ({
 			}
 		}
 	]
-})
+});

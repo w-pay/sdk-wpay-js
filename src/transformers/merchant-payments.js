@@ -7,26 +7,23 @@ const { fromBasketDTO } = require("./basket");
 const { fromDynamicPayloadDTO } = require("./dynamic-payload");
 const { toDate } = require("../helpers/props");
 
-const fromMerchantPaymentDetailsDTO =
-	mapProps({
-		expiryTime: toDate,
-		basket: fromBasketDTO,
-		posPayload: fromDynamicPayloadDTO,
-		merchantPayload: fromDynamicPayloadDTO
-	})
+const fromMerchantPaymentDetailsDTO = mapProps({
+	expiryTime: toDate,
+	basket: fromBasketDTO,
+	posPayload: fromDynamicPayloadDTO,
+	merchantPayload: fromDynamicPayloadDTO
+});
 
-const fromMerchantPaymentSummaryDTO =
-	mapProps({
-		expiryTime: toDate
-	})
+const fromMerchantPaymentSummaryDTO = mapProps({
+	expiryTime: toDate
+});
 
-const fromMerchantPaymentSummariesDTO =
-	mapProps({
-		payments: map(fromMerchantPaymentSummaryDTO)
-	})
+const fromMerchantPaymentSummariesDTO = mapProps({
+	payments: map(fromMerchantPaymentSummaryDTO)
+});
 
 module.exports = {
 	fromMerchantPaymentDetailsDTO,
 	fromMerchantPaymentSummariesDTO,
 	fromMerchantPaymentSummaryDTO
-}
+};

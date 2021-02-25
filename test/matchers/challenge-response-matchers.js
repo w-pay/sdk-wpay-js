@@ -21,4 +21,4 @@ exports.challengeResponseFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});

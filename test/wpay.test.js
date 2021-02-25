@@ -25,7 +25,7 @@ const sdks = [
 describe("WPay SDKs", function () {
 	let stubHttpClient;
 
-	beforeEach(function() {
+	beforeEach(function () {
 		stubHttpClient = new StubHttpClient();
 
 		stubHttpClient.response.body = JSON.stringify({
@@ -33,7 +33,7 @@ describe("WPay SDKs", function () {
 				healthCheck: "success"
 			},
 			meta: {}
-		})
+		});
 	});
 
 	sdks.forEach((sdk) => {

@@ -80,11 +80,11 @@ const newMerchantSchemaDTOFrom = (model) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 module.exports = {
 	merchantSchemaFrom,
 	merchantSchemaSummariesFrom,
 	merchantSchemaSummaryFrom,
 	newMerchantSchemaDTOFrom
-}
+};

@@ -2,4 +2,4 @@
 
 exports.healthCheckDTO = () => ({
 	healthCheck: "success"
-})
+});

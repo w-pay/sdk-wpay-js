@@ -22,7 +22,11 @@ const safe = require("crocks/Maybe/safe");
 const sequence = require("crocks/pointfree/sequence");
 const valueOf = require("crocks/pointfree/valueOf");
 
-const { bearerToken, constantHeaders, createHeaders } = require("@api-sdk-creator/http-api-client");
+const {
+	bearerToken,
+	constantHeaders,
+	createHeaders
+} = require("@api-sdk-creator/http-api-client");
 
 const { toApiAuthenticator } = require("./api-authenticator");
 const { X_API_KEY, X_MERCHANT_ID, X_WALLET_ID } = require("./header-names");
@@ -46,49 +50,42 @@ const applyFunctor = flip(pipe(applyTo, map));
 // getHeaderOrError :: String -> String -> Result Error Assign
 const getHeaderOrError = curry((prop, headerName) =>
 	pipe(getPropOrError(prop), map(pipe(objOf(headerName), Assign)))
-)
+);
 
 // getHeaderOrError :: String -> String -> Result Assign
 const getHeaderOrNothing = curry((prop, headerName) =>
 	pipe(getProp(prop), either(constant({}), objOf(headerName)), Assign, Result.of)
-)
+);
 
 // safeGetProp :: String -> Object -> Maybe a
-const safeGetProp = (prop) =>
-	pipe(
-		getProp(prop),
-		chain(safe(not(isNil)))
-	)
+const safeGetProp = (prop) => pipe(getProp(prop), chain(safe(not(isNil))));
 
 // apiAuthenticatorToRequestHeaderFactory :: ApiAuthenticator -> RequestHeaderFactory
-const apiAuthenticatorToRequestHeaderFactory =
-	pipe(
-		(authenticator) => Async.fromPromise(authenticator.authenticate.bind(authenticator)),
-		bearerToken
-	)
+const apiAuthenticatorToRequestHeaderFactory = pipe(
+	(authenticator) => Async.fromPromise(authenticator.authenticate.bind(authenticator)),
+	bearerToken
+);
 
 // constantOptsToHeaders :: Object -> Result Error RequestHeaderFactory
-const constantOptsToHeaders =
-	pipe(
-		applyFunctor([
-			pipe(getHeaderOrError("apiKey", X_API_KEY)),
-			pipe(getHeaderOrNothing("walletId", X_WALLET_ID)),
-			pipe(getHeaderOrNothing("merchantId", X_MERCHANT_ID))
-		]),
-		fold,
-		map(valueOf),
-		map(constantHeaders),
-	)
+const constantOptsToHeaders = pipe(
+	applyFunctor([
+		pipe(getHeaderOrError("apiKey", X_API_KEY)),
+		pipe(getHeaderOrNothing("walletId", X_WALLET_ID)),
+		pipe(getHeaderOrNothing("merchantId", X_MERCHANT_ID))
+	]),
+	fold,
+	map(valueOf),
+	map(constantHeaders)
+);
 
 // accessTokenToHeader :: Object -> Result RequestHeaderFactory
-const accessTokenToHeader =
-	pipe(
-		safeGetProp("accessToken"),
-		map(toApiAuthenticator),
-		map(apiAuthenticatorToRequestHeaderFactory),
-		option(() => Async.of({})),
-		Result.of,
-	)
+const accessTokenToHeader = pipe(
+	safeGetProp("accessToken"),
+	map(toApiAuthenticator),
+	map(apiAuthenticatorToRequestHeaderFactory),
+	option(() => Async.of({})),
+	Result.of
+);
 
 /**
  * Creates a function that when executed will create headers for a request.
@@ -98,16 +95,12 @@ const accessTokenToHeader =
  * @param {object} options WPay options
  */
 // defaultHeaders :: Object -> Result Error RequestHeadersFactory
-const defaultHeaders =
-	pipe(
-		applyFunctor([
-			constantOptsToHeaders,
-			accessTokenToHeader
-		]),
-		sequence(Result.of),
-		map(createHeaders),
-	)
+const defaultHeaders = pipe(
+	applyFunctor([constantOptsToHeaders, accessTokenToHeader]),
+	sequence(Result.of),
+	map(createHeaders)
+);
 
 module.exports = {
 	defaultHeaders
-}
+};

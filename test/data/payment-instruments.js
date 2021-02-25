@@ -13,18 +13,18 @@ const aSelectedPaymentInstrument = () => ({
 	lastUsed: new Date(),
 	paymentToken: uuid(),
 	primary: true,
-	status: PaymentInstrumentStatus.VERIFIED,
+	status: PaymentInstrumentStatus.VERIFIED
 });
 
 const aSecondaryPaymentInstrument = () => ({
 	paymentInstrumentId: uuid(),
 	amount: 10
-})
+});
 
 const aNewPaymentInstrument = () => ({
 	clientReference: "abc123",
-	wallet: Wallet.EVERYDAY_PAY,
-})
+	wallet: Wallet.EVERYDAY_PAY
+});
 
 const paymentInstrumentDTO = () => ({
 	paymentInstrumentId: uuid(),
@@ -35,7 +35,7 @@ const paymentInstrumentDTO = () => ({
 	paymentToken: "token",
 	primary: false,
 	status: PaymentInstrumentStatus.UNVERIFIED_PERSISTENT.toLowerCase()
-})
+});
 
 const creditCardDTO = () => ({
 	...paymentInstrumentDTO(),
@@ -52,7 +52,7 @@ const creditCardDTO = () => ({
 		mandatory: false,
 		url: "http://foobar.com/"
 	}
-})
+});
 
 const giftCardDTO = () => ({
 	...paymentInstrumentDTO(),
@@ -61,16 +61,16 @@ const giftCardDTO = () => ({
 		type: "REQUIRE_PASSCODE",
 		mandatory: false
 	}
-})
+});
 
 const walletContentsDTO = () => ({
-	creditCards: [ creditCardDTO() ],
-	giftCards: [ giftCardDTO() ],
+	creditCards: [creditCardDTO()],
+	giftCards: [giftCardDTO()],
 	everydayPay: {
-		creditCards: [ creditCardDTO() ],
-		giftCards: [ giftCardDTO() ],
+		creditCards: [creditCardDTO()],
+		giftCards: [giftCardDTO()]
 	}
-})
+});
 
 module.exports = {
 	aNewPaymentInstrument,
@@ -80,4 +80,4 @@ module.exports = {
 	giftCardDTO,
 	paymentInstrumentDTO,
 	walletContentsDTO
-}
+};

@@ -20,16 +20,11 @@ const {
 const { HttpErrorException, JsonParsingException } = require("./api-errors");
 
 // toHttpErrorException :: HttpResult -> Async Error
-const toHttpErrorException =
-	pipe(
-		getHttpResponse,
-		(response) => new HttpErrorException(
-			response.statusCode,
-			response.headers,
-			response.body
-		),
-		Async.Rejected
-	)
+const toHttpErrorException = pipe(
+	getHttpResponse,
+	(response) => new HttpErrorException(response.statusCode, response.headers, response.body),
+	Async.Rejected
+);
 
 // isSyntaxError :: Error -> Boolean
 const isSyntaxError = (err) => err.name === "SyntaxError";
@@ -47,15 +42,12 @@ const toParsingError = curry((result, error) => {
 			return new JsonParsingException(err.message, details);
 		},
 		identity
-	)(error)
-})
+	)(error);
+});
 
 // unmarshallBodyOrError :: HttpResult -> Async Error HttpResult
 const unmarshallBodyOrError = (result) =>
-	pipe(
-		jsonUnmarshaller(),
-		bimap(toParsingError(result), identity)
-	)(result)
+	pipe(jsonUnmarshaller(), bimap(toParsingError(result), identity))(result);
 
 // resultHandler :: () -> HttpResult -> Async Error a
 const resultHandler = () =>
@@ -63,8 +55,8 @@ const resultHandler = () =>
 		isSuccessfulResult,
 		pipeK(unmarshallBodyOrError, extractHttpBody),
 		toHttpErrorException
-	)
+	);
 
 module.exports = {
 	resultHandler
-}
+};

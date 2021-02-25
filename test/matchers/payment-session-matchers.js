@@ -25,7 +25,7 @@ exports.paymentSessionFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 exports.createPaymentSessionRequestDTOFrom = (model) => ({
 	matches(actual) {
@@ -45,7 +45,7 @@ exports.createPaymentSessionRequestDTOFrom = (model) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 exports.customerUpdatePaymentSessionRequestDTOFrom = (model) => ({
 	matches(actual) {
@@ -61,7 +61,7 @@ exports.customerUpdatePaymentSessionRequestDTOFrom = (model) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 exports.merchantUpdatePaymentSessionRequestDTOFrom = (model) => ({
 	matches(actual) {
@@ -78,7 +78,7 @@ exports.merchantUpdatePaymentSessionRequestDTOFrom = (model) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 exports.paymentSessionCreatedFrom = (dto) => ({
 	matches(item) {
@@ -95,4 +95,4 @@ exports.paymentSessionCreatedFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});

@@ -1,14 +1,15 @@
 "use strict";
 
-exports.preferences = () => (function() {
-	const preferencesGroup = new Map();
-	preferencesGroup.set("preference", "value");
+exports.preferences = () =>
+	(function () {
+		const preferencesGroup = new Map();
+		preferencesGroup.set("preference", "value");
 
-	const preferences = new Map();
-	preferences.set("group", preferencesGroup);
+		const preferences = new Map();
+		preferences.set("group", preferencesGroup);
 
-	return preferences;
-}());
+		return preferences;
+	})();
 
 exports.preferencesDTO = () => ({
 	group: {

@@ -13,34 +13,36 @@ const { requiredParameterError } = require("./api-errors");
 
 // getPreferences :: HttpRequest -> HttpApiClient -> () -> Async Error Preferences
 const getPreferences = curry((request, client, _) => {
-	return asyncToPromise(pipeK(
-		client,
-		fromData(objectToMap)
-	)({
-		...request,
-		method: HttpRequestMethod.GET
-	}))
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(objectToMap)
+		)({
+			...request,
+			method: HttpRequestMethod.GET
+		})
+	);
 });
 
 // getPreferences :: HttpRequest -> HttpApiClient -> Preferences -> Async Error _
 const setPreferences = curry((request, client, preferences) => {
 	if (!preferences) {
-		throw requiredParameterError("preferences")
+		throw requiredParameterError("preferences");
 	}
 
-	return asyncToPromise(pipeK(
-		client
-	)({
-		...request,
-		method: HttpRequestMethod.POST,
-		body: {
-			data: mapToObject(preferences),
-			meta: {}
-		}
-	}))
-})
+	return asyncToPromise(
+		pipeK(client)({
+			...request,
+			method: HttpRequestMethod.POST,
+			body: {
+				data: mapToObject(preferences),
+				meta: {}
+			}
+		})
+	);
+});
 
 module.exports = {
 	getPreferences,
 	setPreferences
-}
+};

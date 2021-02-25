@@ -4,12 +4,12 @@ const { anyOf, equalTo } = require("hamjest");
 
 exports.blankOrMissingString = () => {
 	return anyOf(equalTo(undefined), equalTo(null), equalTo(""));
-}
+};
 
 exports.uppercase = (str) => {
 	return {
 		matches(actual) {
-			return actual === str.toUpperCase()
+			return actual === str.toUpperCase();
 		},
 
 		describeTo(description) {
@@ -19,5 +19,5 @@ exports.uppercase = (str) => {
 		describeMismatch(value, description) {
 			description.appendValue(value);
 		}
-	}
-}
+	};
+};

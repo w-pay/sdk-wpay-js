@@ -17,21 +17,21 @@ const merchantTransactionSummaryDTO = () => ({
 	executionTime: "2021-02-17T06:31:46.358Z",
 	status: TransactionSummaryPaymentStatus.APPROVED.toLowerCase(),
 	walletId: "394589294"
-})
+});
 
 const merchantTransactionSummariesDTO = () => ({
-	transactions: [ merchantTransactionSummaryDTO() ]
-})
+	transactions: [merchantTransactionSummaryDTO()]
+});
 
 const merchantTransactionDetailsDTO = () => ({
 	...merchantTransactionSummaryDTO(),
 	basket: basketDTO(),
 	posPayload: posPayloadDTO(),
 	merchantPayload: merchantPayloadDTO()
-})
+});
 
 module.exports = {
 	merchantTransactionDetailsDTO,
 	merchantTransactionSummariesDTO,
 	merchantTransactionSummaryDTO
-}
+};

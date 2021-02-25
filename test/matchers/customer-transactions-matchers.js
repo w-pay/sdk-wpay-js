@@ -20,7 +20,7 @@ const customerTransactionSummaryFrom = (dto) => ({
 		assertThat(actual.clientReference, is(dto.clientReference));
 
 		actual.instruments.forEach((instrument, i) => {
-			assertThat(instrument, is(customerPaymentInstrumentFrom(dto.instruments[i])))
+			assertThat(instrument, is(customerPaymentInstrumentFrom(dto.instruments[i])));
 		});
 
 		return true;
@@ -33,15 +33,15 @@ const customerTransactionSummaryFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const customerTransactionSummariesFrom = (dto) => ({
 	matches(actual) {
 		assertThat(actual.transactions.length, is(dto.transactions.length));
 
 		actual.transactions.forEach((transaction, i) => {
-			assertThat(transaction, is(customerTransactionSummaryFrom(dto.transactions[i])))
-		})
+			assertThat(transaction, is(customerTransactionSummaryFrom(dto.transactions[i])));
+		});
 
 		return true;
 	},
@@ -53,7 +53,7 @@ const customerTransactionSummariesFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const customerTransactionDetailsFrom = (dto) => ({
 	matches(item) {
@@ -70,7 +70,7 @@ const customerTransactionDetailsFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 const customerPaymentInstrumentFrom = (dto) => ({
 	matches(item) {
@@ -87,11 +87,11 @@ const customerPaymentInstrumentFrom = (dto) => ({
 	describeMismatch(value, description) {
 		description.appendValue(value);
 	}
-})
+});
 
 module.exports = {
 	customerPaymentInstrumentFrom,
 	customerTransactionDetailsFrom,
 	customerTransactionSummaryFrom,
-	customerTransactionSummariesFrom,
-}
+	customerTransactionSummariesFrom
+};

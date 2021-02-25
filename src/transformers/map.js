@@ -1,11 +1,11 @@
 "use strict";
 
 const mapToObject = (map) => {
-	const obj = {}
+	const obj = {};
 
 	map.forEach((value, key) => {
 		if (value instanceof Map) {
-			return obj[key] = mapToObject(value);
+			return (obj[key] = mapToObject(value));
 		}
 
 		obj[key] = value;
@@ -16,4 +16,4 @@ const mapToObject = (map) => {
 
 module.exports = {
 	mapToObject
-}
+};

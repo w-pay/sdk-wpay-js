@@ -24,7 +24,7 @@ exports.aNewPaymentRequestQRCodeRequest = () => ({
 	referenceId: uuid(),
 	referenceType: QRCodePaymentReferenceType.PAYMENT_REQUEST,
 	timeToLive: 300
-})
+});
 
 exports.createPaymentRequestResultDTO = () => ({
 	paymentRequestId: uuid(),

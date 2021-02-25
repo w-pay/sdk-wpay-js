@@ -8,12 +8,12 @@ exports.aChallengeResponse = () => ({
 	instrumentId: uuid(),
 	type: ChallengeResponseType.PASSCODE,
 	token: "fajkfafkaf",
-	reference: "a reference",
+	reference: "a reference"
 });
 
 exports.challengeResponseDTO = () => ({
 	instrumentId: uuid(),
 	type: ChallengeResponseType.PASSCODE.toLowerCase(),
 	token: "fajkfafkaf",
-	reference: "a reference",
+	reference: "a reference"
 });

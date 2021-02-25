@@ -15,17 +15,19 @@ const createPaymentRequestQRCode = (client) => (details) => {
 		throw requiredParameterError("details");
 	}
 
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromQrDTO)
-	)({
-		method: HttpRequestMethod.POST,
-		url: "/merchant/qr",
-		body: {
-			data: details,
-			meta: {}
-		}
-	}));
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromQrDTO)
+		)({
+			method: HttpRequestMethod.POST,
+			url: "/merchant/qr",
+			body: {
+				data: details,
+				meta: {}
+			}
+		})
+	);
 };
 
 const getPaymentRequestQRCodeContent = (client) => (qrCodeId) => {
@@ -33,16 +35,18 @@ const getPaymentRequestQRCodeContent = (client) => (qrCodeId) => {
 		throw requiredParameterError("qrCodeId");
 	}
 
-	return asyncToPromise(pipeK(
-		client,
-		fromData(fromQrDTO)
-	)({
-		method: HttpRequestMethod.GET,
-		url: "/merchant/qr/:qrId",
-		pathParams: {
-			qrId: qrCodeId
-		}
-	}));
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromQrDTO)
+		)({
+			method: HttpRequestMethod.GET,
+			url: "/merchant/qr/:qrId",
+			pathParams: {
+				qrId: qrCodeId
+			}
+		})
+	);
 };
 
 const cancelPaymentQRCode = (client) => (qrCodeId) => {
@@ -50,22 +54,22 @@ const cancelPaymentQRCode = (client) => (qrCodeId) => {
 		throw requiredParameterError("qrCodeId");
 	}
 
-	return asyncToPromise(pipeK(
-		client
-	)({
-		method: HttpRequestMethod.DELETE,
-		url: "/merchant/qr/:qrId",
-		pathParams: {
-			qrId: qrCodeId
-		}
-	}))
+	return asyncToPromise(
+		pipeK(client)({
+			method: HttpRequestMethod.DELETE,
+			url: "/merchant/qr/:qrId",
+			pathParams: {
+				qrId: qrCodeId
+			}
+		})
+	);
 };
 
-module.exports = function(client) {
+module.exports = function (client) {
 	/** @implements {import('../../types/api/QRCode').QRCodeApi} */
 	return {
 		createPaymentRequestQRCode: createPaymentRequestQRCode(client),
 		getPaymentRequestQRCodeContent: getPaymentRequestQRCodeContent(client),
 		cancelPaymentQRCode: cancelPaymentQRCode(client)
 	};
-}
+};
