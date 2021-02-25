@@ -7,5 +7,7 @@ export interface Transactions {
 	 *
 	 * @param
 	 */
-	history(transactionHistoryRequest: TransactionHistoryRequest): Promise<TransactionHistoryResponse>;
+	history(
+		transactionHistoryRequest: TransactionHistoryRequest
+	): Promise<TransactionHistoryResponse>;
 }

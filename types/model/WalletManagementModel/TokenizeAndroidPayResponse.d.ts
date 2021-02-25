@@ -3,11 +3,10 @@
  *
  * @category Model
  */
-export interface TokenizeAndroidPayResponse{
-    /** The new payment instrument id to be used for payments. */
-    paymentInstrumentId: string;
-    
-    /** The step-up token to be used for payments. */
-    stepUpToken: string;
+export interface TokenizeAndroidPayResponse {
+	/** The new payment instrument id to be used for payments. */
+	paymentInstrumentId: string;
+
+	/** The step-up token to be used for payments. */
+	stepUpToken: string;
 }
-    

@@ -1,5 +1,5 @@
-import { TokenizeAndroidPayRequest } from '../../model/WalletManagementModel/TokenizeAndroidPayRequest'
-import { TokenizeAndroidPayResponse } from '../../model/WalletManagementModel/TokenizeAndroidPayResponse'
+import { TokenizeAndroidPayRequest } from "../../model/WalletManagementModel/TokenizeAndroidPayRequest";
+import { TokenizeAndroidPayResponse } from "../../model/WalletManagementModel/TokenizeAndroidPayResponse";
 
 /**
  * @category API
@@ -25,4 +25,3 @@ export interface AndroidPay {
 		tokenizeAndroidPayRequest: TokenizeAndroidPayRequest
 	): Promise<TokenizeAndroidPayResponse>;
 }
-

@@ -44,5 +44,5 @@ export interface Instruments {
 	 *
 	 * @param
 	 */
-    delete(paymentInstrumentId: string): Promise<Record<string, unknown>>;
+	delete(paymentInstrumentId: string): Promise<Record<string, unknown>>;
 }

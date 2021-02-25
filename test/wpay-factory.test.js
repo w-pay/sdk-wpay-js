@@ -11,7 +11,7 @@ const { StubHttpClient } = require("./stub-http-client");
 const config = {
 	apiKey: "abc123",
 	baseUrl: "http://foo.com"
-}
+};
 
 describe("WPay Factory", function () {
 	let httpClient;
@@ -24,16 +24,18 @@ describe("WPay Factory", function () {
 	});
 
 	describe("createApiClient", function () {
-		it("should throw when default headers can't be created", function() {
+		it("should throw when default headers can't be created", function () {
 			assertThat(() => factory({}), throws(instanceOf(Error)));
 		});
 
-		it("should resolve url to baseUrl config", async function() {
+		it("should resolve url to baseUrl config", async function () {
 			const path = "/foo/bar";
 
-			await asyncToPromise(factory(config)({
-				url: path
-			}));
+			await asyncToPromise(
+				factory(config)({
+					url: path
+				})
+			);
 
 			assertThat(httpClient.request.url, is("http://foo.com/foo/bar"));
 		});
