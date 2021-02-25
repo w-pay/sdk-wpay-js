@@ -6,25 +6,25 @@ import { PaymentAgreement } from "./PaymentAgreement";
  * @category Model
  */
 export interface ChargePaymentAgreementRequest {
-    /** 
-     * The payment token of the payment agreement. 
-     * 
-     * The payment token is a unique identifier for the payment agreement.
-     */
-    paymentToken: string;
+	/**
+	 * The payment token of the payment agreement.
+	 *
+	 * The payment token is a unique identifier for the payment agreement.
+	 */
+	paymentToken: string;
 
-    /** The amount that will be charged against the payment instrument linked to the payment agreement. */ 
-    amount: number;
+	/** The amount that will be charged against the payment instrument linked to the payment agreement. */
+	amount: number;
 
-    /** A merchant application specific reference number for the transaction. */
-    clientReference: string;
+	/** A merchant application specific reference number for the transaction. */
+	clientReference: string;
 
-    /** A merchant order number for the transaction. */
-    orderNumber: string;
+	/** A merchant order number for the transaction. */
+	orderNumber: string;
 
-    /** Transaction type containers to use for all instruments. */
-    transactionType: DigitalPayTransactionType;
+	/** Transaction type containers to use for all instruments. */
+	transactionType: DigitalPayTransactionType;
 
-    /** A merchant application specific reference number for the customer. */
-    customerRef?: string;
+	/** A merchant application specific reference number for the customer. */
+	customerRef?: string;
 }

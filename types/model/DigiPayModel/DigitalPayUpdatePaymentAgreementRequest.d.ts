@@ -1,6 +1,6 @@
 import { PaymentAgreementChargeFrequency, PaymentAgreementType } from "../PaymentAgreement";
 import { DigitalPayAddress } from "./DigitalPayAddress";
-import { DigitalPayPaymentAgreement } from "./DigitalPayCreatePaymentAgreementRequest"
+import { DigitalPayPaymentAgreement } from "./DigitalPayCreatePaymentAgreementRequest";
 import { DigitalPayFraudResponse } from "./DigitalPayPaymentResponse";
 
 /**
@@ -9,33 +9,33 @@ import { DigitalPayFraudResponse } from "./DigitalPayPaymentResponse";
  * @category Model
  */
 export interface DigitalPayUpdatePaymentAgreementRequest {
-    /** 
-     * A merchant application specific reference number. 
-     * 
-     * This number should uniquely identify the transaction in the merchant’s system. 
-     */
-    clientReference: string;
-    
-    /** 
-     * A merchant application specific reference number. 
-     * 
-     * This number should uniquely identify the customer in the merchant’s system. 
-     */
-    customerRef?: string;
-    
-    /** 
-     * The merchant order number of the transaction. 
-     * 
-     * This property is only required if the 'immediateCharge' property is true. 
-     */
-    orderNumber?: string;
+	/**
+	 * A merchant application specific reference number.
+	 *
+	 * This number should uniquely identify the transaction in the merchant’s system.
+	 */
+	clientReference: string;
 
-    /** Customer billing address for this payment agreement */
-    billingAddress?: DigitalPayAddress;
+	/**
+	 * A merchant application specific reference number.
+	 *
+	 * This number should uniquely identify the customer in the merchant’s system.
+	 */
+	customerRef?: string;
 
-    /** Detail of the payment agreement to be created */
-    paymentAgreement?: DigitalPayPaymentAgreement;
+	/**
+	 * The merchant order number of the transaction.
+	 *
+	 * This property is only required if the 'immediateCharge' property is true.
+	 */
+	orderNumber?: string;
 
-    /** Digital pay fraud payload */
-    fraudPayload?: DigitalPayFraudResponse;
+	/** Customer billing address for this payment agreement */
+	billingAddress?: DigitalPayAddress;
+
+	/** Detail of the payment agreement to be created */
+	paymentAgreement?: DigitalPayPaymentAgreement;
+
+	/** Digital pay fraud payload */
+	fraudPayload?: DigitalPayFraudResponse;
 }

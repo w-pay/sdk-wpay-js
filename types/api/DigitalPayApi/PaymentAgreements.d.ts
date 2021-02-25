@@ -14,43 +14,50 @@ import { DigitalPayVoidResponse } from "../../model/DigiPayModel/DigitalPayVoidR
  */
 export interface PaymentAgreementApi {
 	/**
-	 * Create a new payment agreement which will be added to the users wallet after validating the payment instrument. 
-	 * 
+	 * Create a new payment agreement which will be added to the users wallet after validating the payment instrument.
+	 *
 	 * This API is IP restricted to allow unauthenticated server side calls.
-	 * 
+	 *
 	 * @param paymentAgreementRequest detail of payment agreement to be created
 	 */
-	create(paymentAgreementRequest: DigitalPayCreatePaymentAgreementRequest): Promise<DigitalPayPaymentAgreementResponse>;
+	create(
+		paymentAgreementRequest: DigitalPayCreatePaymentAgreementRequest
+	): Promise<DigitalPayPaymentAgreementResponse>;
 
-    /**
-	 * Update an existing payment agreement and validate the payment instrument if changed. 
-	 * 
+	/**
+	 * Update an existing payment agreement and validate the payment instrument if changed.
+	 *
 	 * This API is IP restricted to allow unauthenticated server side calls.
-	 * 
+	 *
 	 * @param paymentToken The payment agreement to update
 	 * @param paymentAgreementRequest detail of payment agreement to be updated
 	 */
-	update(paymentToken: string, paymentAgreementRequest: DigitalPayUpdatePaymentAgreementRequest): Promise<DigitalPayPaymentAgreementResponse>
+	update(
+		paymentToken: string,
+		paymentAgreementRequest: DigitalPayUpdatePaymentAgreementRequest
+	): Promise<DigitalPayPaymentAgreementResponse>;
 
-    /**
-	 * Perform charge transaction against a payment agreement. 
-	 * 
-	 * This service will use the provided information to perform the charge transaction. 
-	 * 
-	 * A charge payment is made by the merchant to charge a customer as per their payment agreement. 
-	 * 
+	/**
+	 * Perform charge transaction against a payment agreement.
+	 *
+	 * This service will use the provided information to perform the charge transaction.
+	 *
+	 * A charge payment is made by the merchant to charge a customer as per their payment agreement.
+	 *
 	 * This API is IP restricted to allow unauthenticated server side calls.
-	 * 
+	 *
 	 * @param chargeRequest detail of payment agreement to be charged
 	 */
-	charge(chargeRequest: DigitalPayChargePaymentAgreementRequest): Promise<DigitalPayPaymentAgreementResponse>;
+	charge(
+		chargeRequest: DigitalPayChargePaymentAgreementRequest
+	): Promise<DigitalPayPaymentAgreementResponse>;
 
-    /**
-	 * Delete an existing payment agreement. 
-	 * 
+	/**
+	 * Delete an existing payment agreement.
+	 *
 	 * This API is IP restricted to allow unauthenticated server side calls.
 	 *
 	 * @param paymentToken The payment agreement to delete
 	 */
-	delete(paymentToken: string ): Promise<void>;
+	delete(paymentToken: string): Promise<void>;
 }

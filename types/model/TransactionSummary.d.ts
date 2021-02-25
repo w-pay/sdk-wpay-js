@@ -73,12 +73,12 @@ export interface TransactionUsedPaymentInstrument {
 	instrumentType: string;
 
 	/** The list of transactions associated with the instrument." */
-	transactions: UsedPaymentInstrumentTransaction[]
+	transactions: UsedPaymentInstrumentTransaction[];
 }
 
 /**
  * A subtransaction associated with a payment instrument
- * 
+ *
  * @category Model
  */
 export interface UsedPaymentInstrumentTransaction {
