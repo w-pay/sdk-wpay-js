@@ -13,21 +13,29 @@ import { OpenPayRefundResponse } from "../../model/DigiPayModel/OpenPayRefundRes
 export interface OpenPayApi {
 	/**
 	 * Make payments to a merchant using Openpay payment tokens.
+     * 
+     * @param paymentRequest detail of payment to be made
 	 */
 	pay(paymentRequest: OpenPayPaymentRequest): Promise<OpenPayPaymentResponse>;
 
     /**
 	 * Complete pre-authed Openpay payments. This API is IP restricted to allow unauthenticated server side calls.
+     * 
+     * @param completionRequest detail of payment to be completed
 	 */
-	complete(completeRequest: OpenPayCompletionRequest): Promise<OpenPayCompletionResponse>
+	complete(completionRequest: OpenPayCompletionRequest): Promise<OpenPayCompletionResponse>
 
     /**
 	 * Void (cancel) pre-authed Openpay payments. This API is IP restricted to allow unauthenticated server side calls.
+     * 
+     * @param voidRequest detail of payment to be voided
 	 */
 	void(voidRequest: OpenPayVoidRequest): Promise<OpenPayVoidResponse>;
 
     /**
 	 * Make payments to a merchant using Openpay payment tokens.
+     * 
+     * @param refundRequest detail of payment to be refunded
 	 */
 	refund(refundRequest: OpenPayRefundRequest): Promise<OpenPayRefundResponse>;
 }

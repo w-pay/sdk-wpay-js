@@ -11,21 +11,38 @@ import { DigitalPayVoidResponse } from "../../model/DigiPayModel/DigitalPayVoidR
 export interface PaymentApi {
 	/**
 	 * Make payments to a merchant using payment intruments.
+     * 
+     * @param paymentRequest detail of payment to be made
 	 */
 	pay(paymentRequest: DigitalPayPaymentRequest): Promise<DigitalPayPaymentResponse>;
 
     /**
-	 * Complete pre-authed Openpay payments. This API is IP restricted to allow unauthenticated server side calls.
+     * Make guest payments to a merchant using guest payment intruments.
+     * 
+     * @param completeRequest 
+     * 
+     * @param paymentRequest detail of payment to be made
 	 */
-	complete(completeRequest: DigitalPayCompletionRequest): Promise<DigitalPayCompletionResponse>
+	guestPayment(paymentRequest: DigitalPayPaymentRequest): Promise<DigitalPayPaymentResponse>;
+
+    /**
+	 * Complete pre-authed Openpay payments. This API is IP restricted to allow unauthenticated server side calls.
+     *
+     *  @param completionRequest detail of payment to be completed
+	 */
+	complete(completionRequest: DigitalPayCompletionRequest): Promise<DigitalPayCompletionResponse>
 
     /**
 	 * Void (cancel) pre-authed Openpay payments. This API is IP restricted to allow unauthenticated server side calls.
+     * 
+     * @param voidRequest detail of payment to be voided
 	 */
 	void(voidRequest: DigitalPayVoidRequest): Promise<DigitalPayVoidResponse>;
 
     /**
 	 * Make payments to a merchant using Openpay payment tokens.
+     * 
+     * @param refundRequest detail of payment to be refunded
 	 */
 	refund(refundRequest: DigitalPayRefundRequest ): Promise<DigitalPayRefundResponse>;
 }

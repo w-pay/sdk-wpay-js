@@ -1,4 +1,5 @@
 import { DigitalPayAddress } from "./DigitalPayAddress"
+import { DigitalPayFraudPayload } from "./DigitalPayFraudPayload"
 import { DigitalPayTransactionType } from "./DigitalPayTransactionType"
 
 /**
@@ -7,7 +8,11 @@ import { DigitalPayTransactionType } from "./DigitalPayTransactionType"
  * @category Model
  */
 export interface DigitalPayPaymentRequest {
-    /** This object is only required if the payments request contains apple pay instruments. */
+    /** 
+     * Transaction type containers to use for all instruments.
+     * 
+     * This object is only required if the payments request contains apple pay instruments. 
+     */
 	transactionType: DigitalPayTransactionType;
 
     /** A merchant application specific reference number. This number should uniquely identify the transaction in the merchant’s system. */
@@ -26,7 +31,7 @@ export interface DigitalPayPaymentRequest {
     extendedMerchantData?: ExtendedMerchantData[];
 
     /** Set to null to skip the cybersource fraud check. */
-    fraudPayload?: DigitalPayFraudResponse;
+    fraudPayload?: DigitalPayFraudPayload;
 
     /** Store data */
     storeData?: DigitalPayStoreData;

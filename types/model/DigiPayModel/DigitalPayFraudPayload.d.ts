@@ -3,7 +3,7 @@
  * 
  * @category Model
  */
-export interface DigitalPayFraudResponse {
+export interface DigitalPayFraudPayload {
     /* The fraud check provider. */
     provider: string;
     
