@@ -5,17 +5,22 @@ export interface GooglePay {
 	/**
 	 * Create a payment token for a provided Google Pay wallet item.
 	 *
-	 * @param 
+	 * @param
 	 */
-	tokenize(tokenizeGooglePayRequest: TokenizeGooglePayRequest): Promise<TokenizeGooglePayResponse>;
+	tokenize(
+		tokenizeGooglePayRequest: TokenizeGooglePayRequest
+	): Promise<TokenizeGooglePayResponse>;
 
-    /**
+	/**
 	 * Update a Google Pay payment instrument.
 	 *
-	 * @param 
-     * @param 
+	 * @param
+	 * @param
 	 */
-	update(paymentToken: string, tokenizeGooglePayRequest: TokenizeGooglePayRequest): Promise<TokenizeGooglePayRequest>;
+	update(
+		paymentToken: string,
+		tokenizeGooglePayRequest: TokenizeGooglePayRequest
+	): Promise<TokenizeGooglePayRequest>;
 }
 
 /**
@@ -23,16 +28,15 @@ export interface GooglePay {
  *
  * @category Model
  */
-interface TokenizeGooglePayRequest{
-    
-    /** The type/schema value from the Google Pay wallet. */
-    instrumentType: string;
-    
-    /** The display text returned by the Google Pay wallet. */
-    comment: string;
-    
-    /** The "tokenData" payload from the Google Pay wallet. */
-    tokenData: string;
+interface TokenizeGooglePayRequest {
+	/** The type/schema value from the Google Pay wallet. */
+	instrumentType: string;
+
+	/** The display text returned by the Google Pay wallet. */
+	comment: string;
+
+	/** The "tokenData" payload from the Google Pay wallet. */
+	tokenData: string;
 }
 
 /**
@@ -40,9 +44,7 @@ interface TokenizeGooglePayRequest{
  *
  * @category Model
  */
-interface TokenizeGooglePayResponse{
-    
-    /** The new payment token to be used for payments. The payment token is a unique identifier for the payment instrument.*/
-    paymentToken: string;
+interface TokenizeGooglePayResponse {
+	/** The new payment token to be used for payments. The payment token is a unique identifier for the payment instrument.*/
+	paymentToken: string;
 }
-    

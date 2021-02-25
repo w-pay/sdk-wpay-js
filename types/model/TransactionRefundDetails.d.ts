@@ -16,10 +16,10 @@ export interface TransactionRefundDetails {
 
 	/**
 	 * List of payments and amounts to refund. Can be used to refund to multiple payment instruments or to issue partial refunds.
-	 * 
+	 *
 	 * If subTransactions is not supplied the entire transaction will be refunded.
 	 */
-	subTransactions?: RefundSubTransaction[]
+	subTransactions?: RefundSubTransaction[];
 }
 
 /**

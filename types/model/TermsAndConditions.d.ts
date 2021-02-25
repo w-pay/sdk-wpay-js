@@ -6,14 +6,14 @@ import { PaymentInstrumentStatus } from "./PaymentInstruments";
  * @category Model
  */
 export interface PaymentAgreement {
-    /** The type of the Ts and Cs. */
-    type: string;
-    
-    /** The version of the Ts and Cs. */
-    version: string;
+	/** The type of the Ts and Cs. */
+	type: string;
 
-    /** The timestamp when the shopper/customer agreed to the Everyday Pay Ts and Cs.  The timestamp format is milliseconds since epoch. */
-    timestamp: number;
+	/** The version of the Ts and Cs. */
+	version: string;
+
+	/** The timestamp when the shopper/customer agreed to the Everyday Pay Ts and Cs.  The timestamp format is milliseconds since epoch. */
+	timestamp: number;
 }
 
 /**
