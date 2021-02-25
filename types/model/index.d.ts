@@ -26,3 +26,4 @@ export * from "./TermsAndConditions";
 export * from "./TransactionRefundDetails";
 export * from "./TransactionSummary";
 export * from "./Wallet";
+export * from "./DigiPayModel";

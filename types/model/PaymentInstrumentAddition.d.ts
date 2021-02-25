@@ -1,5 +1,3 @@
-import { Wallet } from "./Wallet";
-
 /**
  * Initiate the addition of a new payment instrument for this customer.
  *

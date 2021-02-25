@@ -1,4 +1,3 @@
-import { PaymentAgreementChargeFrequency, PaymentAgreementType } from "../PaymentAgreement";
 import { DigitalPayAddress } from "./DigitalPayAddress";
 import { DigitalPayPaymentAgreement } from "./DigitalPayCreatePaymentAgreementRequest";
 import { DigitalPayFraudResponse } from "./DigitalPayPaymentResponse";

@@ -13,3 +13,4 @@ export * from "./MerchantTransactions";
 export * from "./PaymentInstruments";
 export * from "./QRCode";
 export * from "./Schemas";
+export * from "./DigitalPayApi";

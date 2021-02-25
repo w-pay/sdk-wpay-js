@@ -1,13 +1,7 @@
-import { DigitalPayChargePaymentAgreementRequest } from "../../model/DigiPayModel/DigitalPayChargePaymentAgreementResponse";
-import { DigitalPayCompletionRequest } from "../../model/DigiPayModel/DigitalPayCompletionRequest";
-import { DigitalPayCompletionResponse } from "../../model/DigiPayModel/DigitalPayCompletionResponse";
+import { DigitalPayChargePaymentAgreementRequest } from "../../model/DigiPayModel/DigitalPayChargePaymentAgreementRequest";
 import { DigitalPayCreatePaymentAgreementRequest } from "../../model/DigiPayModel/DigitalPayCreatePaymentAgreementRequest";
 import { DigitalPayPaymentAgreementResponse } from "../../model/DigiPayModel/DigitalPayPaymentAgreementResponse";
-import { DigitalPayRefundRequest } from "../../model/DigiPayModel/DigitalPayRefundRequest";
-import { DigitalPayRefundResponse } from "../../model/DigiPayModel/DigitalPayRefundResponse";
 import { DigitalPayUpdatePaymentAgreementRequest } from "../../model/DigiPayModel/DigitalPayUpdatePaymentAgreementRequest";
-import { DigitalPayVoidRequest } from "../../model/DigiPayModel/DigitalPayVoidRequest";
-import { DigitalPayVoidResponse } from "../../model/DigiPayModel/DigitalPayVoidResponse";
 
 /**
  * @category API

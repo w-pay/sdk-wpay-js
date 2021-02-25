@@ -1,5 +1,3 @@
-import { PaymentAgreement } from "./PaymentAgreement";
-
 /**
  * Data required to charge against a {@link PaymentAgreement}
  *

@@ -1,5 +1,3 @@
-import { DigitalPayCompletionRequest } from "./DigitalPayCompletionRequest";
-
 /**
  * The JSON request structure of the OpenPay Completions endpoint.
  *
