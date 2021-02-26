@@ -1,5 +1,6 @@
 import { ImportPaymentInstrumentsRequest } from "../../model/WalletManagementModel/ImportPaymentInstrumentsRequest";
 import { ImportPaymentInstrumentsResponse } from "../../model/WalletManagementModel/ImportPaymentInstrumentsResponse";
+import { ListPaymentInstrumentsRequest } from "../../model/WalletManagementModel/ListPaymentInstrumentsRequest";
 import { ListPaymentInstrumentsResponse } from "../../model/WalletManagementModel/ListPaymentInstrumentsResponse";
 import { VerifyPaymentInstrumentsRequest } from "../../model/WalletManagementModel/VerifyPaymentInstrumentsRequest";
 import { VerifyPaymentInstrumentsSuccessResponse } from "../../model/WalletManagementModel/VerifyPaymentInstrumentsSuccessResponse";
@@ -37,7 +38,7 @@ export interface Instruments {
 	 * Get the stored payment intruments of a consumer. This API is IP restricted to allow unauthenticated server side calls.
 	 *
 	 */
-	postList(): Promise<ListPaymentInstrumentsResponse>;
+	postList(listPaymentInstrumentsRequest: ListPaymentInstrumentsRequest): Promise<ListPaymentInstrumentsResponse>;
 
 	/**
 	 * Get the stored payment intruments of a consumer. This API is IP restricted to allow unauthenticated server side calls.

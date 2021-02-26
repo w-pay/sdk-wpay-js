@@ -15,6 +15,15 @@ export interface GooglePay {
 	): Promise<TokenizeGooglePayResponse>;
 
 	/**
+	 * Create a payment token for a provided Google Pay wallet item of a guest user.
+	 *
+	 * @param
+	 */
+	guestTokenize(
+		tokenizeGooglePayRequest: TokenizeGooglePayRequest
+	): Promise<TokenizeGooglePayResponse>;
+
+	/**
 	 * Update a Google Pay payment instrument.
 	 *
 	 * @param

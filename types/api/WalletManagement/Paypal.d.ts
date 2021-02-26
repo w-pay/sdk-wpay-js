@@ -11,4 +11,12 @@ export interface Paypal {
 	 * @param
 	 */
 	tokenize(tokenizePaypalRequest: TokenizePaypalRequest): Promise<TokenizePaypalResponse>;
+
+
+	/**
+	 * 	Create a paymment intrument id for a provided paypal account of a guest user.
+	 *
+	 * @param
+	 */
+	guestTokenize(tokenizePaypalRequest: TokenizePaypalRequest): Promise<TokenizePaypalResponse>;
 }
