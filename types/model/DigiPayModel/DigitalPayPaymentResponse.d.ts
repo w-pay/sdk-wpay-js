@@ -71,13 +71,13 @@ export interface DigitalPayPaymentInstrument {
 	paymentTransactionRef: string;
 
 	/** The error code. Only present if an error occurred during payment. */
-	errorCode: string;
+	errorCode?: string;
 
 	/** The error message. Only present if an error occurred during payment. */
-	errorMessage: string;
+	errorMessage?: string;
 
 	/** The error detail. Only present if an error occurred during payment. */
-	errorDetail: string;
+	errorDetail?: string;
 }
 
 export interface DigitalPayCreditCard extends DigitalPayPaymentInstrument {

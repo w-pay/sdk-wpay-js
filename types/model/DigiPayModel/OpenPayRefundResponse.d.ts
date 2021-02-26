@@ -14,7 +14,7 @@ export interface OpenPayRefundResponse {
 	transactionReceipt: string;
 
 	/** List of refund response */
-	refundResponses: OpenPayRefundTransactionResponse;
+	refundResponses: OpenPayRefundTransactionResponse[];
 }
 
 export interface OpenPayRefundTransactionResponse {

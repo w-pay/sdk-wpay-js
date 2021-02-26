@@ -23,19 +23,20 @@ export interface OpenPayVoidTransactionResponse {
 	/** The amount processed in the void. */
 	amount: number;
 
-	extendedTransactionData: OpenPayExtendedTransactionData;
+	/** This array is only included in the response if it is enabled in the consumers API configuration. */
+	extendedTransactionData?: OpenPayExtendedTransactionData;
 
 	/**
 	 * The external service code (from eg. Openpay).
 	 *
 	 * This property is only included in the response if it is enabled in the consumers API configuration.
 	 */
-	externalServiceCode: string;
+	externalServiceCode?: string;
 
 	/**
 	 * The external service message (from eg. Openpay).
 	 *
 	 * This property is only included in the response if it is enabled in the consumers API configuration.
 	 */
-	externalServiceMessage: string;
+	externalServiceMessage?: string;
 }

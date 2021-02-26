@@ -30,7 +30,7 @@ export interface OpenPayApi {
 	 *
 	 * @param voidRequest detail of payment to be voided
 	 */
-	void(voidRequest: OpenPayVoidRequest): Promise<OpenPayVoidResponse>;
+	voidPayment(voidRequest: OpenPayVoidRequest): Promise<OpenPayVoidResponse>;
 
 	/**
 	 * Make payments to a merchant using Openpay payment tokens.

@@ -40,25 +40,25 @@ export interface DigitalPayTransactionCompletionResponse {
 	amount: number;
 
 	/** The error code. Only present if an error occurred during payment. */
-	errorCode: string;
+	errorCode?: string;
 
 	/** The error message. Only present if an error occurred during payment. */
-	errorMessage: string;
+	errorMessage?: string;
 
 	/** The error detail. Only present if an error occurred during payment. */
-	errorDetail: string;
+	errorDetail?: string;
 
 	/**
 	 * The external service code (from eg. Webpay).
 	 *
 	 * This property is only included in the response if it is enabled in the consumers API configuration.
 	 */
-	externalServiceCode: string;
+	externalServiceCode?: string;
 
 	/**
 	 * The external service message (from eg. Webpay).
 	 *
 	 * This property is only included in the response if it is enabled in the consumers API configuration.
 	 */
-	externalServiceMessage: string;
+	externalServiceMessage?: string;
 }

@@ -40,7 +40,7 @@ export interface PaymentApi {
 	 *
 	 * @param voidRequest detail of payment to be voided
 	 */
-	void(voidRequest: DigitalPayVoidRequest): Promise<DigitalPayVoidResponse>;
+	voidPayment(voidRequest: DigitalPayVoidRequest): Promise<DigitalPayVoidResponse>;
 
 	/**
 	 * Make payments to a merchant using Openpay payment tokens.
