@@ -95,6 +95,6 @@ module.exports = {
 	openPayCompletionResponse,
 	openPayVoidRequest,
 	openPayVoidResponse,
-    openPayRefundRequest,
-    openPayRefundResponse
+	openPayRefundRequest,
+	openPayRefundResponse
 };

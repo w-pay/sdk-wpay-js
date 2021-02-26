@@ -7,7 +7,16 @@ const apiFactory = require("../../src/api/dp-payments");
 
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
-const { digitalPayPaymentResponse, digitalPayPaymentRequest, digitalPayCompletionRequest, digitalPayCompletionResponse, digitalPayVoidRequest, digitalPayRefundRequest, digitalPayRefundResponse, digitalPayVoidResponse } = require("../data/dp-payments");
+const {
+	digitalPayPaymentResponse,
+	digitalPayPaymentRequest,
+	digitalPayCompletionRequest,
+	digitalPayCompletionResponse,
+	digitalPayVoidRequest,
+	digitalPayRefundRequest,
+	digitalPayRefundResponse,
+	digitalPayVoidResponse
+} = require("../data/dp-payments");
 
 describe("digitalPayApi", function () {
 	let apiClient;
@@ -26,10 +35,7 @@ describe("digitalPayApi", function () {
 		});
 
 		it("should throw error when payment request is missing", function () {
-			assertThat(
-				() => api.pay(),
-				throws(requiredParameterError("paymentRequest"))
-			);
+			assertThat(() => api.pay(), throws(requiredParameterError("paymentRequest")));
 		});
 
 		it("should set request params", async function () {
@@ -59,10 +65,7 @@ describe("digitalPayApi", function () {
 		});
 
 		it("should throw error when payment request is missing", function () {
-			assertThat(
-				() => api.guestPayment(),
-				throws(requiredParameterError("paymentRequest"))
-			);
+			assertThat(() => api.guestPayment(), throws(requiredParameterError("paymentRequest")));
 		});
 
 		it("should set request params", async function () {
@@ -86,16 +89,13 @@ describe("digitalPayApi", function () {
 		});
 	});
 
-    describe("complete", function () {
+	describe("complete", function () {
 		beforeEach(function () {
 			apiClient.response = digitalPayCompletionResponse();
 		});
 
 		it("should throw error when completion request is missing", function () {
-			assertThat(
-				() => api.complete(),
-				throws(requiredParameterError("completionRequest"))
-			);
+			assertThat(() => api.complete(), throws(requiredParameterError("completionRequest")));
 		});
 
 		it("should set request params", async function () {
@@ -119,16 +119,13 @@ describe("digitalPayApi", function () {
 		});
 	});
 
-    describe("voidPayment", function () {
+	describe("voidPayment", function () {
 		beforeEach(function () {
 			apiClient.response = digitalPayVoidResponse();
 		});
 
 		it("should throw error when void request is missing", function () {
-			assertThat(
-				() => api.voidPayment(),
-				throws(requiredParameterError("voidRequest"))
-			);
+			assertThat(() => api.voidPayment(), throws(requiredParameterError("voidRequest")));
 		});
 
 		it("should set request params", async function () {
@@ -152,16 +149,13 @@ describe("digitalPayApi", function () {
 		});
 	});
 
-    describe("refund", function () {
+	describe("refund", function () {
 		beforeEach(function () {
 			apiClient.response = digitalPayRefundResponse();
 		});
 
 		it("should throw error when payment request is missing", function () {
-			assertThat(
-				() => api.refund(),
-				throws(requiredParameterError("refundRequest"))
-			);
+			assertThat(() => api.refund(), throws(requiredParameterError("refundRequest")));
 		});
 
 		it("should set request params", async function () {

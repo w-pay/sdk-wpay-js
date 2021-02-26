@@ -1,13 +1,3 @@
-import { CreditCardStepUp } from "../PaymentInstruments";
-import {
-	DigitalPayApplePay,
-	DigitalPayFraudResponse,
-	DigitalPayGiftCard,
-	DigitalPayPaymentInstrument,
-	DigitalPayPayPal,
-	DigitalPayRecieptData
-} from "./DigitalPayPaymentResponse";
-
 /**
  * The JSON success response structure of the Payments endpoint.
  *
