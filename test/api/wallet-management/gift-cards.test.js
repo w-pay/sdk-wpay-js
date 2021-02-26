@@ -1,10 +1,8 @@
 "use strict";
 
-const { assertThat, is, throws } = require("hamjest");
+const { assertThat, is } = require("hamjest");
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { StubApiClient } = require("../../stub-api-client");
-const { requiredParameterError } = require("../../matchers/required-parameters");
-const { v4: uuid } = require("uuid");
 const { TokenizeGiftcardResponseDTO } = require("../../data/wallet-management/TokenizeGiftcardResponse");
 const { GiftcardsBalanceResponseDTO } = require("../../data/wallet-management/GiftcardsBalanceResponse");
 const { TokenizeGiftcardRequestDTO } = require("../../data/wallet-management/TokenizeGiftcardRequest");
