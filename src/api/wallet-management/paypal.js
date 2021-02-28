@@ -6,32 +6,28 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const tokenize = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/paypal/tokenize",
-            body: request
+			body: request
 		})
 	);
 };
 
 const guestTokenize = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/guest/paypal/tokenize",
-            body: request
+			body: request
 		})
 	);
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../types/api/WalletManagement/Paypal').Paypal} */
+	/** @implements {import('../../../types/api/WalletManagement/Paypal').Paypal} */
 	return {
 		tokenize: tokenize(client),
-        guestTokenize: guestTokenize(client)
-    };
+		guestTokenize: guestTokenize(client)
+	};
 };

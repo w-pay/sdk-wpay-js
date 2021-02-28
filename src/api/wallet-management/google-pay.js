@@ -8,53 +8,47 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { requiredParameterError } = require("../api-errors");
 
 const update = (client) => (paymentToken, request) => {
-    if (!paymentToken) {
+	if (!paymentToken) {
 		throw requiredParameterError("paymentToken");
 	}
-    
+
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/googlepay/tokenize/:paymentToken",
 			pathParams: {
 				paymentToken
 			},
-            body: request
+			body: request
 		})
 	);
 };
 
 const tokenize = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/googlepay/tokenize",
-            body: request
+			body: request
 		})
 	);
 };
 
 const guestTokenize = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/guest/googlepay/tokenize",
-            body: request
+			body: request
 		})
 	);
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../types/api/WalletManagement/GooglePay').GooglePay} */
+	/** @implements {import('../../../types/api/WalletManagement/GooglePay').GooglePay} */
 	return {
 		tokenize: tokenize(client),
-        guestTokenize: guestTokenize(client),
+		guestTokenize: guestTokenize(client),
 		update: update(client)
-    };
+	};
 };

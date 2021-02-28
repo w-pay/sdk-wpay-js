@@ -6,19 +6,17 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const history = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/transactions",
-            body: request
+			body: request
 		})
 	);
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../types/api/WalletManagement/Transactions').Transactions} */
+	/** @implements {import('../../../types/api/WalletManagement/Transactions').Transactions} */
 	return {
 		history: history(client)
-    };
+	};
 };

@@ -6,14 +6,12 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { requiredParameterError } = require("../api-errors");
 
 const deleteRoute = (client) => (paymentInstrumentId) => {
-    if (!paymentInstrumentId) {
+	if (!paymentInstrumentId) {
 		throw requiredParameterError("paymentInstrumentId");
 	}
-    
+
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.DELETE,
 			url: "/instruments/:paymentInstrumentId",
 			pathParams: {
@@ -25,33 +23,27 @@ const deleteRoute = (client) => (paymentInstrumentId) => {
 
 const importRoute = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/instruments/import",
-            body: request
+			body: request
 		})
 	);
 };
 
 const verify = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/instruments/verify",
-            body: request
+			body: request
 		})
 	);
 };
 
 const getList = (client) => () => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.GET,
 			url: "/instruments"
 		})
@@ -60,23 +52,21 @@ const getList = (client) => () => {
 
 const postList = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/instruments",
-            body: request
+			body: request
 		})
 	);
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../types/api/WalletManagement/Instruments').Instruments} */
+	/** @implements {import('../../../types/api/WalletManagement/Instruments').Instruments} */
 	return {
 		import: importRoute(client),
 		verify: verify(client),
-        delete: deleteRoute(client),
-        getList: getList(client),
-        postList: postList(client)
-    };
+		delete: deleteRoute(client),
+		getList: getList(client),
+		postList: postList(client)
+	};
 };

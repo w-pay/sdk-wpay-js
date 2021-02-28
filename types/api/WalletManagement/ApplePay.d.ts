@@ -17,7 +17,9 @@ export interface ApplePay {
 	 *
 	 * @param
 	 */
-	guestTokenize(tokenizeApplePayRequest: TokenizeApplePayRequest): Promise<TokenizeApplePayResponse>;
+	guestTokenize(
+		tokenizeApplePayRequest: TokenizeApplePayRequest
+	): Promise<TokenizeApplePayResponse>;
 
 	/**
 	 * Update an Apple Pay payment instrument.

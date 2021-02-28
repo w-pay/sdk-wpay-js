@@ -6,9 +6,7 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const profile = (client) => () => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.GET,
 			url: "/merchants/profile"
 		})
@@ -16,8 +14,8 @@ const profile = (client) => () => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../types/api/WalletManagement/Merchants').Merchants} */
+	/** @implements {import('../../../types/api/WalletManagement/Merchants').Merchants} */
 	return {
 		profile: profile(client)
-    };
+	};
 };

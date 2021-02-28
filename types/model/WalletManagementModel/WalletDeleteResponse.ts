@@ -4,4 +4,4 @@
  * @category Model
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface WalletDeleteResponse{}
+export interface WalletDeleteResponse {}

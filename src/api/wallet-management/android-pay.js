@@ -6,14 +6,12 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { requiredParameterError } = require("../api-errors");
 
 const update = (client) => (paymentInstrumentId, request) => {
-    if (!paymentInstrumentId) {
+	if (!paymentInstrumentId) {
 		throw requiredParameterError("paymentInstrumentId");
 	}
-    
+
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/androidpay/tokenize/:paymentInstrumentId",
 			pathParams: {
@@ -26,9 +24,7 @@ const update = (client) => (paymentInstrumentId, request) => {
 
 const tokenize = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/androidpay/tokenize",
 			body: request
@@ -37,9 +33,9 @@ const tokenize = (client) => (request) => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../types/api/WalletManagement/AndroidPay').AndroidPay} */
+	/** @implements {import('../../../types/api/WalletManagement/AndroidPay').AndroidPay} */
 	return {
 		tokenize: tokenize(client),
 		update: update(client)
-    };
+	};
 };

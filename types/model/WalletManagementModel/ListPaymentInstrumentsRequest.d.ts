@@ -4,10 +4,9 @@
  * @category Model
  */
 
-export interface ListPaymentInstrumentsRequest { 
-    /* The IDM (Gigya) UID or merchant shopper id of the user. Do NOT use an email address! */
-    uid: string;
-    /* The merchant shopper id of the user. */
-    shopperId: string
+export interface ListPaymentInstrumentsRequest {
+	/* The IDM (Gigya) UID or merchant shopper id of the user. Do NOT use an email address! */
+	uid: string;
+	/* The merchant shopper id of the user. */
+	shopperId: string;
 }
-    

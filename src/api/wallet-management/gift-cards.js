@@ -6,9 +6,7 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const tokenize = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/giftcards/tokenize",
 			body: request
@@ -18,9 +16,7 @@ const tokenize = (client) => (request) => {
 
 const guestTokenize = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/guest/giftcards/tokenize",
 			body: request
@@ -30,9 +26,7 @@ const guestTokenize = (client) => (request) => {
 
 const balance = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/giftcards/tokenize",
 			body: request
@@ -41,10 +35,10 @@ const balance = (client) => (request) => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../types/api/WalletManagement/Giftcards').Giftcards} */
+	/** @implements {import('../../../types/api/WalletManagement/Giftcards').Giftcards} */
 	return {
 		tokenize: tokenize(client),
 		guestTokenize: guestTokenize(client),
 		balance: balance(client)
-    };
+	};
 };

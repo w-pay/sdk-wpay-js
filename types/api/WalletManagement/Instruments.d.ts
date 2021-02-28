@@ -38,7 +38,9 @@ export interface Instruments {
 	 * Get the stored payment intruments of a consumer. This API is IP restricted to allow unauthenticated server side calls.
 	 *
 	 */
-	postList(listPaymentInstrumentsRequest: ListPaymentInstrumentsRequest): Promise<ListPaymentInstrumentsResponse>;
+	postList(
+		listPaymentInstrumentsRequest: ListPaymentInstrumentsRequest
+	): Promise<ListPaymentInstrumentsResponse>;
 
 	/**
 	 * Get the stored payment intruments of a consumer. This API is IP restricted to allow unauthenticated server side calls.
