@@ -1,3 +1,5 @@
+import { DigitalPayTransactionType } from "./DigiPayModel";
+
 /**
  * Data required to charge against a {@link PaymentAgreement}
  *
