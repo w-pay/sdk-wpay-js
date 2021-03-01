@@ -67,19 +67,19 @@ const paymentAgreementDTO = () => ({
 });
 
 const CreatePaymentAgreementRequest = () => ({
-	clientReference: 'client-ref',
-	customerRef: 'customer-ref',
-	orderNumber: 'order-12345',
+	clientReference: "client-ref",
+	customerRef: "customer-ref",
+	orderNumber: "order-12345",
 	description: "Description of the payment agreement.",
 	billingAddress: {
-		firstName: 'John',
-		lastName: 'Smith',
-		email: 'john.smith@test.com',
-		streetAddress: '1 Test St',
-		suburb: 'Melbourne',
-		stateOrTerritory: 'VIC', 
-		postalCode: '3000',
-		countryCode: 'AU'
+		firstName: "John",
+		lastName: "Smith",
+		email: "john.smith@test.com",
+		streetAddress: "1 Test St",
+		suburb: "Melbourne",
+		stateOrTerritory: "VIC",
+		postalCode: "3000",
+		countryCode: "AU"
 	},
 	paymentAgreement: {
 		type: "RECURRING",
@@ -125,19 +125,19 @@ const ListPaymentAgreementsResponse = () => ({
 });
 
 const UpdatePaymentAgreementRequest = () => ({
-	clientReference: 'client-ref',
-	customerRef: 'customer-ref',
-	orderNumber: 'order-12345',
+	clientReference: "client-ref",
+	customerRef: "customer-ref",
+	orderNumber: "order-12345",
 	description: "Description of the payment agreement.",
 	billingAddress: {
-		firstName: 'John',
-		lastName: 'Smith',
-		email: 'john.smith@test.com',
-		streetAddress: '1 Test St',
-		suburb: 'Melbourne',
-		stateOrTerritory: 'VIC', 
-		postalCode: '3000',
-		countryCode: 'AU'
+		firstName: "John",
+		lastName: "Smith",
+		email: "john.smith@test.com",
+		streetAddress: "1 Test St",
+		suburb: "Melbourne",
+		stateOrTerritory: "VIC",
+		postalCode: "3000",
+		countryCode: "AU"
 	},
 	paymentAgreement: {
 		type: "RECURRING",
@@ -150,13 +150,13 @@ const UpdatePaymentAgreementRequest = () => ({
 const ChargePaymentAgreementRequest = () => ({
 	data: {
 		transactionType: {
-			creditCard: 'PURCHASE'
+			creditCard: "PURCHASE"
 		},
 		amount: 25.53,
-		clientReference: 'client-ref',
-		customerRef: 'customer-ref',
-		orderNumber: 'order-12345',
-		paymentToken: '11111111-1111-1111-111111111111'
+		clientReference: "client-ref",
+		customerRef: "customer-ref",
+		orderNumber: "order-12345",
+		paymentToken: "11111111-1111-1111-111111111111"
 	},
 	meta: {}
 });

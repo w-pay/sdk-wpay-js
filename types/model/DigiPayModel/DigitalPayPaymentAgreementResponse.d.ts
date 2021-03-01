@@ -57,7 +57,7 @@ export interface DigitalPayResponsePaymentAgreement {
 
 	/** The type of the payment instrument used in the payment agreement. */
 	paymentInstrumentType: string;
-		
+
 	/** The credit card scheme */
 	scheme: string;
 
@@ -78,7 +78,7 @@ export interface DigitalPayResponsePaymentAgreement {
 
 	/** The payment agreement charge frequency. */
 	chargeFrequency: PaymentAgreementChargeFrequency;
-	
+
 	/** The amount that will be charged at the frequency specified in the payment agreement. */
 	chargeAmount: number;
 }

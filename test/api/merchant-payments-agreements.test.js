@@ -3,7 +3,7 @@ const { v4: uuid } = require("uuid");
 const { assertThat, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
-const { paymentAgreementFrom } = require('../matchers/payment-agreements-matchers')
+const { paymentAgreementFrom } = require("../matchers/payment-agreements-matchers");
 
 const apiFactory = require("../../src/api/merchant-payment-agreements");
 
@@ -39,7 +39,10 @@ describe("MerchantPaymentAgreementsApi", function () {
 		});
 
 		it("should throw error when charge request is missing", function () {
-			assertThat(() => api.charge(paymentToken), throws(requiredParameterError("chargePaymentAgreementRequest")));
+			assertThat(
+				() => api.charge(paymentToken),
+				throws(requiredParameterError("chargePaymentAgreementRequest"))
+			);
 		});
 
 		it("should set request params", async function () {

@@ -11,11 +11,11 @@ const termsAndConditionsDTO = () => ({
 });
 
 const acceptTermsAndConditionsRequest = () => ({
-    data: {
-        type: "EVERYDAY_PAY",
-        version: "1.0.0"
-    },
-    meta: {}
+	data: {
+		type: "EVERYDAY_PAY",
+		version: "1.0.0"
+	},
+	meta: {}
 });
 
 module.exports = {

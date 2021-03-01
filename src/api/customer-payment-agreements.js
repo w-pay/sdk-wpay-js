@@ -6,14 +6,17 @@ const pipeK = require("crocks/helpers/pipeK");
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { fromData } = require("../transformers/data");
 const { requiredParameterError } = require("./api-errors");
-const { fromPaymentAgreementsDTO, fromPaymentAgreementDTO } = require("../transformers/payment-agreements");
+const {
+	fromPaymentAgreementsDTO,
+	fromPaymentAgreementDTO
+} = require("../transformers/payment-agreements");
 
 // list :: HttpApiClient -> () -> Promise PaymentAgreements
 const list = (client) => () => {
 	return asyncToPromise(
 		pipeK(
 			client,
-            fromData(fromPaymentAgreementsDTO)
+			fromData(fromPaymentAgreementsDTO)
 		)({
 			method: HttpRequestMethod.GET,
 			url: "/instore/customer/payments/agreements"
@@ -30,7 +33,7 @@ const getById = (client) => (paymentToken) => {
 	return asyncToPromise(
 		pipeK(
 			client,
-            fromData(fromPaymentAgreementDTO)
+			fromData(fromPaymentAgreementDTO)
 		)({
 			method: HttpRequestMethod.GET,
 			url: "/instore/customer/payments/agreements/:paymentToken",
@@ -50,7 +53,7 @@ const create = (client) => (createPaymentAgreementRequest) => {
 	return asyncToPromise(
 		pipeK(
 			client,
-            fromData(fromPaymentAgreementDTO)
+			fromData(fromPaymentAgreementDTO)
 		)({
 			method: HttpRequestMethod.POST,
 			url: "/instore/customer/payments/agreements",
@@ -72,7 +75,7 @@ const update = (client) => (paymentToken, updatePaymentAgreementRequest) => {
 	return asyncToPromise(
 		pipeK(
 			client,
-            fromData(fromPaymentAgreementDTO)
+			fromData(fromPaymentAgreementDTO)
 		)({
 			method: HttpRequestMethod.POST,
 			url: "/instore/customer/payments/agreements/:paymentToken",
@@ -87,7 +90,7 @@ const update = (client) => (paymentToken, updatePaymentAgreementRequest) => {
 module.exports = (client) => {
 	/** @implements {import('../../types/api/CustomerPaymentAgreements').CustomerPaymentAgreementsApi} */
 	return {
-        list: list(client),
+		list: list(client),
 		getById: getById(client),
 		create: create(client),
 		update: update(client)

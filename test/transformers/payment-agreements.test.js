@@ -7,10 +7,7 @@ const {
 	fromPaymentAgreementDTO
 } = require("../../src/transformers/payment-agreements");
 
-const {
-	paymentAgreementsDTO,
-	paymentAgreementDTO
-} = require("../data/payment-agreements");
+const { paymentAgreementsDTO, paymentAgreementDTO } = require("../data/payment-agreements");
 
 const {
 	paymentAgreementsFrom,

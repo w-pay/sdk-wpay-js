@@ -32,7 +32,10 @@ describe("PaymentAgreementsApi", function () {
 		});
 
 		it("should throw error when payment request is missing", function () {
-			assertThat(() => api.create(), throws(requiredParameterError("createPaymentAgreementRequest")));
+			assertThat(
+				() => api.create(),
+				throws(requiredParameterError("createPaymentAgreementRequest"))
+			);
 		});
 
 		it("should set request params", async function () {
@@ -68,7 +71,10 @@ describe("PaymentAgreementsApi", function () {
 		});
 
 		it("should throw error when update request is missing", function () {
-			assertThat(() => api.update(paymentToken), throws(requiredParameterError("updatePaymentAgreementRequest")));
+			assertThat(
+				() => api.update(paymentToken),
+				throws(requiredParameterError("updatePaymentAgreementRequest"))
+			);
 		});
 
 		it("should set request params", async function () {
@@ -101,7 +107,10 @@ describe("PaymentAgreementsApi", function () {
 		});
 
 		it("should throw error when completion request is missing", function () {
-			assertThat(() => api.charge(), throws(requiredParameterError("chargePaymentAgreementRequest")));
+			assertThat(
+				() => api.charge(),
+				throws(requiredParameterError("chargePaymentAgreementRequest"))
+			);
 		});
 
 		it("should set request params", async function () {

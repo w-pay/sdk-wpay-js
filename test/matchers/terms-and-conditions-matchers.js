@@ -6,10 +6,16 @@ const { mapFrom } = require("./map-matchers");
 
 exports.termsAndConditionsAcceptancesDTOFrom = (dto) => ({
 	matches(item) {
-		assertThat(item.termsAndConditionsAcceptances.length, is(dto.termsAndConditionsAcceptances.length));
+		assertThat(
+			item.termsAndConditionsAcceptances.length,
+			is(dto.termsAndConditionsAcceptances.length)
+		);
 
 		item.termsAndConditionsAcceptances.forEach((termsAndConditionsAcceptance, i) => {
-			assertThat(termsAndConditionsAcceptance, is(termsAndConditionsAcceptanceDTOFrom(dto.termsAndConditionsAcceptances[i])));
+			assertThat(
+				termsAndConditionsAcceptance,
+				is(termsAndConditionsAcceptanceDTOFrom(dto.termsAndConditionsAcceptances[i]))
+			);
 		});
 
 		return true;
@@ -23,7 +29,6 @@ exports.termsAndConditionsAcceptancesDTOFrom = (dto) => ({
 		description.appendValue(value);
 	}
 });
-
 
 const termsAndConditionsAcceptanceDTOFrom = (dto) => ({
 	matches(actual) {
