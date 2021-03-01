@@ -15,7 +15,7 @@ const deleteRoute = (client) => (request) => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../../types/api/WalletManagement/Transactions').Transactions} */
+	/** @implements {import('../../../types/api/WalletManagement/Transactions').TransactionsApi} */
 	return {
 		delete: deleteRoute(client)
 	};

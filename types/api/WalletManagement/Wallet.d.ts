@@ -4,7 +4,7 @@ import { WalletDeleteResponse } from "../../model/WalletManagementModel/WalletDe
 /**
  * @category API
  */
-export interface Wallet {
+export interface WalletApi {
 	/**
 	 * Delete a consumers wallet. This API is IP restricted to allow unauthenticated server side calls.
 	 *

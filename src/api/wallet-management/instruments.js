@@ -61,7 +61,7 @@ const postList = (client) => (request) => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../../types/api/WalletManagement/Instruments').Instruments} */
+	/** @implements {import('../../../types/api/WalletManagement/Instruments').InstrumentsApi} */
 	return {
 		import: importRoute(client),
 		verify: verify(client),

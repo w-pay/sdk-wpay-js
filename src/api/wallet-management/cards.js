@@ -25,7 +25,7 @@ const guestInitCapture = (client) => (request) => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../../types/api/WalletManagement/Cards').Cards} */
+	/** @implements {import('../../../types/api/WalletManagement/Cards').CardsApi} */
 	return {
 		initCapture: initCapture(client),
 		guestInitCapture: guestInitCapture(client)

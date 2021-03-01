@@ -35,7 +35,7 @@ const balance = (client) => (request) => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../../types/api/WalletManagement/Giftcards').Giftcards} */
+	/** @implements {import('../../../types/api/WalletManagement/Giftcards').GiftcardsApi} */
 	return {
 		tokenize: tokenize(client),
 		guestTokenize: guestTokenize(client),

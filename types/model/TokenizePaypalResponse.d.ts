@@ -1,5 +1,5 @@
 /**
- * The JSON response structure of the Tokenize Paypal endpoint.
+ * The JSON response structure of the Tokenize PayPalApi endpoint.
  *
  * @category Model
  */
@@ -23,10 +23,10 @@ export interface TokenizePaypalResponse {
 		/* A flag to indicate if the merchant profile in the container allows the use of this payment instrument. */
 		allowed: boolean;
 
-		/* The Paypal email id. */
+		/* The PayPalApi email id. */
 		payPalId: string;
 
-		/* The Paypal customer id. */
+		/* The PayPalApi customer id. */
 		customerId: string;
 	};
 }

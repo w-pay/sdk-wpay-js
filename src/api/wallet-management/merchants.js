@@ -14,7 +14,7 @@ const profile = (client) => () => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../../types/api/WalletManagement/Merchants').Merchants} */
+	/** @implements {import('../../../types/api/WalletManagement/Merchants').MerchantsApi} */
 	return {
 		profile: profile(client)
 	};

@@ -1,4 +1,4 @@
-/* The JSON response structure of the List Payment Instruments endpoint. */
+/* The JSON response structure of the List Payment InstrumentsApi endpoint. */
 export interface ListPaymentInstrumentsResponse {
 	creditCards: CreditCardDetails[];
 	giftCards: GiftCardDetails[];
@@ -122,10 +122,10 @@ interface PayPalDetails {
 	/* A flag to indicate if the merchant profile in the container allows the use of this payment instrument. */
 	allowed: boolean;
 
-	/* The Paypal email id. */
+	/* The PayPalApi email id. */
 	payPalId: string;
 
-	/* The Paypal customer id. */
+	/* The PayPalApi customer id. */
 	customerId: string;
 }
 

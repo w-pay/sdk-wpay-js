@@ -4,7 +4,7 @@ import { TokenizeGooglePayResponse } from "../../model/WalletManagementModel/Tok
 /**
  * @category API
  */
-export interface GooglePay {
+export interface GooglePayApi {
 	/**
 	 * Create a payment token for a provided Google Pay wallet item.
 	 *

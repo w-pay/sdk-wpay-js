@@ -1,5 +1,5 @@
 /**
- * The JSON request structure of the List Payment Instruments endpoint.
+ * The JSON request structure of the List Payment InstrumentsApi endpoint.
  *
  * @category Model
  */

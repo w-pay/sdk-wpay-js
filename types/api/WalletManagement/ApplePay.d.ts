@@ -4,7 +4,7 @@ import { TokenizeApplePayResponse } from "../../model/WalletManagementModel/Toke
 /**
  * @category API
  */
-export interface ApplePay {
+export interface ApplePayApi {
 	/**
 	 * Create a payment instrument id for a provided Apple Pay wallet item.
 	 *

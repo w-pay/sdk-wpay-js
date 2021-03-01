@@ -25,7 +25,7 @@ const guestTokenize = (client) => (request) => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../../types/api/WalletManagement/Paypal').Paypal} */
+	/** @implements {import('../../../types/api/WalletManagement/Paypal').PayPalApi} */
 	return {
 		tokenize: tokenize(client),
 		guestTokenize: guestTokenize(client)

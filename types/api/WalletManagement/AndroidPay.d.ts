@@ -4,7 +4,7 @@ import { TokenizeAndroidPayResponse } from "../../model/WalletManagementModel/To
 /**
  * @category API
  */
-export interface AndroidPay {
+export interface AndroidPayApi {
 	/**
 	 * Create a payment instrument id for a provided Android Pay wallet item.
 	 *

@@ -45,7 +45,7 @@ const guestTokenize = (client) => (request) => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../../types/api/WalletManagement/GooglePay').GooglePay} */
+	/** @implements {import('../../../types/api/WalletManagement/GooglePay').GooglePayApi} */
 	return {
 		tokenize: tokenize(client),
 		guestTokenize: guestTokenize(client),

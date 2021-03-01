@@ -1,5 +1,5 @@
 /**
- * The JSON request structure of the Giftcards Balance endpoint.
+ * The JSON request structure of the GiftcardsApi Balance endpoint.
  *
  * @category Model
  */

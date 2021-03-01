@@ -43,7 +43,7 @@ const guestTokenize = (client) => (request) => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../../types/api/WalletManagement/ApplePay').ApplePay} */
+	/** @implements {import('../../../types/api/WalletManagement/ApplePay').ApplePayApi} */
 	return {
 		tokenize: tokenize(client),
 		guestTokenize: guestTokenize(client),

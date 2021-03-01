@@ -33,7 +33,7 @@ const tokenize = (client) => (request) => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../../types/api/WalletManagement/AndroidPay').AndroidPay} */
+	/** @implements {import('../../../types/api/WalletManagement/AndroidPay').AndroidPayApi} */
 	return {
 		tokenize: tokenize(client),
 		update: update(client)

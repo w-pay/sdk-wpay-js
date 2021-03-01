@@ -8,7 +8,7 @@ import { VerifyPaymentInstrumentsSuccessResponse } from "../../model/WalletManag
 /**
  * @category API
  */
-export interface Instruments {
+export interface InstrumentsApi {
 	/**
 	 * Import a consumers credit cards (from WebPay) and paypal accounts to a new wallet. This API is IP restricted to allow unauthenticated server side calls.
 	 *

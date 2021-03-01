@@ -6,7 +6,7 @@ import { TokenizeGiftcardResponse } from "../../model/WalletManagementModel/Toke
 /**
  * @category API
  */
-export interface Giftcards {
+export interface GiftcardsApi {
 	/**
 	 * Create a paymment intrument id for a provided gift card.
 	 *

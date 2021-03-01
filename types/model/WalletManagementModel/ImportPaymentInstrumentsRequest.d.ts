@@ -1,5 +1,5 @@
 /**
- * The JSON request structure of the Import Payment Instruments endpoint.
+ * The JSON request structure of the Import Payment InstrumentsApi endpoint.
  *
  * @category Model
  */
@@ -12,13 +12,13 @@ export interface ImportPaymentInstrumentsRequest {
 
 	creditCards?: CreditCard[];
 	payPal?: {
-		/* The Paypal customer id. */
+		/* The PayPalApi customer id. */
 		customerId: string;
 
-		/* The Paypal email id. */
+		/* The PayPalApi email id. */
 		payPalId: string;
 
-		/* The Paypal payment method token. */
+		/* The PayPalApi payment method token. */
 		paymentMethodToken: string;
 	};
 }

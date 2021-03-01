@@ -4,7 +4,7 @@ import { TokenizePaypalRequest } from "../../model/WalletManagementModel/Tokeniz
 /**
  * @category API
  */
-export interface Paypal {
+export interface PayPalApi {
 	/**
 	 * Create a paymment intrument id for a provided paypal account.
 	 *
