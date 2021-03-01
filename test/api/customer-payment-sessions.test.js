@@ -57,7 +57,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/customer/payment/session/:paymentSessionId",
+					url: "/instore/customer/payment/session/:paymentSessionId",
 					pathParams: {
 						paymentSessionId
 					}
@@ -93,7 +93,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/customer/payment/session/qr/:qrId",
+					url: "/instore/customer/payment/session/qr/:qrId",
 					pathParams: {
 						qrId: qrCodeId
 					}
@@ -127,7 +127,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/customer/payment/session/:paymentSessionId",
+					url: "/instore/customer/payment/session/:paymentSessionId",
 					pathParams: {
 						paymentSessionId
 					},
@@ -162,7 +162,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.DELETE,
-					url: "/customer/payment/session/:paymentSessionId",
+					url: "/instore/customer/payment/session/:paymentSessionId",
 					pathParams: {
 						paymentSessionId
 					}
@@ -193,7 +193,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.PUT,
-					url: "/customer/payment/session/:paymentSessionId",
+					url: "/instore/customer/payment/session/:paymentSessionId",
 					headers: {
 						[X_EVERYDAY_PAY_WALLET]: "false"
 					},

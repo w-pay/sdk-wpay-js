@@ -55,7 +55,7 @@ describe("CustomerPaymentRequestsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/customer/payments/:paymentRequestId",
+					url: "/instore/customer/payments/:paymentRequestId",
 					pathParams: {
 						paymentRequestId
 					}
@@ -84,7 +84,7 @@ describe("CustomerPaymentRequestsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/customer/qr/:qrCodeId",
+					url: "/instore/customer/qr/:qrCodeId",
 					pathParams: {
 						qrCodeId
 					}
@@ -121,7 +121,7 @@ describe("CustomerPaymentRequestsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.PUT,
-					url: "/customer/payments/:paymentRequestId",
+					url: "/instore/customer/payments/:paymentRequestId",
 					headers: equalTo({
 						[X_EVERYDAY_PAY_WALLET]: "false"
 					}),

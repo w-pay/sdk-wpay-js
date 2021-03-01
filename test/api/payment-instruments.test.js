@@ -49,7 +49,7 @@ describe("PaymentInstrumentsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/customer/instruments",
+					url: "/instore/customer/instruments",
 					headers: {
 						[X_EVERYDAY_PAY_WALLET]: "true"
 					}
@@ -81,7 +81,7 @@ describe("PaymentInstrumentsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.DELETE,
-					url: "/customer/instruments/:paymentInstrumentId",
+					url: "/instore/customer/instruments/:paymentInstrumentId",
 					headers: {
 						[X_EVERYDAY_PAY_WALLET]: "false"
 					},
@@ -120,7 +120,7 @@ describe("PaymentInstrumentsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/customer/instruments",
+					url: "/instore/customer/instruments",
 					headers: {
 						[X_EVERYDAY_PAY_WALLET]: "false"
 					},

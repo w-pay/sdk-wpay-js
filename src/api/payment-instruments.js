@@ -23,7 +23,7 @@ const list = (client) => (wallet) => {
 			fromData(fromWalletContentsDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/customer/instruments"
+			url: "/instore/customer/instruments"
 		})
 	);
 };
@@ -39,7 +39,7 @@ const deleteInstrument = (client) => (instrument) => {
 			client
 		)({
 			method: HttpRequestMethod.DELETE,
-			url: "/customer/instruments/:paymentInstrumentId",
+			url: "/instore/customer/instruments/:paymentInstrumentId",
 			pathParams: {
 				paymentInstrumentId: instrument.paymentInstrumentId
 			}
@@ -59,7 +59,7 @@ const initiateAddition = (client) => (instrument) => {
 			fromData(identity)
 		)({
 			method: HttpRequestMethod.POST,
-			url: "/customer/instruments",
+			url: "/instore/customer/instruments",
 			body: {
 				data: {
 					clientReference: instrument.clientReference

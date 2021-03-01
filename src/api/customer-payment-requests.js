@@ -24,7 +24,7 @@ const getById = (client) => (paymentRequestId) => {
 			fromData(fromCustomerPaymentRequestDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/customer/payments/:paymentRequestId",
+			url: "/instore/customer/payments/:paymentRequestId",
 			pathParams: {
 				paymentRequestId
 			}
@@ -44,7 +44,7 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 			fromData(fromCustomerPaymentRequestDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/customer/qr/:qrCodeId",
+			url: "/instore/customer/qr/:qrCodeId",
 			pathParams: {
 				qrCodeId
 			}
@@ -76,7 +76,7 @@ const makePayment = (client) => (
 			fromData(fromCustomerTransactionSummaryDTO)
 		)({
 			method: HttpRequestMethod.PUT,
-			url: "/customer/payments/:paymentRequestId",
+			url: "/instore/customer/payments/:paymentRequestId",
 			pathParams: {
 				paymentRequestId
 			},
