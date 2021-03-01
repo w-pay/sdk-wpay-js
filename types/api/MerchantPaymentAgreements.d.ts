@@ -4,9 +4,9 @@ import { DigitalPayPaymentAgreementResponse } from "../model/DigiPayModel/Digita
 /**
  * @category API
  */
-export interface CustomerPaymentAgreementsApi {
+export interface MerchantPaymentAgreementsApi {
 	/**
-	 * Retrieve a list of customer's {@link PaymentAgreement}s
+	 * Charge a {@link PaymentAgreement}s
 	 *
 	 * @param paymentToken The ID.
 	 * @param chargePaymentAgreementRequest details of charge to make against the payment agreement

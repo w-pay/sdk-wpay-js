@@ -35,7 +35,6 @@ export interface PaymentAgreement {
 
 	/** The credit card scheme. */
 	scheme?: string;
-	ENUM?;
 
 	/** The suffix (last 4 digits) of the credit card number. */
 	cardSuffix?: string;

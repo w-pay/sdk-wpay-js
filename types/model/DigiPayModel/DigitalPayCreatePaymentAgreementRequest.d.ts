@@ -39,7 +39,7 @@ export interface DigitalPayCreatePaymentAgreementRequest {
 	fraudPayload?: DigitalPayFraudPayload;
 }
 
-export interface DigitalPayPaymentAgreement {
+export interface DigitalPayRequestPaymentAgreement {
 	/** The payment agreement type. */
 	type: PaymentAgreementType;
 

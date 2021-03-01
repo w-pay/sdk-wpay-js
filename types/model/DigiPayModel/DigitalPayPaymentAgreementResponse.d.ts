@@ -1,4 +1,4 @@
-import { DigitalPayPaymentAgreement } from "./DigitalPayCreatePaymentAgreementRequest";
+import { PaymentAgreementType } from "../PaymentAgreement";
 import {
 	DigitalPayExtendedTransactionData,
 	DigitalPayFraudResponse
@@ -25,7 +25,7 @@ export interface DigitalPayPaymentAgreementResponse {
 	paymentToken?: string;
 
 	/** Detail of the payment agreement that has been created or updated */
-	paymentAgreement: DigitalPayPaymentAgreement;
+	paymentAgreement: DigitalPayResponsePaymentAgreement;
 
 	/** Fraud response */
 	fraudResponse?: DigitalPayFraudResponse;
@@ -46,4 +46,39 @@ export interface DigitalPayPaymentAgreementResponse {
 	 * This property is only included in the response if it is enabled in the consumers API configuration.
 	 */
 	externalServiceMessage?: string;
+}
+
+export interface DigitalPayResponsePaymentAgreement {
+	/** The payment agreement type. */
+	type: PaymentAgreementType;
+
+	/** The payment agreement payment instrument id that will be used for the charges. */
+	paymentInstrumentId: string;
+
+	/** The type of the payment instrument used in the payment agreement. */
+	paymentInstrumentType: string;
+		
+	/** The credit card scheme */
+	scheme: string;
+
+	/** The suffix (last 4 digits) of the credit card number. */
+	cardSuffix: string;
+
+	/** The month of the expiry date of the credit card. */
+	expiryMonth: string;
+
+	/** The year of the expiry date of the credit card. */
+	expiryYear: string;
+
+	/** The payment agreement start date and time. The timestamp format is ISO8601. */
+	startDate: string;
+
+	/** The payment agreement end date and time. The timestamp format is ISO8601. */
+	endDate: string;
+
+	/** The payment agreement charge frequency. */
+	chargeFrequency: PaymentAgreementChargeFrequency;
+	
+	/** The amount that will be charged at the frequency specified in the payment agreement. */
+	chargeAmount: number;
 }

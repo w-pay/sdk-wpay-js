@@ -1,5 +1,5 @@
 import { DigitalPayAddress } from "./DigitalPayAddress";
-import { DigitalPayPaymentAgreement } from "./DigitalPayCreatePaymentAgreementRequest";
+import { DigitalPayRequestPaymentAgreement } from "./DigitalPayCreatePaymentAgreementRequest";
 import { DigitalPayFraudResponse } from "./DigitalPayPaymentResponse";
 
 /**
@@ -33,7 +33,7 @@ export interface DigitalPayUpdatePaymentAgreementRequest {
 	billingAddress?: DigitalPayAddress;
 
 	/** Detail of the payment agreement to be created */
-	paymentAgreement?: DigitalPayPaymentAgreement;
+	paymentAgreement?: DigitalPayRequestPaymentAgreement;
 
 	/** Digital pay fraud payload */
 	fraudPayload?: DigitalPayFraudResponse;

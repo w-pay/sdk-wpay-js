@@ -23,3 +23,11 @@ export interface TermsAndConditionsAcceptance {
 	/** The timestamp when the shopper/customer agreed to the Everyday Pay Ts and Cs.  The timestamp format is milliseconds since epoch. */
 	timestamp: number;
 }
+
+export interface AcceptTermsAndConditionsRequest {
+	/** The type of Ts and Cs that the shopper/customer has agreed to. */
+	type: string;
+
+	/** The current version of the Ts and Cs that the shopper/customer has agreed to. */
+	version: string;
+}

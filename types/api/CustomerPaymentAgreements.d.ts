@@ -1,5 +1,6 @@
 import {
 	PaymentAgreement,
+	PaymentAgreements,
 	CreatePaymentAgreementRequest,
 	UpdatePaymentAgreementRequest
 } from "../model";
@@ -11,7 +12,7 @@ export interface CustomerPaymentAgreementsApi {
 	/**
 	 * Retrieve a list of customer's {@link PaymentAgreement}s
 	 */
-	list(): Promise<PaymentAgreement[]>;
+	list(): Promise<PaymentAgreements>;
 
 	/**
 	 * Retrieve a {@link PaymentAgreement} by its associated payment token
