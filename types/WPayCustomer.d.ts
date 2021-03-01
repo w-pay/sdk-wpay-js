@@ -5,6 +5,7 @@ import { CustomerPaymentRequestsApi } from "./api";
 import { CustomerPaymentSessionsApi } from "./api";
 import { CustomerPreferencesApi } from "./api";
 import { CustomerTransactionsApi } from "./api";
+import { DigitalPayApi } from "./api";
 import { PaymentInstrumentsApi } from "./api";
 import { WPayOptions } from "./WPayOptions";
 
@@ -29,6 +30,7 @@ export function createCustomerSDK(
  */
 export interface WPayCustomerApi {
 	admin: AdministrationApi;
+	dp: DigitalPayApi;
 	instruments: PaymentInstrumentsApi;
 	paymentRequests: CustomerPaymentRequestsApi;
 	paymentSessions: CustomerPaymentSessionsApi;

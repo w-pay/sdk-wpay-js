@@ -1,6 +1,7 @@
 import { HttpClientFactory } from "@api-sdk-creator/http-api-client";
 
 import { AdministrationApi } from "./WPayFactory";
+import { DigitalPayApi } from "./api";
 import { MerchantPaymentsApi } from "./api";
 import { MerchantPaymentSessionsApi } from "./api";
 import { MerchantPreferencesApi } from "./api";
@@ -30,6 +31,7 @@ export function createMerchantSDK(
  */
 export interface WPayMerchantApi {
 	admin: AdministrationApi;
+	dp: DigitalPayApi;
 	payments: MerchantPaymentsApi;
 	paymentSession: MerchantPaymentSessionsApi;
 	preferences: MerchantPreferencesApi;
