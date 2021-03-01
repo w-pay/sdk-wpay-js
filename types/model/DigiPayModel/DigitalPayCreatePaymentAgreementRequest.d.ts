@@ -33,7 +33,7 @@ export interface DigitalPayCreatePaymentAgreementRequest {
 	billingAddress: DigitalPayAddress;
 
 	/** Detail of the payment agreement to be created */
-	paymentAgreement: DigitalPayPaymentAgreement;
+	paymentAgreement: DigitalPayRequestPaymentAgreement;
 
 	/** Digital pay fraud payload */
 	fraudPayload?: DigitalPayFraudPayload;

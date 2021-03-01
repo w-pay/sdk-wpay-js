@@ -1,4 +1,4 @@
-import { TermsAndConditionsAcceptances } from "../model";
+import { AcceptTermsAndConditionsRequest, TermsAndConditionsAcceptances } from "../model";
 
 /**
  * @category API

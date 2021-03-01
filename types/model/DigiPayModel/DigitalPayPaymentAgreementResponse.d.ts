@@ -1,4 +1,4 @@
-import { PaymentAgreementType } from "../PaymentAgreement";
+import { PaymentAgreementChargeFrequency, PaymentAgreementType } from "../PaymentAgreement";
 import {
 	DigitalPayExtendedTransactionData,
 	DigitalPayFraudResponse
