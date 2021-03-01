@@ -42,7 +42,7 @@ describe("MerchantTransactionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/merchant/transactions",
+					url: "/instore/merchant/transactions",
 					queryParams: {}
 				})
 			);
@@ -95,7 +95,7 @@ describe("MerchantTransactionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/merchant/transactions/:transactionId",
+					url: "/instore/merchant/transactions/:transactionId",
 					pathParams: {
 						transactionId
 					}

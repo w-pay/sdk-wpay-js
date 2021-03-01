@@ -23,7 +23,7 @@ const create = (client) => (request) => {
 			fromData(fromCreatePaymentSessionResultDTO)
 		)({
 			method: HttpRequestMethod.POST,
-			url: "/merchant/payment/session",
+			url: "/instore/merchant/payment/session",
 			body: {
 				data: mapProps(
 					{
@@ -48,7 +48,7 @@ const getById = (client) => (paymentSessionId) => {
 			fromData(fromPaymentSessionDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/merchant/payment/session/:paymentSessionId",
+			url: "/instore/merchant/payment/session/:paymentSessionId",
 			pathParams: {
 				paymentSessionId
 			}
@@ -68,7 +68,7 @@ const update = (client) => (paymentSessionId, session) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.POST,
-			url: "/merchant/payment/session/:paymentSessionId",
+			url: "/instore/merchant/payment/session/:paymentSessionId",
 			pathParams: {
 				paymentSessionId
 			},
@@ -93,7 +93,7 @@ const deletePaymentSession = (client) => (paymentSessionId) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.DELETE,
-			url: "/merchant/payment/session/:paymentSessionId",
+			url: "/instore/merchant/payment/session/:paymentSessionId",
 			pathParams: {
 				paymentSessionId
 			}

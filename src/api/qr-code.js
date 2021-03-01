@@ -21,7 +21,7 @@ const createPaymentRequestQRCode = (client) => (details) => {
 			fromData(fromQrDTO)
 		)({
 			method: HttpRequestMethod.POST,
-			url: "/merchant/qr",
+			url: "/instore/merchant/qr",
 			body: {
 				data: details,
 				meta: {}
@@ -41,7 +41,7 @@ const getPaymentRequestQRCodeContent = (client) => (qrCodeId) => {
 			fromData(fromQrDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/merchant/qr/:qrId",
+			url: "/instore/merchant/qr/:qrId",
 			pathParams: {
 				qrId: qrCodeId
 			}
@@ -57,7 +57,7 @@ const cancelPaymentQRCode = (client) => (qrCodeId) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.DELETE,
-			url: "/merchant/qr/:qrId",
+			url: "/instore/merchant/qr/:qrId",
 			pathParams: {
 				qrId: qrCodeId
 			}

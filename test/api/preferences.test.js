@@ -19,7 +19,7 @@ const apiDefs = [
 	{
 		name: "MerchantPreferencesApi",
 		apiFactory: require("../../src/api/merchant-preferences"),
-		url: "/merchant/preferences"
+		url: "/instore/merchant/preferences"
 	}
 ];
 

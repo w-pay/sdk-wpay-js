@@ -20,7 +20,7 @@ const list = (client) => () =>
 			fromData(fromMerchantSchemaSummariesDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/merchant/schema"
+			url: "/instore/merchant/schema"
 		})
 	);
 
@@ -35,7 +35,7 @@ const getById = (client) => (schemaId) => {
 			fromData(fromMerchantSchemaDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/merchant/schema/:schemaId",
+			url: "/instore/merchant/schema/:schemaId",
 			pathParams: {
 				schemaId
 			}
@@ -54,7 +54,7 @@ const create = (client) => (schema) => {
 			fromData(fromMerchantSchemaSummaryDTO)
 		)({
 			method: HttpRequestMethod.POST,
-			url: "/merchant/schema",
+			url: "/instore/merchant/schema",
 			body: {
 				data: schema,
 				meta: {}

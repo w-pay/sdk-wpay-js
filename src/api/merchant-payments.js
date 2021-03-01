@@ -25,7 +25,7 @@ const listPayments = (client) => (type, page, pageSize) => {
 			fromData(fromMerchantPaymentSummariesDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/merchant/payments",
+			url: "/instore/merchant/payments",
 			queryParams: params([
 				optionalParam("type", type),
 				optionalParam("page", page),
@@ -46,7 +46,7 @@ const createPaymentRequest = (client) => (paymentRequest) => {
 			fromData(fromCreatePaymentRequestResultDTO)
 		)({
 			method: HttpRequestMethod.POST,
-			url: "/merchant/payments",
+			url: "/instore/merchant/payments",
 			body: {
 				data: mapProps(
 					{
@@ -73,7 +73,7 @@ const getPaymentRequestDetailsBy = (client) => (paymentRequestId) => {
 			fromData(fromMerchantPaymentDetailsDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/merchant/payments/:paymentRequestId",
+			url: "/instore/merchant/payments/:paymentRequestId",
 			pathParams: {
 				paymentRequestId
 			}
@@ -89,7 +89,7 @@ const deletePaymentRequest = (client) => (paymentRequestId) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.DELETE,
-			url: "/merchant/payments/paymentRequestId",
+			url: "/instore/merchant/payments/paymentRequestId",
 			pathParams: {
 				paymentRequestId
 			}
@@ -112,7 +112,7 @@ const refundTransaction = (client) => (transactionId, refundDetails) => {
 			fromData(fromMerchantTransactionSummaryDTO)
 		)({
 			method: HttpRequestMethod.POST,
-			url: "/merchant/transactions/:transactionId/refund",
+			url: "/instore/merchant/transactions/:transactionId/refund",
 			pathParams: {
 				transactionId
 			},

@@ -55,7 +55,7 @@ describe("MerchantPaymentsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/merchant/payments",
+					url: "/instore/merchant/payments",
 					queryParams: {}
 				})
 			);
@@ -108,7 +108,7 @@ describe("MerchantPaymentsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/merchant/payments",
+					url: "/instore/merchant/payments",
 					body: is(
 						body(
 							withData(
@@ -162,7 +162,7 @@ describe("MerchantPaymentsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/merchant/payments/:paymentRequestId",
+					url: "/instore/merchant/payments/:paymentRequestId",
 					pathParams: {
 						paymentRequestId
 					}
@@ -194,7 +194,7 @@ describe("MerchantPaymentsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.DELETE,
-					url: "/merchant/payments/paymentRequestId",
+					url: "/instore/merchant/payments/paymentRequestId",
 					pathParams: {
 						paymentRequestId
 					}
@@ -237,7 +237,7 @@ describe("MerchantPaymentsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/merchant/transactions/:transactionId/refund",
+					url: "/instore/merchant/transactions/:transactionId/refund",
 					pathParams: {
 						transactionId
 					},

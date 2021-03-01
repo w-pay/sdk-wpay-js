@@ -48,7 +48,7 @@ describe("SchemasApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/merchant/schema"
+					url: "/instore/merchant/schema"
 				})
 			);
 		});
@@ -81,7 +81,7 @@ describe("SchemasApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/merchant/schema/:schemaId",
+					url: "/instore/merchant/schema/:schemaId",
 					pathParams: {
 						schemaId
 					}
@@ -116,7 +116,7 @@ describe("SchemasApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/merchant/schema",
+					url: "/instore/merchant/schema",
 					body: is(body(withData(equalTo(schema))))
 				})
 			);
