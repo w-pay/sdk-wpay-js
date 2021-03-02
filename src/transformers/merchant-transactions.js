@@ -10,6 +10,7 @@ const { toDate, toUpperCase } = require("../helpers/props");
 const fromMerchantTransactionDetailsDTO = mapProps({
 	executionTime: toDate,
 	status: toUpperCase,
+	rollback: toUpperCase,
 	type: toUpperCase,
 	basket: fromBasketDTO,
 	posPayload: fromDynamicPayloadDTO,
@@ -19,6 +20,7 @@ const fromMerchantTransactionDetailsDTO = mapProps({
 const fromMerchantTransactionSummaryDTO = mapProps({
 	executionTime: toDate,
 	status: toUpperCase,
+	rollback: toUpperCase,
 	type: toUpperCase
 });
 

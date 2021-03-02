@@ -1,4 +1,8 @@
-import { WalletContents, PaymentInstrumentIdentifier } from "../model";
+import {
+	WalletContents,
+	IndividualPaymentInstrument,
+	PaymentInstrumentIdentifier
+} from "../model";
 import { PaymentInstrumentAddition } from "../model";
 import { PaymentInstrumentAdditionResult } from "../model";
 import { Wallet } from "../model";
@@ -7,6 +11,19 @@ import { Wallet } from "../model";
  * @category API
  */
 export interface PaymentInstrumentsApi {
+	/**
+	 * Get the specified payment instrument of the customer.
+	 *
+	 * @param paymentToken The payment token of the payment instrument to fetch.
+	 * @param wallet What wallet the instrument is in.
+	 * @param publicKey A public key used to encrypt sensitive instrument data and include that encrypted data in the response sent back to the consumer.
+	 */
+	getByToken(
+		paymentToken: string,
+		wallet: Wallet,
+		publicKey?: string
+	): Promise<IndividualPaymentInstrument>;
+
 	/**
 	 * Retrieve the customer's registered {@link PaymentInstrumentsApi}
 	 *

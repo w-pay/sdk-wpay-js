@@ -45,7 +45,7 @@ describe("CustomerTransactionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/customer/transactions",
+					url: "/instore/customer/transactions",
 					queryParams: {}
 				})
 			);
@@ -100,7 +100,7 @@ describe("CustomerTransactionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/customer/transactions/:transactionId",
+					url: "/instore/customer/transactions/:transactionId",
 					pathParams: {
 						transactionId
 					}

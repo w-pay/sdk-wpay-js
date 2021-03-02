@@ -1,0 +1,157 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> api/DigitalPayApi/OpenPay.d.ts</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="ApiException.html">ApiException</a></li><li><a href="HttpErrorException.html">HttpErrorException</a></li><li><a href="JsonParsingException.html">JsonParsingException</a></li></ul><h3>Interfaces</h3><ul><li><a href="ApiAuthenticator.html">ApiAuthenticator</a></li><li><a href="WPayCustomerApi.html">WPayCustomerApi</a></li><li><a href="WPayCustomerOptions.html">WPayCustomerOptions</a></li><li><a href="WPayMerchantApi.html">WPayMerchantApi</a></li><li><a href="WPayMerchantOptions.html">WPayMerchantOptions</a></li></ul><h3>Global</h3><ul><li><a href="global.html#details">details</a></li><li><a href="global.html#Wallet">Wallet</a></li></ul></div><div class="category"><h2>API</h2><h3>Interfaces</h3><ul><li><a href="AdministrationApi.html">AdministrationApi</a></li><li><a href="AndroidPayApi.html">AndroidPayApi</a></li><li><a href="ApplePayApi.html">ApplePayApi</a></li><li><a href="CardsApi.html">CardsApi</a></li><li><a href="CustomerPaymentAgreementsApi.html">CustomerPaymentAgreementsApi</a></li><li><a href="CustomerPaymentRequestsApi.html">CustomerPaymentRequestsApi</a></li><li><a href="CustomerPaymentSessionsApi.html">CustomerPaymentSessionsApi</a></li><li><a href="CustomerPreferencesApi.html">CustomerPreferencesApi</a></li><li><a href="CustomerTermsAndConditionsApi.html">CustomerTermsAndConditionsApi</a></li><li><a href="CustomerTransactionsApi.html">CustomerTransactionsApi</a></li><li><a href="DigitalPayApi.html">DigitalPayApi</a></li><li><a href="GiftcardsApi.html">GiftcardsApi</a></li><li><a href="GooglePayApi.html">GooglePayApi</a></li><li><a href="InstrumentsApi.html">InstrumentsApi</a></li><li><a href="MerchantPaymentAgreementsApi.html">MerchantPaymentAgreementsApi</a></li><li><a href="MerchantPaymentsApi.html">MerchantPaymentsApi</a></li><li><a href="MerchantPaymentSessionsApi.html">MerchantPaymentSessionsApi</a></li><li><a href="MerchantPreferencesApi.html">MerchantPreferencesApi</a></li><li><a href="MerchantsApi.html">MerchantsApi</a></li><li><a href="MerchantTransactionsApi.html">MerchantTransactionsApi</a></li><li><a href="OpenPayApi.html">OpenPayApi</a></li><li><a href="PaymentAgreementApi.html">PaymentAgreementApi</a></li><li><a href="PaymentApi.html">PaymentApi</a></li><li><a href="PaymentInstrumentsApi.html">PaymentInstrumentsApi</a></li><li><a href="PayPalApi.html">PayPalApi</a></li><li><a href="QRCodeApi.html">QRCodeApi</a></li><li><a href="SchemasApi.html">SchemasApi</a></li><li><a href="WalletApi.html">WalletApi</a></li></ul></div><div class="category"><h2>Model</h2><h3>Interfaces</h3><ul><li><a href="Basket.html">Basket</a></li><li><a href="BasketItem.html">BasketItem</a></li><li><a href="ChallengeResponse.html">ChallengeResponse</a></li><li><a href="ChargePaymentAgreementRequest.html">ChargePaymentAgreementRequest</a></li><li><a href="CommonPaymentAgreementRequest.html">CommonPaymentAgreementRequest</a></li><li><a href="CreatePaymentAgreementRequest.html">CreatePaymentAgreementRequest</a></li><li><a href="CreatePaymentRequestResult.html">CreatePaymentRequestResult</a></li><li><a href="CreatePaymentSessionRequest.html">CreatePaymentSessionRequest</a></li><li><a href="CreatePaymentSessionResult.html">CreatePaymentSessionResult</a></li><li><a href="CreditCard.html">CreditCard</a></li><li><a href="CreditCardStepUp.html">CreditCardStepUp</a></li><li><a href="CustomerPaymentRequest.html">CustomerPaymentRequest</a></li><li><a href="CustomerPreferences.html">CustomerPreferences</a></li><li><a href="CustomerTransactionDetails.html">CustomerTransactionDetails</a></li><li><a href="CustomerTransactionSummaries.html">CustomerTransactionSummaries</a></li><li><a href="CustomerTransactionSummary.html">CustomerTransactionSummary</a></li><li><a href="CustomerUpdatePaymentSessionRequest.html">CustomerUpdatePaymentSessionRequest</a></li><li><a href="DigitalPayAddress.html">DigitalPayAddress</a></li><li><a href="DigitalPayChargePaymentAgreementRequest.html">DigitalPayChargePaymentAgreementRequest</a></li><li><a href="DigitalPayCompletionRequest.html">DigitalPayCompletionRequest</a></li><li><a href="DigitalPayCompletionResponse.html">DigitalPayCompletionResponse</a></li><li><a href="DigitalPayCreatePaymentAgreementRequest.html">DigitalPayCreatePaymentAgreementRequest</a></li><li><a href="DigitalPayFraudPayload.html">DigitalPayFraudPayload</a></li><li><a href="DigitalPayPaymentAgreementResponse.html">DigitalPayPaymentAgreementResponse</a></li><li><a href="DigitalPayPaymentRequest.html">DigitalPayPaymentRequest</a></li><li><a href="DigitalPayPaymentResponse.html">DigitalPayPaymentResponse</a></li><li><a href="DigitalPayRefundRequest.html">DigitalPayRefundRequest</a></li><li><a href="DigitalPayRefundResponse.html">DigitalPayRefundResponse</a></li><li><a href="DigitalPayUpdatePaymentAgreementRequest.html">DigitalPayUpdatePaymentAgreementRequest</a></li><li><a href="DigitalPayVoidRequest.html">DigitalPayVoidRequest</a></li><li><a href="DigitalPayVoidResponse.html">DigitalPayVoidResponse</a></li><li><a href="DynamicPayload.html">DynamicPayload</a></li><li><a href="GiftCard.html">GiftCard</a></li><li><a href="GiftcardsBalanceRequest.html">GiftcardsBalanceRequest</a></li><li><a href="GiftcardsBalanceResponse.html">GiftcardsBalanceResponse</a></li><li><a href="GiftCardStepUp.html">GiftCardStepUp</a></li><li><a href="HealthCheck.html">HealthCheck</a></li><li><a href="ImportPaymentInstrumentsRequest.html">ImportPaymentInstrumentsRequest</a></li><li><a href="ImportPaymentInstrumentsResponse.html">ImportPaymentInstrumentsResponse</a></li><li><a href="InitiateCardCaptureRequest.html">InitiateCardCaptureRequest</a></li><li><a href="InitiateCardCaptureResponse.html">InitiateCardCaptureResponse</a></li><li><a href="ListPaymentInstrumentsRequest.html">ListPaymentInstrumentsRequest</a></li><li><a href="MerchantPayload.html">MerchantPayload</a></li><li><a href="MerchantPaymentDetails.html">MerchantPaymentDetails</a></li><li><a href="MerchantPaymentSummaries.html">MerchantPaymentSummaries</a></li><li><a href="MerchantPaymentSummary.html">MerchantPaymentSummary</a></li><li><a href="MerchantProfileResponse.html">MerchantProfileResponse</a></li><li><a href="MerchantSchema.html">MerchantSchema</a></li><li><a href="MerchantSchemaSummaries.html">MerchantSchemaSummaries</a></li><li><a href="MerchantSchemaSummary.html">MerchantSchemaSummary</a></li><li><a href="MerchantTransactionDetails.html">MerchantTransactionDetails</a></li><li><a href="MerchantTransactionSummaries.html">MerchantTransactionSummaries</a></li><li><a href="MerchantTransactionSummary.html">MerchantTransactionSummary</a></li><li><a href="MerchantUpdatePaymentSessionRequest.html">MerchantUpdatePaymentSessionRequest</a></li><li><a href="NewPaymentRequest.html">NewPaymentRequest</a></li><li><a href="NewPaymentRequestQRCode.html">NewPaymentRequestQRCode</a></li><li><a href="OpenPayCompletionRequest.html">OpenPayCompletionRequest</a></li><li><a href="OpenPayCompletionResponse.html">OpenPayCompletionResponse</a></li><li><a href="OpenPayPaymentRequest.html">OpenPayPaymentRequest</a></li><li><a href="OpenPayPaymentTransactionResponse.html">OpenPayPaymentTransactionResponse</a></li><li><a href="OpenPayRefundRequest.html">OpenPayRefundRequest</a></li><li><a href="OpenPayRefundResponse.html">OpenPayRefundResponse</a></li><li><a href="OpenPayVoidRequest.html">OpenPayVoidRequest</a></li><li><a href="OpenPayVoidResponse.html">OpenPayVoidResponse</a></li><li><a href="Payment.html">Payment</a></li><li><a href="PaymentAgreement.html">PaymentAgreement</a></li><li><a href="PaymentAgreementBillingAddress.html">PaymentAgreementBillingAddress</a></li><li><a href="PaymentAgreements.html">PaymentAgreements</a></li><li><a href="PaymentInstrument.html">PaymentInstrument</a></li><li><a href="PaymentInstrumentAddition.html">PaymentInstrumentAddition</a></li><li><a href="PaymentInstrumentAdditionResult.html">PaymentInstrumentAdditionResult</a></li><li><a href="PaymentInstrumentIdentifier.html">PaymentInstrumentIdentifier</a></li><li><a href="PaymentInstruments.html">PaymentInstruments</a></li><li><a href="PaymentPreferences.html">PaymentPreferences</a></li><li><a href="PaymentSession.html">PaymentSession</a></li><li><a href="PosPayload.html">PosPayload</a></li><li><a href="QRCode.html">QRCode</a></li><li><a href="RefundSubTransaction.html">RefundSubTransaction</a></li><li><a href="SecondaryPaymentInstrument.html">SecondaryPaymentInstrument</a></li><li><a href="TermsAndConditionsAcceptance.html">TermsAndConditionsAcceptance</a></li><li><a href="TermsAndConditionsAcceptances.html">TermsAndConditionsAcceptances</a></li><li><a href="TokenizeAndroidPayRequest.html">TokenizeAndroidPayRequest</a></li><li><a href="TokenizeAndroidPayResponse.html">TokenizeAndroidPayResponse</a></li><li><a href="TokenizeApplePayRequest.html">TokenizeApplePayRequest</a></li><li><a href="TokenizeApplePayResponse.html">TokenizeApplePayResponse</a></li><li><a href="TokenizeGiftcardRequest.html">TokenizeGiftcardRequest</a></li><li><a href="TokenizeGiftcardResponse.html">TokenizeGiftcardResponse</a></li><li><a href="TokenizeGooglePayRequest.html">TokenizeGooglePayRequest</a></li><li><a href="TokenizeGooglePayResponse.html">TokenizeGooglePayResponse</a></li><li><a href="TokenizePaypalRequest.html">TokenizePaypalRequest</a></li><li><a href="TokenizePaypalResponse.html">TokenizePaypalResponse</a></li><li><a href="TransactionRefundDetails.html">TransactionRefundDetails</a></li><li><a href="TransactionSummary.html">TransactionSummary</a></li><li><a href="TransactionUsedPaymentInstrument.html">TransactionUsedPaymentInstrument</a></li><li><a href="UpdatePaymentAgreementRequest.html">UpdatePaymentAgreementRequest</a></li><li><a href="UsedPaymentInstrumentTransaction.html">UsedPaymentInstrumentTransaction</a></li><li><a href="WalletContents.html">WalletContents</a></li><li><a href="WalletDeleteRequest.html">WalletDeleteRequest</a></li><li><a href="WalletDeleteResponse.html">WalletDeleteResponse</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ChallengeResponseType">ChallengeResponseType</a></li><li><a href="global.html#HealthCheckStatus">HealthCheckStatus</a></li><li><a href="global.html#PaymentAgreementChargeFrequency">PaymentAgreementChargeFrequency</a></li><li><a href="global.html#PaymentAgreementType">PaymentAgreementType</a></li><li><a href="global.html#PaymentInstrumentStatus">PaymentInstrumentStatus</a></li><li><a href="global.html#QRCodePaymentReferenceType">QRCodePaymentReferenceType</a></li><li><a href="global.html#TransactionSummaryPaymentStatus">TransactionSummaryPaymentStatus</a></li><li><a href="global.html#TransactionSummaryPaymentType">TransactionSummaryPaymentType</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>api/DigitalPayApi/OpenPay.d.ts</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { OpenPayCompletionRequest } from "../../model/DigiPayModel/OpenPayCompletionRequest";
+import { OpenPayCompletionResponse } from "../../model/DigiPayModel/OpenPayCompletionResponse";
+import { OpenPayPaymentRequest } from "../../model/DigiPayModel/OpenPayPaymentRequest";
+import { OpenPayPaymentResponse } from "../../model/DigiPayModel/OpenPayPaymentResponse";
+import { OpenPayVoidRequest } from "../../model/DigiPayModel/OpenPayVoidRequest";
+import { OpenPayVoidResponse } from "../../model/DigiPayModel/OpenPayVoidResponse";
+import { OpenPayRefundRequest } from "../../model/DigiPayModel/OpenPayRefundRequest";
+import { OpenPayRefundResponse } from "../../model/DigiPayModel/OpenPayRefundResponse";
+
+/**
+ * @category API
+ */
+export interface OpenPayApi {
+	/**
+	 * Make payments to a merchant using Openpay payment tokens.
+	 *
+	 * @param paymentRequest detail of payment to be made
+	 */
+	pay(paymentRequest: OpenPayPaymentRequest): Promise&lt;OpenPayPaymentResponse>;
+
+	/**
+	 * Complete pre-authed Openpay payments. This API is IP restricted to allow unauthenticated server side calls.
+	 *
+	 * @param completionRequest detail of payment to be completed
+	 */
+	complete(completionRequest: OpenPayCompletionRequest): Promise&lt;OpenPayCompletionResponse>;
+
+	/**
+	 * Void (cancel) pre-authed Openpay payments. This API is IP restricted to allow unauthenticated server side calls.
+	 *
+	 * @param voidRequest detail of payment to be voided
+	 */
+	voidPayment(voidRequest: OpenPayVoidRequest): Promise&lt;OpenPayVoidResponse>;
+
+	/**
+	 * Make payments to a merchant using Openpay payment tokens.
+	 *
+	 * @param refundRequest detail of payment to be refunded
+	 */
+	refund(refundRequest: OpenPayRefundRequest): Promise&lt;OpenPayRefundResponse>;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>

@@ -3,11 +3,11 @@
 const { getPreferences, setPreferences } = require("./preferences");
 
 const getPrefs = getPreferences({
-	url: "/merchant/preferences"
+	url: "/instore/merchant/preferences"
 });
 
 const setPrefs = setPreferences({
-	url: "/merchant/preferences"
+	url: "/instore/merchant/preferences"
 });
 
 module.exports = (client) => {

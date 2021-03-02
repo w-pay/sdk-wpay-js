@@ -11,6 +11,7 @@ const createCustomerSDK = (httpClient, options) => {
 
 	return {
 		admin: api.administration(client),
+		dp: api.digitalPay(client),
 		instruments: api.paymentInstruments(client),
 		paymentRequests: api.customerPaymentRequests(client),
 		paymentSessions: api.customerPaymentSessions(client),

@@ -27,6 +27,7 @@ export interface CustomerPaymentRequestsApi {
 	 * @param paymentRequestId The {@link CustomerPaymentRequest} to pay for.
 	 * @param primaryInstrument The primary (or only) instrument to use to make the payment.
 	 * @param secondaryInstruments Other payment instruments to use to split payment.
+	 * @param skipRollback An optional flag to indicate that the automatic rollback step should be skipped in the case of failure
 	 * @param clientReference An optional client reference to be associated with the transaction.
 	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
 	 */
@@ -34,6 +35,7 @@ export interface CustomerPaymentRequestsApi {
 		paymentRequestId: string,
 		primaryInstrument: PaymentInstrumentIdentifier,
 		secondaryInstruments?: SecondaryPaymentInstrument[],
+		skipRollback?: boolean,
 		clientReference?: string,
 		challengeResponses?: ChallengeResponse[]
 	): Promise<CustomerTransactionSummary>;

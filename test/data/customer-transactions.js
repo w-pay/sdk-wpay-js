@@ -5,7 +5,8 @@ const { v4: uuid } = require("uuid");
 const { basketDTO } = require("./basket");
 const {
 	TransactionSummaryPaymentStatus,
-	TransactionSummaryPaymentType
+	TransactionSummaryPaymentType,
+	TransactionSummaryRollback
 } = require("../../src/model");
 
 const customerTransactionSummaryDTO = () => ({
@@ -14,6 +15,7 @@ const customerTransactionSummaryDTO = () => ({
 	type: TransactionSummaryPaymentType.PAYMENT.toLowerCase(),
 	executionTime: "2021-02-17T06:31:46.358Z",
 	status: TransactionSummaryPaymentStatus.APPROVED.toLowerCase(),
+	rollback: TransactionSummaryRollback.FAILED.toLowerCase(),
 	merchantId: uuid(),
 	instruments: [
 		{

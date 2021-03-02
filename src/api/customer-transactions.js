@@ -22,7 +22,7 @@ const list = (client) => (paymentRequestId, page, pageSize, endTime, startTime) 
 			fromData(fromCustomerTransactionSummariesDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/customer/transactions",
+			url: "/instore/customer/transactions",
 			queryParams: mapProps(
 				{
 					startTime: toISOString,
@@ -51,7 +51,7 @@ const getById = (client) => (transactionId) => {
 			fromData(fromCustomerTransactionDetailsDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/customer/transactions/:transactionId",
+			url: "/instore/customer/transactions/:transactionId",
 			pathParams: {
 				transactionId
 			}

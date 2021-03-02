@@ -22,7 +22,7 @@ const list = (client) => (page, pageSize, endTime, startTime) => {
 			fromData(fromMerchantTransactionSummariesDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/merchant/transactions",
+			url: "/instore/merchant/transactions",
 			queryParams: mapProps(
 				{
 					startTime: toISOString,
@@ -50,7 +50,7 @@ const getById = (client) => (transactionId) => {
 			fromData(fromMerchantTransactionDetailsDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/merchant/transactions/:transactionId",
+			url: "/instore/merchant/transactions/:transactionId",
 			pathParams: {
 				transactionId
 			}

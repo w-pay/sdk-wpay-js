@@ -24,7 +24,7 @@ const fromCreditCardDTO = compose(
 
 const fromGiftCardDTO = fromPaymentInstrumentDTO;
 
-exports.fromWalletContentsDTO = mapProps({
+const fromWalletContentsDTO = mapProps({
 	creditCards: map(fromCreditCardDTO),
 	giftCards: map(fromGiftCardDTO),
 	everydayPay: mapProps({
@@ -32,3 +32,8 @@ exports.fromWalletContentsDTO = mapProps({
 		giftCards: map(fromGiftCardDTO)
 	})
 });
+
+module.exports = {
+	fromPaymentInstrumentDTO,
+	fromWalletContentsDTO
+};

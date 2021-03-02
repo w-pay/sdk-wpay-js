@@ -34,6 +34,7 @@ const merchantTransactionSummaryFrom = (dto) => ({
 		assertThat(item.grossAmount, is(dto.grossAmount));
 		assertThat(item.executionTime, is(dateFrom(dto.executionTime)));
 		assertThat(item.status, is(uppercase(dto.status)));
+		assertThat(item.rollback, is(uppercase(dto.rollback)));
 		assertThat(item.transactionId, is(dto.transactionId));
 		assertThat(item.clientReference, is(dto.clientReference));
 

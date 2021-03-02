@@ -14,12 +14,12 @@ const apiDefs = [
 	{
 		name: "CustomerPreferencesApi",
 		apiFactory: require("../../src/api/customer-preferences"),
-		url: "/customer/preferences"
+		url: "/instore/customer/preferences"
 	},
 	{
 		name: "MerchantPreferencesApi",
 		apiFactory: require("../../src/api/merchant-preferences"),
-		url: "/merchant/preferences"
+		url: "/instore/merchant/preferences"
 	}
 ];
 

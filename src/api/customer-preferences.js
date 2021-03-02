@@ -3,11 +3,11 @@
 const { getPreferences, setPreferences } = require("./preferences");
 
 const getPrefs = getPreferences({
-	url: "/customer/preferences"
+	url: "/instore/customer/preferences"
 });
 
 const setPrefs = setPreferences({
-	url: "/customer/preferences"
+	url: "/instore/customer/preferences"
 });
 
 module.exports = (client) => {

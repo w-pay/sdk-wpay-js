@@ -9,16 +9,19 @@ const toSecondaryInstrument = (instrument) => ({
 exports.toPaymentDetailsDTO = (
 	primaryInstrument,
 	secondaryInstruments,
-	clientReference,
-	challengeResponses
+	skipRollback,
+	clientReference
 ) => {
 	const dto = {
 		primaryInstrumentId: primaryInstrument.paymentInstrumentId,
 		secondaryInstruments: secondaryInstruments
 			? secondaryInstruments.map(toSecondaryInstrument)
-			: [],
-		challengeResponses: challengeResponses ? challengeResponses : []
+			: []
 	};
+
+	if (skipRollback) {
+		dto.skipRollback = skipRollback;
+	}
 
 	if (clientReference) {
 		dto.clientReference = clientReference;

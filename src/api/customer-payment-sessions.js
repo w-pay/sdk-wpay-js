@@ -24,7 +24,7 @@ const getById = (client) => (paymentSessionId) => {
 			fromData(fromPaymentSessionDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/customer/payment/session/:paymentSessionId",
+			url: "/instore/customer/payment/session/:paymentSessionId",
 			pathParams: {
 				paymentSessionId
 			}
@@ -43,7 +43,7 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 			fromData(fromPaymentSessionDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/customer/payment/session/qr/:qrId",
+			url: "/instore/customer/payment/session/qr/:qrId",
 			pathParams: {
 				qrId: qrCodeId
 			}
@@ -63,7 +63,7 @@ const update = (client) => (paymentSessionId, session) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.POST,
-			url: "/customer/payment/session/:paymentSessionId",
+			url: "/instore/customer/payment/session/:paymentSessionId",
 			pathParams: {
 				paymentSessionId
 			},
@@ -88,7 +88,7 @@ const deletePayment = (client) => (paymentSessionId) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.DELETE,
-			url: "/customer/payment/session/:paymentSessionId",
+			url: "/instore/customer/payment/session/:paymentSessionId",
 			pathParams: {
 				paymentSessionId
 			}
@@ -100,6 +100,7 @@ const preApprove = (client) => (
 	paymentSessionId,
 	primaryInstrument,
 	secondaryInstruments,
+	skipRollback,
 	clientReference,
 	challengeResponses
 ) => {
@@ -117,7 +118,7 @@ const preApprove = (client) => (
 			client
 		)({
 			method: HttpRequestMethod.PUT,
-			url: "/customer/payment/session/:paymentSessionId",
+			url: "/instore/customer/payment/session/:paymentSessionId",
 			pathParams: {
 				paymentSessionId
 			},
@@ -125,10 +126,12 @@ const preApprove = (client) => (
 				data: toPaymentDetailsDTO(
 					primaryInstrument,
 					secondaryInstruments,
-					clientReference,
-					challengeResponses
+					skipRollback,
+					clientReference
 				),
-				meta: {}
+				meta: {
+					challengeResponses: challengeResponses ? challengeResponses : []
+				}
 			}
 		})
 	);

@@ -14,7 +14,8 @@ const {
 	aSelectedPaymentInstrument,
 	aSecondaryPaymentInstrument
 } = require("../data/payment-instruments");
-const { body, withData } = require("../matchers/request-body-matchers");
+const { body, withData, withMeta } = require("../matchers/request-body-matchers");
+const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-matchers");
 const { customerPaymentRequestDTO } = require("../data/payment-request");
 const { customerPaymentRequestFrom } = require("../matchers/payment-request-matchers");
 const { customerTransactionSummaryDTO } = require("../data/customer-transactions");
@@ -55,7 +56,7 @@ describe("CustomerPaymentRequestsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/customer/payments/:paymentRequestId",
+					url: "/instore/customer/payments/:paymentRequestId",
 					pathParams: {
 						paymentRequestId
 					}
@@ -84,7 +85,7 @@ describe("CustomerPaymentRequestsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/customer/qr/:qrCodeId",
+					url: "/instore/customer/qr/:qrCodeId",
 					pathParams: {
 						qrCodeId
 					}
@@ -121,14 +122,19 @@ describe("CustomerPaymentRequestsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.PUT,
-					url: "/customer/payments/:paymentRequestId",
+					url: "/instore/customer/payments/:paymentRequestId",
 					headers: equalTo({
 						[X_EVERYDAY_PAY_WALLET]: "false"
 					}),
 					pathParams: {
 						paymentRequestId
 					},
-					body: is(body(withData(paymentDetailsDTOFrom(primaryPaymentInstrument))))
+					body: is(
+						body(
+							withData(paymentDetailsDTOFrom(primaryPaymentInstrument)),
+							withMeta(challengeResponsesDTOFrom([]))
+						)
+					)
 				})
 			);
 		});
@@ -136,6 +142,7 @@ describe("CustomerPaymentRequestsApi", function () {
 		it("should set optional parameters", async function () {
 			const primaryPaymentInstrument = aSelectedPaymentInstrument();
 			const secondaryPaymentInstruments = [aSecondaryPaymentInstrument()];
+			const skipRollback = true;
 			const clientReference = "this is a reference";
 			const challengeResponses = [aChallengeResponse()];
 
@@ -143,6 +150,7 @@ describe("CustomerPaymentRequestsApi", function () {
 				uuid(),
 				primaryPaymentInstrument,
 				secondaryPaymentInstruments,
+				skipRollback,
 				clientReference,
 				challengeResponses
 			);
@@ -155,10 +163,11 @@ describe("CustomerPaymentRequestsApi", function () {
 							paymentDetailsDTOFrom(
 								primaryPaymentInstrument,
 								secondaryPaymentInstruments,
-								clientReference,
-								challengeResponses
+								skipRollback,
+								clientReference
 							)
-						)
+						),
+						withMeta(challengeResponsesDTOFrom(challengeResponses))
 					)
 				)
 			);

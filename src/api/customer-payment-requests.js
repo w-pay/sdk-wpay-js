@@ -24,7 +24,7 @@ const getById = (client) => (paymentRequestId) => {
 			fromData(fromCustomerPaymentRequestDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/customer/payments/:paymentRequestId",
+			url: "/instore/customer/payments/:paymentRequestId",
 			pathParams: {
 				paymentRequestId
 			}
@@ -44,7 +44,7 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 			fromData(fromCustomerPaymentRequestDTO)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/customer/qr/:qrCodeId",
+			url: "/instore/customer/qr/:qrCodeId",
 			pathParams: {
 				qrCodeId
 			}
@@ -53,11 +53,12 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 };
 
 // returns an uncurried function for data so that defaults can be omitted
-// makePayment :: HttpApiClient -> (String, PaymentInstrumentIdentifier, Array, String, Array) -> Promise CustomerTransactionSummary
+// makePayment :: HttpApiClient -> (String, PaymentInstrumentIdentifier, Array, Boolean, String, Array) -> Promise CustomerTransactionSummary
 const makePayment = (client) => (
 	paymentRequestId,
 	primaryInstrument,
 	secondaryInstruments,
+	skipRollback,
 	clientReference,
 	challengeResponses
 ) => {
@@ -76,7 +77,7 @@ const makePayment = (client) => (
 			fromData(fromCustomerTransactionSummaryDTO)
 		)({
 			method: HttpRequestMethod.PUT,
-			url: "/customer/payments/:paymentRequestId",
+			url: "/instore/customer/payments/:paymentRequestId",
 			pathParams: {
 				paymentRequestId
 			},
@@ -84,10 +85,12 @@ const makePayment = (client) => (
 				data: toPaymentDetailsDTO(
 					primaryInstrument,
 					secondaryInstruments,
-					clientReference,
-					challengeResponses
+					skipRollback,
+					clientReference
 				),
-				meta: {}
+				meta: {
+					challengeResponses: challengeResponses ? challengeResponses : []
+				}
 			}
 		})
 	);

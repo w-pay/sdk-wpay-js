@@ -18,7 +18,8 @@ const {
 	aSecondaryPaymentInstrument,
 	aSelectedPaymentInstrument
 } = require("../data/payment-instruments");
-const { body, withData } = require("../matchers/request-body-matchers");
+const { body, withData, withMeta } = require("../matchers/request-body-matchers");
+const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-matchers");
 const { objFrom } = require("../matchers/map-matchers");
 const { paymentDetailsDTOFrom } = require("../matchers/payment-instrument-matchers");
 const { paymentSessionFrom } = require("../matchers/payment-session-matchers");
@@ -57,7 +58,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/customer/payment/session/:paymentSessionId",
+					url: "/instore/customer/payment/session/:paymentSessionId",
 					pathParams: {
 						paymentSessionId
 					}
@@ -93,7 +94,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/customer/payment/session/qr/:qrId",
+					url: "/instore/customer/payment/session/qr/:qrId",
 					pathParams: {
 						qrId: qrCodeId
 					}
@@ -127,7 +128,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/customer/payment/session/:paymentSessionId",
+					url: "/instore/customer/payment/session/:paymentSessionId",
 					pathParams: {
 						paymentSessionId
 					},
@@ -162,7 +163,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.DELETE,
-					url: "/customer/payment/session/:paymentSessionId",
+					url: "/instore/customer/payment/session/:paymentSessionId",
 					pathParams: {
 						paymentSessionId
 					}
@@ -193,20 +194,26 @@ describe("CustomerPaymentSessionsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.PUT,
-					url: "/customer/payment/session/:paymentSessionId",
+					url: "/instore/customer/payment/session/:paymentSessionId",
 					headers: {
 						[X_EVERYDAY_PAY_WALLET]: "false"
 					},
 					pathParams: {
 						paymentSessionId
 					},
-					body: is(body(withData(paymentDetailsDTOFrom(primaryInstrument))))
+					body: is(
+						body(
+							withData(paymentDetailsDTOFrom(primaryInstrument)),
+							withMeta(challengeResponsesDTOFrom([]))
+						)
+					)
 				})
 			);
 		});
 
 		it("should set optional request params", async function () {
 			const secondaryPaymentInstruments = [aSecondaryPaymentInstrument()];
+			const skipRollback = true;
 			const clientReference = "this is a reference";
 			const challengeResponses = [aChallengeResponse()];
 
@@ -214,6 +221,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				paymentSessionId,
 				primaryInstrument,
 				secondaryPaymentInstruments,
+				skipRollback,
 				clientReference,
 				challengeResponses
 			);
@@ -226,10 +234,11 @@ describe("CustomerPaymentSessionsApi", function () {
 							paymentDetailsDTOFrom(
 								primaryInstrument,
 								secondaryPaymentInstruments,
-								clientReference,
-								challengeResponses
+								skipRollback,
+								clientReference
 							)
-						)
+						),
+						withMeta(challengeResponsesDTOFrom(challengeResponses))
 					)
 				)
 			);

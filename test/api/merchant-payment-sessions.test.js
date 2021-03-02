@@ -54,7 +54,7 @@ describe("MerchantPaymentSessionsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/merchant/payment/session",
+					url: "/instore/merchant/payment/session",
 					body: is(
 						body(
 							withData(
@@ -103,7 +103,7 @@ describe("MerchantPaymentSessionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/merchant/payment/session/:paymentSessionId",
+					url: "/instore/merchant/payment/session/:paymentSessionId",
 					pathParams: {
 						paymentSessionId
 					}
@@ -137,7 +137,7 @@ describe("MerchantPaymentSessionsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/merchant/payment/session/:paymentSessionId",
+					url: "/instore/merchant/payment/session/:paymentSessionId",
 					pathParams: {
 						paymentSessionId
 					},
@@ -173,7 +173,7 @@ describe("MerchantPaymentSessionsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.DELETE,
-					url: "/merchant/payment/session/:paymentSessionId",
+					url: "/instore/merchant/payment/session/:paymentSessionId",
 					pathParams: {
 						paymentSessionId
 					}

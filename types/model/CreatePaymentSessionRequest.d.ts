@@ -18,7 +18,7 @@ export interface CreatePaymentSessionRequest {
 	 *
 	 * @returns `false` by default
 	 */
-	generateQR: boolean;
+	generateQR?: boolean;
 
 	/**
 	 * The time in seconds that the payment request should remain valid
@@ -27,7 +27,7 @@ export interface CreatePaymentSessionRequest {
 	 *
 	 * @returns: `0` by default
 	 */
-	timeToLivePaymentSession: number;
+	timeToLivePaymentSession?: number;
 
 	/**
 	 * The time in seconds that the QR code should remain valid.
@@ -36,7 +36,10 @@ export interface CreatePaymentSessionRequest {
 	 *
 	 * @returns `0` by default
 	 */
-	timeToLiveQR: number;
+	timeToLiveQR?: number;
+
+	/** The ID of the associated payment request */
+	paymentRequestId?: string;
 }
 
 /**

@@ -53,7 +53,7 @@ describe("QRCodeApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/merchant/qr",
+					url: "/instore/merchant/qr",
 					body: is(body(withData(equalTo(details))))
 				})
 			);
@@ -90,7 +90,7 @@ describe("QRCodeApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/merchant/qr/:qrId",
+					url: "/instore/merchant/qr/:qrId",
 					pathParams: {
 						qrId: qrCodeId
 					}
@@ -119,7 +119,7 @@ describe("QRCodeApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.DELETE,
-					url: "/merchant/qr/:qrId",
+					url: "/instore/merchant/qr/:qrId",
 					pathParams: {
 						qrId: qrCodeId
 					}
