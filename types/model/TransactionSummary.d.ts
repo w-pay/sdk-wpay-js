@@ -21,6 +21,9 @@ export interface TransactionSummary extends Payment {
 	/** The current status of the transactions */
 	status: TransactionSummaryPaymentStatus;
 
+	/** The rollback state of this transaction */
+	rollback?: TransactionSummaryRollback;
+
 	/** Array of transaction responses returned by downstream processes */
 	subTransactions?: any[];
 
@@ -58,6 +61,13 @@ export enum TransactionSummaryPaymentStatus {
 
 	/** The transaction was rejected */
 	REJECTED = "REJECTED"
+}
+
+export enum TransactionSummaryRollback {
+	REQUIRED = "REQUIRED",
+	NOT_REQUIRED = "NOT_REQUIRED",
+	FAILED = "FAILED",
+	SUCCESSFUL = "SUCCESSFUL"
 }
 
 /**

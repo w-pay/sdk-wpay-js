@@ -9,6 +9,7 @@ const { toDate, toUpperCase } = require("../helpers/props");
 const fromCustomerTransactionSummaryDTO = mapProps({
 	executionTime: toDate,
 	status: toUpperCase,
+	rollback: toUpperCase,
 	type: toUpperCase
 });
 
@@ -19,6 +20,7 @@ const fromCustomerTransactionSummariesDTO = mapProps({
 const fromCustomerTransactionDetailsDTO = mapProps({
 	executionTime: toDate,
 	status: toUpperCase,
+	rollback: toUpperCase,
 	type: toUpperCase,
 	basket: fromBasketDTO
 });

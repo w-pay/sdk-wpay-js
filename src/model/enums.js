@@ -30,6 +30,13 @@ exports.TransactionSummaryPaymentStatus = {
 	REJECTED: "REJECTED"
 };
 
+exports.TransactionSummaryRollback = {
+	REQUIRED: "REQUIRED",
+	NOT_REQUIRED: "NOT_REQUIRED",
+	FAILED: "FAILED",
+	SUCCESSFUL: "SUCCESSFUL"
+};
+
 exports.Wallet = {
 	MERCHANT: "MERCHANT",
 	EVERYDAY_PAY: "EVERYDAY_PAY"

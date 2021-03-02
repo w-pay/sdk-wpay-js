@@ -20,7 +20,7 @@ const {
 } = require("../matchers/merchant-transaction-matchers");
 
 describe("Merchant Transactions Transformers", function () {
-	describe("MerchantransactionSummaries", function () {
+	describe("MerchantTransactionSummaries", function () {
 		describe("from DTO", function () {
 			it("should convert dto", function () {
 				const dto = merchantTransactionSummariesDTO();
