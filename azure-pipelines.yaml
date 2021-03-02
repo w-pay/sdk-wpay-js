@@ -37,7 +37,7 @@ stages:
     - template: /nodejs/build-publish-feed.yaml@pe-templates
       parameters:
         feedName: $(feedName)
-    - template: /release/common/steps/github-release.yaml@pe-templates
+    - template: /release/common/steps/github-release-package-version.yaml@pe-templates
       parameters:
         serviceConnection: 'wx-dp-devops'
       
