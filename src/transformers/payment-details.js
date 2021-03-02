@@ -6,18 +6,12 @@ const toSecondaryInstrument = (instrument) => ({
 	amount: instrument.amount
 });
 
-exports.toPaymentDetailsDTO = (
-	primaryInstrument,
-	secondaryInstruments,
-	clientReference,
-	challengeResponses
-) => {
+exports.toPaymentDetailsDTO = (primaryInstrument, secondaryInstruments, clientReference) => {
 	const dto = {
 		primaryInstrumentId: primaryInstrument.paymentInstrumentId,
 		secondaryInstruments: secondaryInstruments
 			? secondaryInstruments.map(toSecondaryInstrument)
-			: [],
-		challengeResponses: challengeResponses ? challengeResponses : []
+			: []
 	};
 
 	if (clientReference) {

@@ -53,8 +53,26 @@ const withEmptyMeta = () => ({
 	}
 });
 
+const withMeta = (matcher) => ({
+	matches(actual) {
+		assertThat(actual, is(defined()));
+		assertThat(actual, is(matcher));
+
+		return true;
+	},
+
+	describeTo(description) {
+		description.append(`API request meta`);
+	},
+
+	describeMismatch(value, description) {
+		description.appendValue(value);
+	}
+});
+
 module.exports = {
 	body,
 	withData,
-	withEmptyMeta
+	withEmptyMeta,
+	withMeta
 };

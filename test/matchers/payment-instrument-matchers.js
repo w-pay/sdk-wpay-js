@@ -1,6 +1,5 @@
 const { assertThat, defined, is } = require("hamjest");
 
-const { challengeResponseFrom } = require("./challenge-response-matchers");
 const { dateFrom } = require("./date-matchers");
 const { uppercase } = require("./string-matchers");
 const { urlFrom } = require("./url-matches");
@@ -8,8 +7,7 @@ const { urlFrom } = require("./url-matches");
 const paymentDetailsDTOFrom = (
 	primaryPaymentInstrument,
 	secondaryInstruments = [],
-	clientReference = undefined,
-	challengeResponses = []
+	clientReference = undefined
 ) => ({
 	matches(actual) {
 		assertThat(actual.primaryInstrumentId, is(primaryPaymentInstrument.paymentInstrumentId));
@@ -21,11 +19,6 @@ const paymentDetailsDTOFrom = (
 
 		assertThat(actual.clientReference, is(clientReference));
 
-		assertThat(actual.challengeResponses.length, is(challengeResponses.length));
-		actual.challengeResponses.forEach((response, i) => {
-			assertThat(response, is(challengeResponseFrom(challengeResponses[i])));
-		});
-
 		return true;
 	},
 
@@ -34,8 +27,7 @@ const paymentDetailsDTOFrom = (
 			`Payment details containing ${JSON.stringify({
 				primaryPaymentInstrument,
 				secondaryInstruments,
-				clientReference,
-				challengeResponses
+				clientReference
 			})}`
 		);
 	},

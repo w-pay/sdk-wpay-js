@@ -18,7 +18,8 @@ const {
 	aSecondaryPaymentInstrument,
 	aSelectedPaymentInstrument
 } = require("../data/payment-instruments");
-const { body, withData } = require("../matchers/request-body-matchers");
+const { body, withData, withMeta } = require("../matchers/request-body-matchers");
+const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-matchers");
 const { objFrom } = require("../matchers/map-matchers");
 const { paymentDetailsDTOFrom } = require("../matchers/payment-instrument-matchers");
 const { paymentSessionFrom } = require("../matchers/payment-session-matchers");
@@ -200,7 +201,12 @@ describe("CustomerPaymentSessionsApi", function () {
 					pathParams: {
 						paymentSessionId
 					},
-					body: is(body(withData(paymentDetailsDTOFrom(primaryInstrument))))
+					body: is(
+						body(
+							withData(paymentDetailsDTOFrom(primaryInstrument)),
+							withMeta(challengeResponsesDTOFrom([]))
+						)
+					)
 				})
 			);
 		});
@@ -226,10 +232,10 @@ describe("CustomerPaymentSessionsApi", function () {
 							paymentDetailsDTOFrom(
 								primaryInstrument,
 								secondaryPaymentInstruments,
-								clientReference,
-								challengeResponses
+								clientReference
 							)
-						)
+						),
+						withMeta(challengeResponsesDTOFrom(challengeResponses))
 					)
 				)
 			);

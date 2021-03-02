@@ -122,13 +122,10 @@ const preApprove = (client) => (
 				paymentSessionId
 			},
 			body: {
-				data: toPaymentDetailsDTO(
-					primaryInstrument,
-					secondaryInstruments,
-					clientReference,
-					challengeResponses
-				),
-				meta: {}
+				data: toPaymentDetailsDTO(primaryInstrument, secondaryInstruments, clientReference),
+				meta: {
+					challengeResponses: challengeResponses ? challengeResponses : []
+				}
 			}
 		})
 	);
