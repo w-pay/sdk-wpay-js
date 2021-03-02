@@ -29,7 +29,6 @@ const aNewPaymentInstrument = () => ({
 const paymentInstrumentDTO = () => ({
 	paymentInstrumentId: uuid(),
 	allowed: true,
-	cardSuffix: "1234",
 	lastUpdated: "2021-02-17T06:31:46.358Z",
 	lastUsed: "2021-02-17T06:31:46.358Z",
 	paymentToken: "token",
@@ -37,8 +36,13 @@ const paymentInstrumentDTO = () => ({
 	status: PaymentInstrumentStatus.UNVERIFIED_PERSISTENT.toLowerCase()
 });
 
-const creditCardDTO = () => ({
+const cardInstrumentDTO = () => ({
 	...paymentInstrumentDTO(),
+	cardSuffix: "1234"
+});
+
+const creditCardDTO = () => ({
+	...cardInstrumentDTO(),
 	cardName: "My Card",
 	cvvValidated: true,
 	expired: true,
@@ -55,7 +59,7 @@ const creditCardDTO = () => ({
 });
 
 const giftCardDTO = () => ({
-	...paymentInstrumentDTO(),
+	...cardInstrumentDTO(),
 	programName: "Gift cards",
 	stepUp: {
 		type: "REQUIRE_PASSCODE",
@@ -72,12 +76,26 @@ const walletContentsDTO = () => ({
 	}
 });
 
+const individualPaymentInstrumentDTO = () => ({
+	...paymentInstrumentDTO(),
+	paymentInstrumentType: "GIFT_CARD",
+	paymentInstrumentDetail: {
+		cardSuffix: "5678",
+		programName: "Gift cards",
+		stepUp: {
+			type: "REQUIRE_PASSCODE",
+			mandatory: true
+		}
+	}
+});
+
 module.exports = {
 	aNewPaymentInstrument,
 	aSelectedPaymentInstrument,
 	aSecondaryPaymentInstrument,
 	creditCardDTO,
 	giftCardDTO,
+	individualPaymentInstrumentDTO,
 	paymentInstrumentDTO,
 	walletContentsDTO
 };

@@ -181,10 +181,46 @@ const paymentInstrumentAddedFrom = (dto) => ({
 	}
 });
 
+const individualPaymentInstrumentFrom = (dto) => ({
+	matches(actual) {
+		assertThat(actual.allowed, is(dto.data.allowed));
+		assertThat(actual.lastUpdated, is(dateFrom(dto.data.lastUpdated)));
+		assertThat(actual.lastUsed, is(dateFrom(dto.data.lastUsed)));
+		assertThat(actual.paymentInstrumentId, is(dto.data.paymentInstrumentId));
+		assertThat(actual.paymentToken, is(dto.data.paymentToken));
+		assertThat(actual.primary, is(dto.data.primary));
+		assertThat(actual.status, is(uppercase(dto.data.status)));
+		assertThat(actual.paymentInstrumentType, is(dto.data.paymentInstrumentType));
+
+		const detail = actual.paymentInstrumentDetail;
+		assertThat(detail, is(defined()));
+		assertThat(detail.cardSuffix, is(dto.data.paymentInstrumentDetail.cardSuffix));
+		assertThat(detail.programName, is(dto.data.paymentInstrumentDetail.programName));
+
+		const stepUp = detail.stepUp;
+		assertThat(stepUp, is(defined()));
+		assertThat(stepUp.mandatory, is(dto.data.paymentInstrumentDetail.stepUp.mandatory));
+		assertThat(stepUp.type, is(dto.data.paymentInstrumentDetail.stepUp.type));
+
+		assertThat(actual.cipherText, is(dto.meta.cipherText));
+
+		return true;
+	},
+
+	describeTo(description) {
+		description.append(`An IndividualPaymentInstrument from ${JSON.stringify(dto)}`);
+	},
+
+	describeMismatch(value, description) {
+		description.appendValue(value);
+	}
+});
+
 module.exports = {
 	creditCardFrom,
 	giftCardFrom,
 	hasPaymentInstrumentsFrom,
+	individualPaymentInstrumentFrom,
 	paymentDetailsDTOFrom,
 	paymentInstrumentAddedFrom,
 	secondaryInstrumentDTOFrom,

@@ -12,11 +12,15 @@ const { Wallet } = require("../../src/model/enums");
 
 const { body, withData } = require("../matchers/request-body-matchers");
 const {
+	individualPaymentInstrumentFrom,
 	paymentInstrumentAddedFrom,
 	walletContentsFrom
 } = require("../matchers/payment-instrument-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
-const { walletContentsDTO } = require("../data/payment-instruments");
+const {
+	individualPaymentInstrumentDTO,
+	walletContentsDTO
+} = require("../data/payment-instruments");
 const { StubApiClient } = require("../stub-api-client");
 
 describe("PaymentInstrumentsApi", function () {
@@ -28,6 +32,65 @@ describe("PaymentInstrumentsApi", function () {
 		apiClient = new StubApiClient();
 
 		api = apiFactory(apiClient.client());
+	});
+
+	describe("getByToken", function () {
+		const paymentToken = uuid();
+
+		beforeEach(function () {
+			apiClient.response = {
+				data: individualPaymentInstrumentDTO(),
+				meta: {
+					cipherText: "fgjkagjkl;dkls;jsdjfdafjafkadkl;f"
+				}
+			};
+		});
+
+		it("should throw error if payment token is missing", function () {
+			assertThat(() => api.getByToken(), throws(requiredParameterError("paymentToken")));
+		});
+
+		it("should throw error if wallet is missing", function () {
+			assertThat(() => api.getByToken(paymentToken), throws(requiredParameterError("wallet")));
+		});
+
+		it("should set request parameters", async function () {
+			await api.getByToken(paymentToken, Wallet.MERCHANT);
+
+			assertThat(
+				apiClient.request,
+				is({
+					method: HttpRequestMethod.GET,
+					url: "/instore/customer/instruments/:paymentToken",
+					headers: {
+						[X_EVERYDAY_PAY_WALLET]: "false"
+					},
+					pathParams: {
+						paymentToken
+					},
+					queryParams: {}
+				})
+			);
+		});
+
+		it("should set optional request parameters", async function () {
+			const publicKey = "dkjfgadko;fgjai;gja;ig";
+
+			await api.getByToken(paymentToken, Wallet.MERCHANT, publicKey);
+
+			assertThat(
+				apiClient.request.queryParams,
+				is({
+					publicKey
+				})
+			);
+		});
+
+		it("should get payment instrument", async function () {
+			const result = await api.getByToken(paymentToken, Wallet.EVERYDAY_PAY);
+
+			assertThat(result, is(individualPaymentInstrumentFrom(apiClient.response)));
+		});
 	});
 
 	describe("list", function () {

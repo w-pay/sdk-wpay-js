@@ -49,9 +49,6 @@ export interface PaymentInstrument extends PaymentInstrumentIdentifier {
 	/** Indicates if the merchant profile in the container allows the use of this payment instrument. */
 	allowed: boolean;
 
-	/** The suffix (last 4 digits) of the card number. */
-	cardSuffix: string;
-
 	/** The timestamp for when the payment instrument was added. */
 	createdOn: Date;
 
@@ -81,12 +78,17 @@ export enum PaymentInstrumentStatus {
 	VERIFIED = "VERIFIED"
 }
 
+export interface CardPaymentInstrument extends PaymentInstrument {
+	/** The suffix (last 4 digits) of the card number. */
+	cardSuffix: string;
+}
+
 /**
  * An added credit card
  *
  * @category Model
  */
-export interface CreditCard extends PaymentInstrument {
+export interface CreditCard extends CardPaymentInstrument {
 	/** The nickname of the credit card instrument in the container. */
 	cardName: string;
 
@@ -120,7 +122,7 @@ export interface CreditCard extends PaymentInstrument {
  *
  * @category Model
  */
-export interface GiftCard extends PaymentInstrument {
+export interface GiftCard extends CardPaymentInstrument {
 	/** The gift card program name. */
 	programName: string;
 
@@ -168,4 +170,19 @@ export interface SecondaryPaymentInstrument {
 
 	/** The amount of the payment to be paid using this instrument. */
 	amount: number;
+}
+
+export interface IndividualPaymentInstrument extends PaymentInstrument {
+	/** The type of the payment instrument. */
+	paymentInstrumentType: string;
+	paymentInstrumentDetail: {
+		/** The gift card program name. */
+		programName: string;
+
+		/** What {@link ChallengeResponse} is required to make a payment with this instrument */
+		stepUp: GiftCardStepUp;
+	};
+
+	/** An encrypted JSON object containing sensitive data */
+	cipherText?: string;
 }
