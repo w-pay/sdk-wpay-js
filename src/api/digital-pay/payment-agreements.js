@@ -5,7 +5,7 @@ const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { requiredParameterError } = require("./api-errors");
+const { requiredParameterError } = require("../api-errors");
 
 // create :: HttpApiClient -> (DigitalPayCreatePaymentAgreementRequest) -> Promise DigitalPayPaymentAgreementResponse
 const create = (client) => (createPaymentAgreementRequest) => {
@@ -77,7 +77,7 @@ const charge = (client) => (chargePaymentAgreementRequest) => {
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../types/api/DigitalPayApi/PaymentAgreements').PaymentAgreementsApi} */
+	/** @implements {import('../../../types/api/DigitalPayApi/PaymentAgreements').PaymentAgreementApi} */
 	return {
 		create: create(client),
 		update: update(client),

@@ -3,22 +3,22 @@ const { assertThat, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const apiFactory = require("../../src/api/dp-payments");
+const apiFactory = require("../../../src/api/digital-pay/openpay-payments");
 
-const { requiredParameterError } = require("../matchers/required-parameters");
-const { StubApiClient } = require("../stub-api-client");
+const { requiredParameterError } = require("../../matchers/required-parameters");
+const { StubApiClient } = require("../../stub-api-client");
 const {
-	digitalPayPaymentResponse,
-	digitalPayPaymentRequest,
-	digitalPayCompletionRequest,
-	digitalPayCompletionResponse,
-	digitalPayVoidRequest,
-	digitalPayRefundRequest,
-	digitalPayRefundResponse,
-	digitalPayVoidResponse
-} = require("../data/dp-payments");
+	openPayPaymentResponse,
+	openPayPaymentRequest,
+	openPayCompletionRequest,
+	openPayCompletionResponse,
+	openPayVoidRequest,
+	openPayRefundRequest,
+	openPayRefundResponse,
+	openPayVoidResponse
+} = require("../../data/dp-openpay-payments");
 
-describe("digitalPayApi", function () {
+describe("OpenPayApi", function () {
 	let apiClient;
 
 	let api;
@@ -31,7 +31,7 @@ describe("digitalPayApi", function () {
 
 	describe("pay", function () {
 		beforeEach(function () {
-			apiClient.response = digitalPayPaymentResponse();
+			apiClient.response = openPayPaymentResponse();
 		});
 
 		it("should throw error when payment request is missing", function () {
@@ -39,59 +39,29 @@ describe("digitalPayApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = digitalPayPaymentRequest();
+			const request = openPayPaymentRequest();
 			await api.pay(request);
 
 			assertThat(
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/payments",
+					url: "/openpay/payments",
 					body: is(request)
 				})
 			);
 		});
 
 		it("should create payment request", async function () {
-			const result = await api.pay(digitalPayPaymentRequest());
+			const result = await api.pay(openPayPaymentRequest());
 
-			assertThat(result, is(digitalPayPaymentResponse()));
-		});
-	});
-
-	describe("guestPayment", function () {
-		beforeEach(function () {
-			apiClient.response = digitalPayPaymentResponse();
-		});
-
-		it("should throw error when payment request is missing", function () {
-			assertThat(() => api.guestPayment(), throws(requiredParameterError("paymentRequest")));
-		});
-
-		it("should set request params", async function () {
-			const request = digitalPayPaymentRequest();
-			await api.guestPayment(request);
-
-			assertThat(
-				apiClient.request,
-				hasProperties({
-					method: HttpRequestMethod.POST,
-					url: "/guest/payments",
-					body: is(request)
-				})
-			);
-		});
-
-		it("should create payment request", async function () {
-			const result = await api.guestPayment(digitalPayPaymentRequest());
-
-			assertThat(result, is(digitalPayPaymentResponse()));
+			assertThat(result, is(openPayPaymentResponse()));
 		});
 	});
 
 	describe("complete", function () {
 		beforeEach(function () {
-			apiClient.response = digitalPayCompletionResponse();
+			apiClient.response = openPayCompletionResponse();
 		});
 
 		it("should throw error when completion request is missing", function () {
@@ -99,29 +69,29 @@ describe("digitalPayApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = digitalPayPaymentRequest();
+			const request = openPayPaymentRequest();
 			await api.complete(request);
 
 			assertThat(
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/completions",
+					url: "/openpay/completions",
 					body: is(request)
 				})
 			);
 		});
 
 		it("should complete payment request", async function () {
-			const result = await api.complete(digitalPayCompletionRequest());
+			const result = await api.complete(openPayCompletionRequest());
 
-			assertThat(result, is(digitalPayCompletionResponse()));
+			assertThat(result, is(openPayCompletionResponse()));
 		});
 	});
 
 	describe("voidPayment", function () {
 		beforeEach(function () {
-			apiClient.response = digitalPayVoidResponse();
+			apiClient.response = openPayVoidResponse();
 		});
 
 		it("should throw error when void request is missing", function () {
@@ -129,29 +99,29 @@ describe("digitalPayApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = digitalPayVoidRequest();
+			const request = openPayVoidRequest();
 			await api.voidPayment(request);
 
 			assertThat(
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/voids",
+					url: "/openpay/voids",
 					body: is(request)
 				})
 			);
 		});
 
 		it("should void payment request", async function () {
-			const result = await api.voidPayment(digitalPayVoidRequest());
+			const result = await api.voidPayment(openPayVoidRequest());
 
-			assertThat(result, is(digitalPayVoidResponse()));
+			assertThat(result, is(openPayVoidResponse()));
 		});
 	});
 
 	describe("refund", function () {
 		beforeEach(function () {
-			apiClient.response = digitalPayRefundResponse();
+			apiClient.response = openPayRefundResponse();
 		});
 
 		it("should throw error when payment request is missing", function () {
@@ -159,23 +129,23 @@ describe("digitalPayApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = digitalPayRefundRequest();
+			const request = openPayRefundRequest();
 			await api.refund(request);
 
 			assertThat(
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/refunds",
+					url: "/openpay/refunds",
 					body: is(request)
 				})
 			);
 		});
 
 		it("should refund payment request", async function () {
-			const result = await api.refund(digitalPayRefundRequest());
+			const result = await api.refund(openPayRefundRequest());
 
-			assertThat(result, is(digitalPayRefundResponse()));
+			assertThat(result, is(openPayRefundResponse()));
 		});
 	});
 });

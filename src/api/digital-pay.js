@@ -9,9 +9,9 @@ module.exports = (client) => {
 		googlePay: require("./wallet-management/google-pay")(client),
 		instruments: require("./wallet-management/instruments")(client),
 		merchants: require("./wallet-management/merchants")(client),
-		openPay: require("./dp-openpay-payments")(client),
-		// TODO: paymentAgreements: require("./dp")(client),
-		payments: require("./dp-payments")(client),
+		openPay: require("./digital-pay/openpay-payments")(client),
+		paymentAgreements: require("./digital-pay/payment-agreements")(client),
+		payments: require("./digital-pay/payments")(client),
 		paypal: require("./wallet-management/paypal")(client),
 		transactions: require("./wallet-management/transactions")(client),
 		wallet: require("./wallet-management/wallet")(client)

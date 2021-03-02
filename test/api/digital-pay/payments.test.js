@@ -3,22 +3,22 @@ const { assertThat, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const apiFactory = require("../../src/api/dp-openpay-payments");
+const apiFactory = require("../../../src/api/digital-pay/payments");
 
-const { requiredParameterError } = require("../matchers/required-parameters");
-const { StubApiClient } = require("../stub-api-client");
+const { requiredParameterError } = require("../../matchers/required-parameters");
+const { StubApiClient } = require("../../stub-api-client");
 const {
-	openPayPaymentResponse,
-	openPayPaymentRequest,
-	openPayCompletionRequest,
-	openPayCompletionResponse,
-	openPayVoidRequest,
-	openPayRefundRequest,
-	openPayRefundResponse,
-	openPayVoidResponse
-} = require("../data/dp-openpay-payments");
+	digitalPayPaymentResponse,
+	digitalPayPaymentRequest,
+	digitalPayCompletionRequest,
+	digitalPayCompletionResponse,
+	digitalPayVoidRequest,
+	digitalPayRefundRequest,
+	digitalPayRefundResponse,
+	digitalPayVoidResponse
+} = require("../../data/dp-payments");
 
-describe("OpenPayApi", function () {
+describe("digitalPayApi", function () {
 	let apiClient;
 
 	let api;
@@ -31,7 +31,7 @@ describe("OpenPayApi", function () {
 
 	describe("pay", function () {
 		beforeEach(function () {
-			apiClient.response = openPayPaymentResponse();
+			apiClient.response = digitalPayPaymentResponse();
 		});
 
 		it("should throw error when payment request is missing", function () {
@@ -39,29 +39,59 @@ describe("OpenPayApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = openPayPaymentRequest();
+			const request = digitalPayPaymentRequest();
 			await api.pay(request);
 
 			assertThat(
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/openpay/payments",
+					url: "/payments",
 					body: is(request)
 				})
 			);
 		});
 
 		it("should create payment request", async function () {
-			const result = await api.pay(openPayPaymentRequest());
+			const result = await api.pay(digitalPayPaymentRequest());
 
-			assertThat(result, is(openPayPaymentResponse()));
+			assertThat(result, is(digitalPayPaymentResponse()));
+		});
+	});
+
+	describe("guestPayment", function () {
+		beforeEach(function () {
+			apiClient.response = digitalPayPaymentResponse();
+		});
+
+		it("should throw error when payment request is missing", function () {
+			assertThat(() => api.guestPayment(), throws(requiredParameterError("paymentRequest")));
+		});
+
+		it("should set request params", async function () {
+			const request = digitalPayPaymentRequest();
+			await api.guestPayment(request);
+
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.POST,
+					url: "/guest/payments",
+					body: is(request)
+				})
+			);
+		});
+
+		it("should create payment request", async function () {
+			const result = await api.guestPayment(digitalPayPaymentRequest());
+
+			assertThat(result, is(digitalPayPaymentResponse()));
 		});
 	});
 
 	describe("complete", function () {
 		beforeEach(function () {
-			apiClient.response = openPayCompletionResponse();
+			apiClient.response = digitalPayCompletionResponse();
 		});
 
 		it("should throw error when completion request is missing", function () {
@@ -69,29 +99,29 @@ describe("OpenPayApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = openPayPaymentRequest();
+			const request = digitalPayPaymentRequest();
 			await api.complete(request);
 
 			assertThat(
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/openpay/completions",
+					url: "/completions",
 					body: is(request)
 				})
 			);
 		});
 
 		it("should complete payment request", async function () {
-			const result = await api.complete(openPayCompletionRequest());
+			const result = await api.complete(digitalPayCompletionRequest());
 
-			assertThat(result, is(openPayCompletionResponse()));
+			assertThat(result, is(digitalPayCompletionResponse()));
 		});
 	});
 
 	describe("voidPayment", function () {
 		beforeEach(function () {
-			apiClient.response = openPayVoidResponse();
+			apiClient.response = digitalPayVoidResponse();
 		});
 
 		it("should throw error when void request is missing", function () {
@@ -99,29 +129,29 @@ describe("OpenPayApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = openPayVoidRequest();
+			const request = digitalPayVoidRequest();
 			await api.voidPayment(request);
 
 			assertThat(
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/openpay/voids",
+					url: "/voids",
 					body: is(request)
 				})
 			);
 		});
 
 		it("should void payment request", async function () {
-			const result = await api.voidPayment(openPayVoidRequest());
+			const result = await api.voidPayment(digitalPayVoidRequest());
 
-			assertThat(result, is(openPayVoidResponse()));
+			assertThat(result, is(digitalPayVoidResponse()));
 		});
 	});
 
 	describe("refund", function () {
 		beforeEach(function () {
-			apiClient.response = openPayRefundResponse();
+			apiClient.response = digitalPayRefundResponse();
 		});
 
 		it("should throw error when payment request is missing", function () {
@@ -129,23 +159,23 @@ describe("OpenPayApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = openPayRefundRequest();
+			const request = digitalPayRefundRequest();
 			await api.refund(request);
 
 			assertThat(
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/openpay/refunds",
+					url: "/refunds",
 					body: is(request)
 				})
 			);
 		});
 
 		it("should refund payment request", async function () {
-			const result = await api.refund(openPayRefundRequest());
+			const result = await api.refund(digitalPayRefundRequest());
 
-			assertThat(result, is(openPayRefundResponse()));
+			assertThat(result, is(digitalPayRefundResponse()));
 		});
 	});
 });

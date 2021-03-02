@@ -5,9 +5,9 @@ const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { requiredParameterError } = require("./api-errors");
+const { requiredParameterError } = require("../api-errors");
 
-// pay :: HttpApiClient -> (OpenPayPaymentRequest) -> Promise OpenPayPaymentResponse
+// pay :: HttpApiClient -> (DigitalPayPaymentRequest) -> Promise DigitalPayPaymentResponse
 const pay = (client) => (paymentRequest) => {
 	if (!paymentRequest) {
 		throw requiredParameterError("paymentRequest");
@@ -16,13 +16,28 @@ const pay = (client) => (paymentRequest) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.POST,
-			url: "/openpay/payments",
+			url: "/payments",
 			body: paymentRequest
 		})
 	);
 };
 
-// complete :: HttpApiClient -> (OpenPayCompletionRequest) -> Promise OpenPayCompletionResponse
+// guestPayment :: HttpApiClient -> (DigitalPayPaymentRequest) -> Promise DigitalPayPaymentResponse
+const guestPayment = (client) => (paymentRequest) => {
+	if (!paymentRequest) {
+		throw requiredParameterError("paymentRequest");
+	}
+
+	return asyncToPromise(
+		pipeK(client)({
+			method: HttpRequestMethod.POST,
+			url: "/guest/payments",
+			body: paymentRequest
+		})
+	);
+};
+
+// complete :: HttpApiClient -> (DigitalPayCompletionRequest) -> Promise DigitalPayCompletionResponse
 const complete = (client) => (completionRequest) => {
 	if (!completionRequest) {
 		throw requiredParameterError("completionRequest");
@@ -31,13 +46,13 @@ const complete = (client) => (completionRequest) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.POST,
-			url: "/openpay/completions",
+			url: "/completions",
 			body: completionRequest
 		})
 	);
 };
 
-// void :: HttpApiClient -> (OpenPayVoidRequest) -> Promise OpenPayVoidResponse
+// voidPayment :: HttpApiClient -> (DigitalPayVoidRequest) -> Promise DigitalPayVoidResponse
 const voidPayment = (client) => (voidRequest) => {
 	if (!voidRequest) {
 		throw requiredParameterError("voidRequest");
@@ -46,13 +61,13 @@ const voidPayment = (client) => (voidRequest) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.POST,
-			url: "/openpay/voids",
+			url: "/voids",
 			body: voidRequest
 		})
 	);
 };
 
-// refund :: HttpApiClient -> (OpenPayRefundRequest) -> Promise OpenPayRefundResponse
+// refund :: HttpApiClient -> (DigitalPayRefundRequest) -> Promise DigitalPayRefundResponse
 const refund = (client) => (refundRequest) => {
 	if (!refundRequest) {
 		throw requiredParameterError("refundRequest");
@@ -61,16 +76,17 @@ const refund = (client) => (refundRequest) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.POST,
-			url: "/openpay/refunds",
+			url: "/refunds",
 			body: refundRequest
 		})
 	);
 };
 
 module.exports = (client) => {
-	/** @implements {import('../../types/api/DigitalPayApi/OpenPay').OpenPayApi} */
+	/** @implements {import('../../../types/api/DigitalPayApi/Payments').PaymentApi} */
 	return {
 		pay: pay(client),
+		guestPayment: guestPayment(client),
 		complete: complete(client),
 		voidPayment: voidPayment(client),
 		refund: refund(client)

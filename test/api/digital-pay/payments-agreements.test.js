@@ -4,16 +4,16 @@ const { assertThat, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const apiFactory = require("../../src/api/dp-payment-agreements");
+const apiFactory = require("../../../src/api/digital-pay/payment-agreements");
 
-const { requiredParameterError } = require("../matchers/required-parameters");
-const { StubApiClient } = require("../stub-api-client");
+const { requiredParameterError } = require("../../matchers/required-parameters");
+const { StubApiClient } = require("../../stub-api-client");
 const {
 	digitalPayCreatePaymentAgreementRequest,
 	digitalPayPaymentAgreementResponse,
 	digitalPayUpdatePaymentAgreementRequest,
 	digitalPayChargePaymentAgreementRequest
-} = require("../data/dp-payment-agreements");
+} = require("../../data/dp-payment-agreements");
 
 describe("PaymentAgreementsApi", function () {
 	let apiClient;
