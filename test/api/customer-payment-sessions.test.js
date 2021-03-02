@@ -213,6 +213,7 @@ describe("CustomerPaymentSessionsApi", function () {
 
 		it("should set optional request params", async function () {
 			const secondaryPaymentInstruments = [aSecondaryPaymentInstrument()];
+			const skipRollback = true;
 			const clientReference = "this is a reference";
 			const challengeResponses = [aChallengeResponse()];
 
@@ -220,6 +221,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				paymentSessionId,
 				primaryInstrument,
 				secondaryPaymentInstruments,
+				skipRollback,
 				clientReference,
 				challengeResponses
 			);
@@ -232,6 +234,7 @@ describe("CustomerPaymentSessionsApi", function () {
 							paymentDetailsDTOFrom(
 								primaryInstrument,
 								secondaryPaymentInstruments,
+								skipRollback,
 								clientReference
 							)
 						),

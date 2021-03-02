@@ -7,6 +7,7 @@ const { urlFrom } = require("./url-matches");
 const paymentDetailsDTOFrom = (
 	primaryPaymentInstrument,
 	secondaryInstruments = [],
+	skipRollback = undefined,
 	clientReference = undefined
 ) => ({
 	matches(actual) {
@@ -17,6 +18,7 @@ const paymentDetailsDTOFrom = (
 			assertThat(instrument, is(secondaryInstrumentDTOFrom(secondaryInstruments[i])));
 		});
 
+		assertThat(actual.skipRollback, is(skipRollback));
 		assertThat(actual.clientReference, is(clientReference));
 
 		return true;
@@ -27,6 +29,7 @@ const paymentDetailsDTOFrom = (
 			`Payment details containing ${JSON.stringify({
 				primaryPaymentInstrument,
 				secondaryInstruments,
+				skipRollback,
 				clientReference
 			})}`
 		);

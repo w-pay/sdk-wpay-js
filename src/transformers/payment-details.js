@@ -6,13 +6,22 @@ const toSecondaryInstrument = (instrument) => ({
 	amount: instrument.amount
 });
 
-exports.toPaymentDetailsDTO = (primaryInstrument, secondaryInstruments, clientReference) => {
+exports.toPaymentDetailsDTO = (
+	primaryInstrument,
+	secondaryInstruments,
+	skipRollback,
+	clientReference
+) => {
 	const dto = {
 		primaryInstrumentId: primaryInstrument.paymentInstrumentId,
 		secondaryInstruments: secondaryInstruments
 			? secondaryInstruments.map(toSecondaryInstrument)
 			: []
 	};
+
+	if (skipRollback) {
+		dto.skipRollback = skipRollback;
+	}
 
 	if (clientReference) {
 		dto.clientReference = clientReference;

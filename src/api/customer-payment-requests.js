@@ -53,11 +53,12 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 };
 
 // returns an uncurried function for data so that defaults can be omitted
-// makePayment :: HttpApiClient -> (String, PaymentInstrumentIdentifier, Array, String, Array) -> Promise CustomerTransactionSummary
+// makePayment :: HttpApiClient -> (String, PaymentInstrumentIdentifier, Array, Boolean, String, Array) -> Promise CustomerTransactionSummary
 const makePayment = (client) => (
 	paymentRequestId,
 	primaryInstrument,
 	secondaryInstruments,
+	skipRollback,
 	clientReference,
 	challengeResponses
 ) => {
@@ -81,7 +82,12 @@ const makePayment = (client) => (
 				paymentRequestId
 			},
 			body: {
-				data: toPaymentDetailsDTO(primaryInstrument, secondaryInstruments, clientReference),
+				data: toPaymentDetailsDTO(
+					primaryInstrument,
+					secondaryInstruments,
+					skipRollback,
+					clientReference
+				),
 				meta: {
 					challengeResponses: challengeResponses ? challengeResponses : []
 				}

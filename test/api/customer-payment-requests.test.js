@@ -142,6 +142,7 @@ describe("CustomerPaymentRequestsApi", function () {
 		it("should set optional parameters", async function () {
 			const primaryPaymentInstrument = aSelectedPaymentInstrument();
 			const secondaryPaymentInstruments = [aSecondaryPaymentInstrument()];
+			const skipRollback = true;
 			const clientReference = "this is a reference";
 			const challengeResponses = [aChallengeResponse()];
 
@@ -149,6 +150,7 @@ describe("CustomerPaymentRequestsApi", function () {
 				uuid(),
 				primaryPaymentInstrument,
 				secondaryPaymentInstruments,
+				skipRollback,
 				clientReference,
 				challengeResponses
 			);
@@ -161,6 +163,7 @@ describe("CustomerPaymentRequestsApi", function () {
 							paymentDetailsDTOFrom(
 								primaryPaymentInstrument,
 								secondaryPaymentInstruments,
+								skipRollback,
 								clientReference
 							)
 						),

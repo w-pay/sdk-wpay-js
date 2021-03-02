@@ -100,6 +100,7 @@ const preApprove = (client) => (
 	paymentSessionId,
 	primaryInstrument,
 	secondaryInstruments,
+	skipRollback,
 	clientReference,
 	challengeResponses
 ) => {
@@ -122,7 +123,12 @@ const preApprove = (client) => (
 				paymentSessionId
 			},
 			body: {
-				data: toPaymentDetailsDTO(primaryInstrument, secondaryInstruments, clientReference),
+				data: toPaymentDetailsDTO(
+					primaryInstrument,
+					secondaryInstruments,
+					skipRollback,
+					clientReference
+				),
 				meta: {
 					challengeResponses: challengeResponses ? challengeResponses : []
 				}
