@@ -8,7 +8,7 @@ export interface GooglePayApi {
 	/**
 	 * Create a payment token for a provided Google Pay wallet item.
 	 *
-	 * @param
+	 * @param tokenizeGooglePayRequest Detail of the Google Pay wallet item to be tokenized.
 	 */
 	tokenize(
 		tokenizeGooglePayRequest: TokenizeGooglePayRequest
@@ -17,7 +17,7 @@ export interface GooglePayApi {
 	/**
 	 * Create a payment token for a provided Google Pay wallet item of a guest user.
 	 *
-	 * @param
+	 * @param tokenizeGooglePayRequest Detail of the Google Pay wallet item to be tokenized.
 	 */
 	guestTokenize(
 		tokenizeGooglePayRequest: TokenizeGooglePayRequest
@@ -26,8 +26,8 @@ export interface GooglePayApi {
 	/**
 	 * Update a Google Pay payment instrument.
 	 *
-	 * @param
-	 * @param
+	 * @param paymentToken The payment token of the google pay payment instrument to update.
+	 * @param tokenizeGooglePayRequest Detail of the Google Pay wallet item to be tokenized.
 	 */
 	update(
 		paymentToken: string,

@@ -5,7 +5,7 @@ export interface TransactionsApi {
 	/**
 	 * Get the transaction history of a consumer.
 	 *
-	 * @param
+	 * @param transactionHistoryRequest Detail about transactions to recieve history for.
 	 */
 	history(
 		transactionHistoryRequest: TransactionHistoryRequest

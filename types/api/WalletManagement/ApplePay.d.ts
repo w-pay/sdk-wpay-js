@@ -8,14 +8,14 @@ export interface ApplePayApi {
 	/**
 	 * Create a payment instrument id for a provided Apple Pay wallet item.
 	 *
-	 * @param
+	 * @param tokenizeApplePayRequest Detail of the Apple Pay wallet item to be tokenized.
 	 */
 	tokenize(tokenizeApplePayRequest: TokenizeApplePayRequest): Promise<TokenizeApplePayResponse>;
 
 	/**
 	 * Create a payment instrument id for a provided Apple Pay wallet item of a guest user.
 	 *
-	 * @param
+	 * @param tokenizeApplePayRequest Detail of the Apple Pay wallet item to be tokenized.
 	 */
 	guestTokenize(
 		tokenizeApplePayRequest: TokenizeApplePayRequest
@@ -24,8 +24,8 @@ export interface ApplePayApi {
 	/**
 	 * Update an Apple Pay payment instrument.
 	 *
-	 * @param
-	 * @param
+	 * @param paymentInstrumentId The id of the Apple Pay payment instrument to update.
+	 * @param tokenizeApplePayRequest Detail of the Apple Pay wallet item to be tokenized.
 	 */
 	update(
 		paymentInstrumentId: string,

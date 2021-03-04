@@ -8,7 +8,7 @@ export interface AndroidPayApi {
 	/**
 	 * Create a payment instrument id for a provided Android Pay wallet item.
 	 *
-	 * @param
+	 * @param tokenizeAndroidPayRequest Detail of the Android Pay wallet item to be tokenized.
 	 */
 	tokenize(
 		tokenizeAndroidPayRequest: TokenizeAndroidPayRequest
@@ -17,8 +17,8 @@ export interface AndroidPayApi {
 	/**
 	 * Update an Android Pay payment instrument.
 	 *
-	 * @param
-	 * @param
+	 * @param paymentInstrumentId The id of the Android Pay payment instrument to update.
+	 * @param tokenizeAndroidPayRequest Detail of the Android Pay wallet item to be tokenized.
 	 */
 	update(
 		paymentInstrumentId: string,
