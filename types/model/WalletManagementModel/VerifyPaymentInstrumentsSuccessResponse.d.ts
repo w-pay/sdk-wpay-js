@@ -1,4 +1,8 @@
-/* The JSON success response structure of the Verify Payment InstrumentsApi endpoint. */
+/**
+ * The JSON success response structure of the Verify Payment InstrumentsApi endpoint.
+ *
+ * @category Model
+ */
 export interface VerifyPaymentInstrumentsSuccessResponse {
 	/* Container reference in the transaction logs. This number uniquely identifies the whole/grouped transaction in the container. */
 	transactionReceipt: string;

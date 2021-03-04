@@ -1,4 +1,8 @@
-/* The JSON request structure of the Transaction History endpoint. */
+/**
+ * The JSON request structure of the Transaction History endpoint.
+ *
+ * @category Model
+ */
 export interface TransactionHistoryRequest {
 	/* The container transaction types to include in the results. */
 	transactionTypes: "PREAUTH" | "PURCHASE" | "COMPLETION" | "VOID" | "REFUND"[];

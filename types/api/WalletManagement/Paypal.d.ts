@@ -8,14 +8,14 @@ export interface PayPalApi {
 	/**
 	 * Create a paymment intrument id for a provided paypal account.
 	 *
-	 * @param
+	 * @param tokenizePaypalRequest Detail of the paypal account to be tokenized.
 	 */
 	tokenize(tokenizePaypalRequest: TokenizePaypalRequest): Promise<TokenizePaypalResponse>;
 
 	/**
 	 * 	Create a paymment intrument id for a provided paypal account of a guest user.
 	 *
-	 * @param
+	 * @param tokenizePaypalRequest Detail of the paypal account to be tokenized.
 	 */
 	guestTokenize(tokenizePaypalRequest: TokenizePaypalRequest): Promise<TokenizePaypalResponse>;
 }

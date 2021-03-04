@@ -1,4 +1,8 @@
-/* The JSON request structure of the Verify Payment InstrumentsApi endpoint. */
+/**
+ * The JSON request structure of the Verify Payment InstrumentsApi endpoint.
+ *
+ * @category Model
+ */
 export interface VerifyPaymentInstrumentsRequest {
 	/* A merchant application specific reference number. This number should uniquely identify the transaction in the merchant’s system.*/
 	clientReference: string;
