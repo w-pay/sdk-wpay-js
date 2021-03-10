@@ -45,7 +45,7 @@ const getById = (client) => (paymentToken) => {
 };
 
 // create :: HttpApiClient -> (CreatePaymentAgreementRequest) -> Promise PaymentAgreements
-const create = (client) => (createPaymentAgreementRequest) => {
+const create = (client) => (createPaymentAgreementRequest, challengeResponses) => {
 	if (!createPaymentAgreementRequest) {
 		throw requiredParameterError("createPaymentAgreementRequest");
 	}
@@ -57,13 +57,22 @@ const create = (client) => (createPaymentAgreementRequest) => {
 		)({
 			method: HttpRequestMethod.POST,
 			url: "/instore/customer/payments/agreements",
-			body: createPaymentAgreementRequest
+			body: {
+				data: createPaymentAgreementRequest,
+				meta: {
+					challengeResponses: challengeResponses ? challengeResponses : []
+				}
+			}
 		})
 	);
 };
 
 // update :: HttpApiClient -> (String, UpdatePaymentAgreementRequest) -> Promise PaymentAgreements
-const update = (client) => (paymentToken, updatePaymentAgreementRequest) => {
+const update = (client) => (
+	paymentToken,
+	updatePaymentAgreementRequest,
+	challengeResponses
+) => {
 	if (!paymentToken) {
 		throw requiredParameterError("paymentToken");
 	}
@@ -82,7 +91,12 @@ const update = (client) => (paymentToken, updatePaymentAgreementRequest) => {
 			pathParams: {
 				paymentToken
 			},
-			body: updatePaymentAgreementRequest
+			body: {
+				data: updatePaymentAgreementRequest,
+				meta: {
+					challengeResponses: challengeResponses ? challengeResponses : []
+				}
+			}
 		})
 	);
 };

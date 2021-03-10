@@ -2,7 +2,8 @@ import {
 	PaymentAgreement,
 	PaymentAgreements,
 	CreatePaymentAgreementRequest,
-	UpdatePaymentAgreementRequest
+	UpdatePaymentAgreementRequest,
+	ChallengeResponse
 } from "../model";
 
 /**
@@ -25,17 +26,20 @@ export interface CustomerPaymentAgreementsApi {
 	 * Create a {@link PaymentAgreement}
 	 *
 	 * @param paymentAgreement The details for the new payment agreement
+	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
 	 */
-	create(paymentAgreement: CreatePaymentAgreementRequest): Promise<PaymentAgreement>;
+	create(paymentAgreement: CreatePaymentAgreementRequest, challengeResponses?: ChallengeResponse[]): Promise<PaymentAgreement>;
 
 	/**
 	 * Update a {@link PaymentAgreement}
 	 *
 	 * @param paymentToken The payment token to update
 	 * @param paymentAgreement The updates to apply to the payment agreement
+	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
 	 */
 	update(
 		paymentToken: string,
-		paymentAgreement: UpdatePaymentAgreementRequest
+		paymentAgreement: UpdatePaymentAgreementRequest,
+		challengeResponses?: ChallengeResponse[]
 	): Promise<PaymentAgreement>;
 }

@@ -13,10 +13,12 @@ const createCustomerSDK = (httpClient, options) => {
 		admin: api.administration(client),
 		dp: api.digitalPay(client),
 		instruments: api.paymentInstruments(client),
+		paymentAgreements: api.customerPaymentAgreements(client),
 		paymentRequests: api.customerPaymentRequests(client),
 		paymentSessions: api.customerPaymentSessions(client),
 		preferences: api.customerPreferences(client),
 		transactions: api.customerTransactions(client),
+		termsAndConditions: api.customerTermsAndConditions(client),
 		options
 	};
 };

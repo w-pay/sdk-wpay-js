@@ -13,6 +13,7 @@ const createMerchantSDK = (httpClient, options) => {
 		admin: api.administration(client),
 		dp: api.digitalPay(client),
 		payments: api.merchantPayments(client),
+		paymentAgreements: api.merchantPaymentAgreements(client),
 		paymentSession: api.merchantPaymentSessions(client),
 		preferences: api.merchantPreferences(client),
 		qr: api.qrCode(client),
