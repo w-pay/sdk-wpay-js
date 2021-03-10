@@ -1,4 +1,8 @@
-/* The JSON response structure of the List Payment InstrumentsApi endpoint. */
+/**
+ * The JSON response structure of the List Payment InstrumentsApi endpoint.
+ *
+ * @category Model
+ */
 export interface ListPaymentInstrumentsResponse {
 	creditCards: CreditCardDetails[];
 	giftCards: GiftCardDetails[];

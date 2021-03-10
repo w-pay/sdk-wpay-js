@@ -10,14 +10,14 @@ export interface GiftcardsApi {
 	/**
 	 * Create a paymment intrument id for a provided gift card.
 	 *
-	 * @param
+	 * @param tokenizeGiftcardRequest Detail of the Gift Card to be tokenized.
 	 */
 	tokenize(tokenizeGiftcardRequest: TokenizeGiftcardRequest): Promise<TokenizeGiftcardResponse>;
 
 	/**
 	 * Create a paymment intrument id for a provided gift card of a guest user.
 	 *
-	 * @param
+	 * @param tokenizeGiftcardRequest Detail of the Gift Card to be tokenized.
 	 */
 	guestTokenize(
 		tokenizeGiftcardRequest: TokenizeGiftcardRequest
@@ -26,7 +26,7 @@ export interface GiftcardsApi {
 	/**
 	 * Get the balance and expiryinfo for the provided gift cards. This API is rate limited to 5 requests per minute per shopper id.
 	 *
-	 * @param
+	 * @param giftcardsBalanceRequest Detail of the Gift Card to recieve balences for.
 	 */
 	balance(giftcardsBalanceRequest: GiftcardsBalanceRequest): Promise<GiftcardsBalanceResponse>;
 }

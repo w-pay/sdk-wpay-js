@@ -1,4 +1,8 @@
-/* The JSON response structure of the Transaction History endpoint. */
+/**
+ * The JSON response structure of the Transaction History endpoint.
+ *
+ * @category Model
+ */
 export interface TransactionHistoryResponse {
 	/* The number of transactions returned in the results. */
 	returned: number;

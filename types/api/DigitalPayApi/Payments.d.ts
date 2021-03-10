@@ -20,8 +20,6 @@ export interface PaymentApi {
 	/**
 	 * Make guest payments to a merchant using guest payment intruments.
 	 *
-	 * @param completeRequest
-	 *
 	 * @param paymentRequest detail of payment to be made
 	 */
 	guestPayment(paymentRequest: DigitalPayPaymentRequest): Promise<DigitalPayPaymentResponse>;

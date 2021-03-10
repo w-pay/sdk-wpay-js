@@ -12,7 +12,7 @@ export interface InstrumentsApi {
 	/**
 	 * Import a consumers credit cards (from WebPay) and paypal accounts to a new wallet. This API is IP restricted to allow unauthenticated server side calls.
 	 *
-	 * @param
+	 * @param importPaymentInstrumentsRequest Details of the consumers credits and paypal accounts to be imported.
 	 */
 	import(
 		importPaymentInstrumentsRequest: ImportPaymentInstrumentsRequest
@@ -21,7 +21,7 @@ export interface InstrumentsApi {
 	/**
 	 * Verify if a provided payment instrument is valid and optionally perform a fraud check on the instrument.
 	 *
-	 * @param
+	 * @param verifyPaymentInstrumentsRequest Details of the payment instrument to be verified.
 	 */
 	verify(
 		verifyPaymentInstrumentsRequest: VerifyPaymentInstrumentsRequest
@@ -29,23 +29,22 @@ export interface InstrumentsApi {
 
 	/**
 	 * Get the stored payment intruments of a consumer.
-	 *
-	 * @param
 	 */
 	getList(): Promise<ListPaymentInstrumentsResponse>;
 
 	/**
 	 * Get the stored payment intruments of a consumer. This API is IP restricted to allow unauthenticated server side calls.
 	 *
+	 * @param listPaymentInstrumentsRequest Details of the consumer to list payment instruments for.
 	 */
 	postList(
 		listPaymentInstrumentsRequest: ListPaymentInstrumentsRequest
 	): Promise<ListPaymentInstrumentsResponse>;
 
 	/**
-	 * Get the stored payment intruments of a consumer. This API is IP restricted to allow unauthenticated server side calls.
+	 * Delete a stored payment intrument of a consumer.
 	 *
-	 * @param
+	 * @param paymentInstrumentId The id of the payment instrument to delete.
 	 */
 	delete(paymentInstrumentId: string): Promise<Record<string, unknown>>;
 }

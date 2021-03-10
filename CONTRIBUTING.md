@@ -79,3 +79,9 @@ developers quickly understand how to use the components of the SDK.
 In accordance with [SemVer](https://semver.org/) the SDK should see the version changed based
 on the type of changes occurring. Breaking changes to the SDK should really occur without a
 breaking change in the API specification, which would see the major versions bumped accordingly.
+
+## Publishing
+
+Currently, the SDK is published to an internal WPay NPM registry on pushing/merging to the `main` branch. In order for the publishing to succeed the version number of the module needs to be incremented pre-merging.
+
+The development strategy is that work should take place on an `uplift` branch and merged when the changes are ready to be published, including the version bump as required under the SemVer rules.

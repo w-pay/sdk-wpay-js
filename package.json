@@ -1,6 +1,6 @@
 {
   "name": "@wpay/sdk",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "Library that can facilitate JS applications accessing the WPay API.",
   "main": "src/index.js",
   "types": "types",
@@ -22,9 +22,10 @@
     "test:pack:merchant": "karma start test/webpack/merchant/karma.config.js --single-run"
   },
   "files": [
+    "dist",
+    "docs",
     "src",
-    "types",
-    "docs"
+    "types"
   ],
   "repository": {
     "type": "git",

@@ -8,7 +8,7 @@ export interface WalletApi {
 	/**
 	 * Delete a consumers wallet. This API is IP restricted to allow unauthenticated server side calls.
 	 *
-	 * @param
+	 * @param walletDeleteRequest Detail of the consumer who will have their the wallet deleted.
 	 */
 	delete(walletDeleteRequest: WalletDeleteRequest): Promise<WalletDeleteResponse>;
 }
