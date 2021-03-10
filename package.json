@@ -22,9 +22,10 @@
     "test:pack:merchant": "karma start test/webpack/merchant/karma.config.js --single-run"
   },
   "files": [
+    "dist",
+    "docs",
     "src",
-    "types",
-    "docs"
+    "types"
   ],
   "repository": {
     "type": "git",
