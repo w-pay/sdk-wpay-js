@@ -53,7 +53,7 @@ const unmarshallBodyOrError = (result) =>
 const resultHandler = () =>
 	ifElse(
 		isSuccessfulResult,
-		pipeK(unmarshallBodyOrError, extractHttpBody),
+		pipeK(unmarshallBodyOrError, pipe(extractHttpBody, Async.of)),
 		toHttpErrorException
 	);
 
