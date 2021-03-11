@@ -1,6 +1,8 @@
 import { HttpClientFactory } from "@api-sdk-creator/http-api-client";
 
 import { AdministrationApi } from "./api";
+import { CustomerPaymentAgreementsApi } from "./api";
+import { CustomerTermsAndConditionsApi } from "./api";
 import { CustomerPaymentRequestsApi } from "./api";
 import { CustomerPaymentSessionsApi } from "./api";
 import { CustomerPreferencesApi } from "./api";
@@ -32,9 +34,11 @@ export interface WPayCustomerApi {
 	admin: AdministrationApi;
 	dp: DigitalPayApi;
 	instruments: PaymentInstrumentsApi;
+	paymentAgreements: CustomerPaymentAgreementsApi;
 	paymentRequests: CustomerPaymentRequestsApi;
 	paymentSessions: CustomerPaymentSessionsApi;
 	preferences: CustomerPreferencesApi;
+	termsAndConditions: CustomerTermsAndConditionsApi;
 	transactions: CustomerTransactionsApi;
 
 	/**

@@ -9,7 +9,9 @@ const {
 } = require("../matchers/payment-agreements-matchers");
 
 const apiFactory = require("../../src/api/customer-payment-agreements");
-
+const { aChallengeResponse } = require("../data/challenge-response");
+const { body, withData, withMeta } = require("../matchers/request-body-matchers");
+const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
 const {
@@ -106,14 +108,17 @@ describe("CustomerPaymentAgreementsApi", function () {
 
 		it("should set request params", async function () {
 			const request = CreatePaymentAgreementRequest();
-			await api.create(request);
+			const challengeResponses = [aChallengeResponse()];
+			await api.create(request, challengeResponses);
 
 			assertThat(
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
 					url: "/instore/customer/payments/agreements",
-					body: is(request)
+					body: is(
+						body(withData(request), withMeta(challengeResponsesDTOFrom(challengeResponses)))
+					)
 				})
 			);
 		});
@@ -148,15 +153,23 @@ describe("CustomerPaymentAgreementsApi", function () {
 
 		it("should set request params", async function () {
 			const request = UpdatePaymentAgreementRequest();
-			await api.update(paymentToken, request);
+			const challengeResponses = [aChallengeResponse()];
+			await api.update(paymentToken, request, challengeResponses);
 
 			assertThat(
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
 					url: "/instore/customer/payments/agreements/:paymentToken",
-					body: is(request)
+					pathParams: {
+						paymentToken
+					}
 				})
+			);
+
+			assertThat(
+				apiClient.request.body,
+				is(body(withData(request), withMeta(challengeResponsesDTOFrom(challengeResponses))))
 			);
 		});
 
