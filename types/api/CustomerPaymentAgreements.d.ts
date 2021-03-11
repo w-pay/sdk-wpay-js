@@ -28,7 +28,10 @@ export interface CustomerPaymentAgreementsApi {
 	 * @param paymentAgreement The details for the new payment agreement
 	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
 	 */
-	create(paymentAgreement: CreatePaymentAgreementRequest, challengeResponses?: ChallengeResponse[]): Promise<PaymentAgreement>;
+	create(
+		paymentAgreement: CreatePaymentAgreementRequest,
+		challengeResponses?: ChallengeResponse[]
+	): Promise<PaymentAgreement>;
 
 	/**
 	 * Update a {@link PaymentAgreement}
