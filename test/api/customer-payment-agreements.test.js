@@ -160,7 +160,10 @@ describe("CustomerPaymentAgreementsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.POST,
-					url: "/instore/customer/payments/agreements/:paymentToken"
+					url: "/instore/customer/payments/agreements/:paymentToken",
+					pathParams: {
+						paymentToken
+					}
 				})
 			);
 
