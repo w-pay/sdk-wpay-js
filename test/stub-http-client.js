@@ -2,6 +2,8 @@
 
 const Async = require("crocks/Async");
 
+const { JSON_MIME_TYPE } = require("@api-sdk-creator/http-api-client");
+
 class StubHttpClient {
 	constructor() {
 		this.request = null;
@@ -9,7 +11,9 @@ class StubHttpClient {
 		this.response = {
 			statusCode: 200,
 			statusMessage: "OK",
-			headers: {}
+			headers: {
+				"content-type": JSON_MIME_TYPE
+			}
 		};
 	}
 
