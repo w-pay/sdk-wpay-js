@@ -1,13 +1,15 @@
 "use strict";
 
-const { assertThat, is } = require("hamjest");
+const { assertThat, hasProperties, is } = require("hamjest");
+
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { StubApiClient } = require("../../stub-api-client");
 const {
 	WalletDeleteResponseDTO
 } = require("../../data/wallet-management/WalletDeleteResponse");
-const { WalletDeleteRequestDTO } = require("../../data/wallet-management/WalletDeleteRequest");
+const { aWalletDeleteRequest } = require("../../data/wallet-management/WalletDeleteRequest");
 const apiFactory = require("../../../src/api/wallet-management/wallet");
+const { X_EVERYDAY_PAY_WALLET } = require("../../../src/headers/header-names");
 
 describe("Wallet", function () {
 	let apiClient;
@@ -24,16 +26,25 @@ describe("Wallet", function () {
 
 	describe("delete", function () {
 		it("should set request params", async function () {
-			await api.delete(WalletDeleteRequestDTO());
+			await api.delete(aWalletDeleteRequest());
 			const request = apiClient.request;
 
-			assertThat(request.method, is(HttpRequestMethod.POST));
-			assertThat(request.url, is("/wallet/delete"));
-			assertThat(request.body, is(WalletDeleteRequestDTO()));
+			assertThat(
+				request,
+				hasProperties({
+					method: HttpRequestMethod.POST,
+					url: "/wallet/delete",
+					headers: {
+						[X_EVERYDAY_PAY_WALLET]: "false"
+					},
+					body: is(aWalletDeleteRequest())
+				})
+			);
 		});
 
 		it("should return WalletDeleteResponseDTO", async function () {
-			const result = await api.delete();
+			const result = await api.delete(aWalletDeleteRequest());
+
 			assertThat(result.data, is(WalletDeleteResponseDTO()));
 		});
 	});
