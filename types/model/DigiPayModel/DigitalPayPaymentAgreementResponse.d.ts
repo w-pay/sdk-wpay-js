@@ -31,7 +31,7 @@ export interface DigitalPayPaymentAgreementResponse {
 	fraudResponse?: DigitalPayFraudResponse;
 
 	/** Extended transaction data object */
-	extendedTransactionData?: DigitalPayExtendedTransactionData;
+	extendedTransactionData?: DigitalPayExtendedTransactionData[];
 
 	/**
 	 * The external service code (from eg. Webpay).
