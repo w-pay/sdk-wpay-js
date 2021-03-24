@@ -225,8 +225,7 @@ interface PaymentAgreementDetails {
 	paymentToken: string;
 
 	/* The status of the payment agreement in the container. */
-	status: "UNVERIFIED_PERSISTENT";
-	VERIFIED;
+	status: "UNVERIFIED_PERSISTENT" | "VERIFIED";
 
 	/* The timestamp the payment agreement was last updated in the container. The timestamp format is ISO8601. */
 	lastUpdated: string;
@@ -241,9 +240,7 @@ interface PaymentAgreementDetails {
 	allowed: boolean;
 
 	/* The payment agreement type. */
-	type: "RECURRING";
-	ADHOC;
-	INSTALLMENT;
+	type: "RECURRING" | "ADHOC" | "INSTALLMENT";
 
 	/* The payment agreement payment instrument id that will be used for the charges. */
 	paymentInstrumentId: string;
