@@ -1,6 +1,6 @@
 import { HttpClientFactory } from "@api-sdk-creator/http-api-client";
 
-import { AdministrationApi } from "./WPayFactory";
+import { AdministrationApi } from "./api";
 import { DigitalPayApi } from "./api";
 import { MerchantPaymentsApi } from "./api";
 import { MerchantPaymentSessionsApi } from "./api";
