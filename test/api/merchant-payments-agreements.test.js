@@ -53,7 +53,7 @@ describe("MerchantPaymentAgreementsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.PUT,
-					url: "/instore/customer/payments/agreements/:paymentToken",
+					url: "/instore/merchant/payments/agreements/:paymentToken",
 					body: is(request)
 				})
 			);
@@ -80,7 +80,7 @@ describe("MerchantPaymentAgreementsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.DELETE,
-					url: "/instore/customer/payments/agreements/:paymentToken",
+					url: "/instore/merchant/payments/agreements/:paymentToken",
 					pathParams: {
 						paymentToken
 					}
