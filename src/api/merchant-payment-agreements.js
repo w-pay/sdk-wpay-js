@@ -17,7 +17,7 @@ const deletePaymentAgreement = (client) => (paymentToken) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.DELETE,
-			url: "/instore/customer/payments/agreements/:paymentToken",
+			url: "/instore/merchant/payments/agreements/:paymentToken",
 			pathParams: {
 				paymentToken
 			}
@@ -41,7 +41,7 @@ const charge = (client) => (paymentToken, chargePaymentAgreementRequest) => {
 			fromData(fromPaymentAgreementDTO)
 		)({
 			method: HttpRequestMethod.PUT,
-			url: "/instore/customer/payments/agreements/:paymentToken",
+			url: "/instore/merchant/payments/agreements/:paymentToken",
 			pathParams: {
 				paymentToken
 			},
