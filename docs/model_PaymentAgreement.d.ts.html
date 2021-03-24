@@ -94,25 +94,25 @@
  */
 export interface PaymentAgreement {
 	/** The payment token of the payment agreement. The payment token is a unique identifier for the payment agreement. */
-	paymentToken: string;
+	paymentToken?: string;
 
 	/** The status of the payment agreement in the container. */
-	status: PaymentInstrumentStatus;
+	status?: PaymentInstrumentStatus;
 
 	/** The timestamp the payment agreement was last updated in the container. The timestamp format is ISO8601. */
-	lastUpdated: Date;
+	lastUpdated?: Date;
 
 	/** The timestamp the payment agreement was last used in the container. The timestamp format is ISO8601. Will be null if never used. */
-	lastUsed: Date;
+	lastUsed?: Date;
 
 	/** The timestamp for when the payment instrument was added. The timestamp format is ISO8601. */
-	createdOn: Date;
+	createdOn?: Date;
 
 	/** A flag to indicate if this payment instrument is the primary instrument in the container. Not used for payment agreements. */
-	primary: boolean;
+	primary?: boolean;
 
 	/** A flag to indicate if the merchant profile in the container allows the use of this payment agreement. */
-	allowed: boolean;
+	allowed?: boolean;
 
 	/** The payment agreement type. */
 	type: PaymentAgreementType;
@@ -133,10 +133,10 @@ export interface PaymentAgreement {
 	expiryYear?: string;
 
 	/** The payment agreement start date and time. The timestamp format is ISO8601. */
-	startDate: Date;
+	startDate?: Date;
 
 	/** The payment agreement end date and time. The timestamp format is ISO8601. */
-	endDate: Date;
+	endDate?: Date;
 
 	/** The payment agreement charge frequency. */
 	chargeFrequency: PaymentAgreementChargeFrequency;
@@ -145,13 +145,13 @@ export interface PaymentAgreement {
 	chargeAmount: number;
 
 	/** The current charge cycle number. */
-	chargeCycle: number;
+	chargeCycle?: number;
 
 	/** A flag to indicate if the payment agreement is expired. */
-	expired: boolean;
+	expired?: boolean;
 
 	/** The URL of the endpoint to use to update the payment agreement. */
-	updateURL: string;
+	updateURL?: string;
 
 	stepUp?: {
 		/* The type of the step up action. For credit cards this will be CAPTURE_CVV which identifies that the consumer must capture the CVV prior to payment. */

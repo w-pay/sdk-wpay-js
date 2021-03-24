@@ -96,6 +96,7 @@ import { MerchantTransactionsApi } from "./api";
 import { QRCodeApi } from "./api";
 import { SchemasApi } from "./api";
 import { WPayOptions } from "./WPayOptions";
+import { MerchantPaymentAgreementsApi } from "./api/MerchantPaymentAgreements";
 
 /**
  * Factory for creating a {@link WPayMerchantApi} instance
@@ -120,6 +121,7 @@ export interface WPayMerchantApi {
 	admin: AdministrationApi;
 	dp: DigitalPayApi;
 	payments: MerchantPaymentsApi;
+	paymentAgreements: MerchantPaymentAgreementsApi;
 	paymentSession: MerchantPaymentSessionsApi;
 	preferences: MerchantPreferencesApi;
 	qr: QRCodeApi;
