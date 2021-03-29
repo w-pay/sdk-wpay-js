@@ -52,21 +52,18 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 };
 
 // returns an uncurried function for data so that defaults can be omitted
-// makePayment :: HttpApiClient -> (String, String, Array, Boolean, String, Array) -> Promise CustomerTransactionSummary
+// makePayment :: HttpApiClient -> (String, String, Array, Boolean, String, PaymentPreferences, Array) -> Promise CustomerTransactionSummary
 const makePayment = (client) => (
 	paymentRequestId,
 	primaryInstrument,
 	secondaryInstruments,
 	skipRollback,
 	clientReference,
+	preferences,
 	challengeResponses
 ) => {
 	if (!paymentRequestId) {
 		throw requiredParameterError("paymentRequestId");
-	}
-
-	if (!primaryInstrument) {
-		throw requiredParameterError("primaryInstrument");
 	}
 
 	return asyncToPromise(
@@ -84,7 +81,8 @@ const makePayment = (client) => (
 					primaryInstrument,
 					secondaryInstruments,
 					skipRollback,
-					clientReference
+					clientReference,
+					preferences
 				),
 				meta: {
 					challengeResponses: challengeResponses ? challengeResponses : []

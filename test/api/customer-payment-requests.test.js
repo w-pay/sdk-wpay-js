@@ -19,6 +19,7 @@ const {
 	customerTransactionSummaryFrom
 } = require("../matchers/customer-transactions-matchers");
 const { paymentDetailsDTOFrom } = require("../matchers/payment-instrument-matchers");
+const { paymentPreferences } = require("../data/preferences");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
 
@@ -101,18 +102,10 @@ describe("CustomerPaymentRequestsApi", function () {
 			assertThat(() => api.makePayment(), throws(requiredParameterError("paymentRequestId")));
 		});
 
-		it("should throw error if primaryInstrument is missing", function () {
-			assertThat(
-				() => api.makePayment("abc123"),
-				throws(requiredParameterError("primaryInstrument"))
-			);
-		});
-
 		it("should set request params", async function () {
 			const paymentRequestId = "fhgut738484dfjkskdk";
-			const primaryPaymentInstrument = uuid();
 
-			await api.makePayment(paymentRequestId, primaryPaymentInstrument);
+			await api.makePayment(paymentRequestId);
 
 			assertThat(
 				apiClient.request,
@@ -123,10 +116,7 @@ describe("CustomerPaymentRequestsApi", function () {
 						paymentRequestId
 					},
 					body: is(
-						body(
-							withData(paymentDetailsDTOFrom(primaryPaymentInstrument)),
-							withMeta(challengeResponsesDTOFrom([]))
-						)
+						body(withData(paymentDetailsDTOFrom()), withMeta(challengeResponsesDTOFrom([])))
 					)
 				})
 			);
@@ -137,6 +127,7 @@ describe("CustomerPaymentRequestsApi", function () {
 			const secondaryPaymentInstruments = [aSecondaryPaymentInstrument()];
 			const skipRollback = true;
 			const clientReference = "this is a reference";
+			const prefs = paymentPreferences();
 			const challengeResponses = [aChallengeResponse()];
 
 			await api.makePayment(
@@ -145,6 +136,7 @@ describe("CustomerPaymentRequestsApi", function () {
 				secondaryPaymentInstruments,
 				skipRollback,
 				clientReference,
+				prefs,
 				challengeResponses
 			);
 
@@ -157,7 +149,8 @@ describe("CustomerPaymentRequestsApi", function () {
 								primaryPaymentInstrument,
 								secondaryPaymentInstruments,
 								skipRollback,
-								clientReference
+								clientReference,
+								prefs
 							)
 						),
 						withMeta(challengeResponsesDTOFrom(challengeResponses))

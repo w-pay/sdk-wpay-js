@@ -1,5 +1,7 @@
 "use strict";
 
+const { v4: uuid } = require("uuid");
+
 exports.preferences = () =>
 	(function () {
 		const preferencesGroup = new Map();
@@ -10,6 +12,11 @@ exports.preferences = () =>
 
 		return preferences;
 	})();
+
+exports.paymentPreferences = () => ({
+	primaryPaymentId: uuid(),
+	secondaryInstruments: []
+});
 
 exports.preferencesDTO = () => ({
 	group: {

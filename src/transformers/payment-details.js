@@ -10,14 +10,18 @@ exports.toPaymentDetailsDTO = (
 	primaryInstrument,
 	secondaryInstruments,
 	skipRollback,
-	clientReference
+	clientReference,
+	preferences
 ) => {
 	const dto = {
-		primaryInstrumentId: primaryInstrument,
 		secondaryInstruments: secondaryInstruments
 			? secondaryInstruments.map(toSecondaryInstrument)
 			: []
 	};
+
+	if (primaryInstrument) {
+		dto.primaryInstrumentId = primaryInstrument;
+	}
 
 	if (skipRollback) {
 		dto.skipRollback = skipRollback;
@@ -25,6 +29,10 @@ exports.toPaymentDetailsDTO = (
 
 	if (clientReference) {
 		dto.clientReference = clientReference;
+	}
+
+	if (preferences) {
+		dto.preferences = preferences;
 	}
 
 	return dto;

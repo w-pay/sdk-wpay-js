@@ -1,4 +1,4 @@
-import { ChallengeResponse } from "../model";
+import { ChallengeResponse, PaymentPreferences } from "../model";
 import { CustomerPaymentRequest } from "../model";
 import { CustomerTransactionSummary } from "../model";
 import { SecondaryPaymentInstrument } from "../model";
@@ -25,18 +25,20 @@ export interface CustomerPaymentRequestsApi {
 	 * Make a payment for a {@link CustomerPaymentRequest}
 	 *
 	 * @param paymentRequestId The {@link CustomerPaymentRequest} to pay for.
-	 * @param primaryInstrument The primary (or only) instrument to use to make the payment.
+	 * @param primaryInstrument The primary (or only) instrument to use to make the payment. If not present then the primary instrument from the customer preferences will be used.
 	 * @param secondaryInstruments Other payment instruments to use to split payment.
 	 * @param skipRollback An optional flag to indicate that the automatic rollback step should be skipped in the case of failure
 	 * @param clientReference An optional client reference to be associated with the transaction.
+	 * @param preferences Optional payment preferences.
 	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
 	 */
 	makePayment(
 		paymentRequestId: string,
-		primaryInstrument: string,
+		primaryInstrument?: string,
 		secondaryInstruments?: SecondaryPaymentInstrument[],
 		skipRollback?: boolean,
 		clientReference?: string,
+		preferences?: PaymentPreferences,
 		challengeResponses?: ChallengeResponse[]
 	): Promise<CustomerTransactionSummary>;
 }

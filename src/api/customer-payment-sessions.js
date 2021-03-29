@@ -101,14 +101,11 @@ const preApprove = (client) => (
 	secondaryInstruments,
 	skipRollback,
 	clientReference,
+	preferences,
 	challengeResponses
 ) => {
 	if (!paymentSessionId) {
 		throw requiredParameterError("paymentSessionId");
-	}
-
-	if (!primaryInstrument) {
-		throw requiredParameterError("primaryInstrument");
 	}
 
 	return asyncToPromise(
@@ -123,7 +120,8 @@ const preApprove = (client) => (
 					primaryInstrument,
 					secondaryInstruments,
 					skipRollback,
-					clientReference
+					clientReference,
+					preferences
 				),
 				meta: {
 					challengeResponses: challengeResponses ? challengeResponses : []

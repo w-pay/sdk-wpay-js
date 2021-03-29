@@ -8,7 +8,8 @@ const paymentDetailsDTOFrom = (
 	primaryPaymentInstrument,
 	secondaryInstruments = [],
 	skipRollback = undefined,
-	clientReference = undefined
+	clientReference = undefined,
+	preferences = undefined
 ) => ({
 	matches(actual) {
 		assertThat(actual.primaryInstrumentId, is(primaryPaymentInstrument));
@@ -20,6 +21,7 @@ const paymentDetailsDTOFrom = (
 
 		assertThat(actual.skipRollback, is(skipRollback));
 		assertThat(actual.clientReference, is(clientReference));
+		assertThat(actual.preferences, is(preferences));
 
 		return true;
 	},
