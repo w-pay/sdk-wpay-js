@@ -1,6 +1,6 @@
-import { ChallengeResponse } from "../model";
+import { ChallengeResponse, PaymentPreferences } from "../model";
 import { CustomerUpdatePaymentSessionRequest } from "../model";
-import { PaymentInstrumentIdentifier, SecondaryPaymentInstrument } from "../model";
+import { SecondaryPaymentInstrument } from "../model";
 import { PaymentSession } from "../model";
 
 /**
@@ -40,18 +40,20 @@ export interface CustomerPaymentSessionsApi {
 	 * Pre-approve payment for a {@link PaymentSession}
 	 *
 	 * @param paymentSessionId The {@link PaymentSession} to pre-approve payment for.
-	 * @param primaryInstrument The primary (or only) instrument to use to make the payment.
+	 * @param primaryInstrument The primary (or only) instrument to use to make the payment. If not present then the primary instrument from the customer preferences will be used.
 	 * @param secondaryInstruments Other payment instruments to use to split payment.
 	 * @param skipRollback An optional flag to indicate that the automatic rollback step should be skipped in the case of failure
 	 * @param clientReference An optional client reference to be associated with the transaction.
+	 * @param preferences Optional payment preferences.
 	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
 	 */
 	preApprove(
 		paymentSessionId: string,
-		primaryInstrument: PaymentInstrumentIdentifier,
+		primaryInstrument?: string,
 		secondaryInstruments?: SecondaryPaymentInstrument[],
 		skipRollback?: boolean,
 		clientReference?: string,
+		preferences?: PaymentPreferences,
 		challengeResponses?: ChallengeResponse[]
 	): Promise<void>;
 }

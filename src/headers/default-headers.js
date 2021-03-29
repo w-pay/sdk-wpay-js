@@ -29,7 +29,14 @@ const {
 } = require("@api-sdk-creator/http-api-client");
 
 const { toApiAuthenticator } = require("./api-authenticator");
-const { X_API_KEY, X_MERCHANT_ID, X_WALLET_ID } = require("./header-names");
+const {
+	X_API_KEY,
+	X_EVERYDAY_PAY_WALLET,
+	X_MERCHANT_ID,
+	X_WALLET_ID
+} = require("./header-names");
+
+const { Wallet } = require("../../src/model");
 
 const { getPropOrError } = require("../helpers/props");
 
@@ -47,14 +54,23 @@ const { getPropOrError } = require("../helpers/props");
 // applyFunctor :: Functor f => f (a -> b) -> a -> f b
 const applyFunctor = flip(pipe(applyTo, map));
 
-// getHeaderOrError :: String -> String -> Result Error Assign
+// getHeaderOrError :: String -> String -> Object -> Result Error Assign
 const getHeaderOrError = curry((prop, headerName) =>
 	pipe(getPropOrError(prop), map(pipe(objOf(headerName), Assign)))
 );
 
-// getHeaderOrError :: String -> String -> Result Assign
+// getHeaderOrNothing :: String -> String -> Object -> Result Assign
 const getHeaderOrNothing = curry((prop, headerName) =>
 	pipe(getProp(prop), either(constant({}), objOf(headerName)), Assign, Result.of)
+);
+
+// everydayPayWalletHeader :: Object -> Result Assign
+const everydayPayWalletHeader = pipe(
+	getProp("wallet"),
+	either(constant("false"), (wallet) => (wallet === Wallet.EVERYDAY_PAY).toString()),
+	objOf(X_EVERYDAY_PAY_WALLET),
+	Assign,
+	Result.of
 );
 
 // safeGetProp :: String -> Object -> Maybe a
@@ -71,7 +87,8 @@ const constantOptsToHeaders = pipe(
 	applyFunctor([
 		pipe(getHeaderOrError("apiKey", X_API_KEY)),
 		pipe(getHeaderOrNothing("walletId", X_WALLET_ID)),
-		pipe(getHeaderOrNothing("merchantId", X_MERCHANT_ID))
+		pipe(getHeaderOrNothing("merchantId", X_MERCHANT_ID)),
+		pipe(everydayPayWalletHeader)
 	]),
 	fold,
 	map(valueOf),

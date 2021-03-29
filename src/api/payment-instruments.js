@@ -9,9 +9,8 @@ const merge = require("crocks/pointfree/merge");
 const pipe = require("crocks/helpers/pipe");
 const pipeK = require("crocks/helpers/pipeK");
 
-const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
 const { fromData } = require("../transformers/data");
 const { fromEncryptedMeta } = require("../transformers/meta");
 const {
@@ -30,18 +29,13 @@ const fromGetByTokenResponse = pipe(
 	merge(liftA2(assign))
 );
 
-const getByToken = (client) => (paymentToken, wallet, publicKey) => {
+const getByToken = (client) => (paymentToken, publicKey) => {
 	if (!paymentToken) {
 		throw requiredParameterError("paymentToken");
 	}
 
-	if (!wallet) {
-		throw requiredParameterError("wallet");
-	}
-
 	return asyncToPromise(
 		pipeK(
-			addHeaders(everydayPayWalletHeader(wallet)),
 			client,
 			fromGetByTokenResponse
 		)({
@@ -55,14 +49,9 @@ const getByToken = (client) => (paymentToken, wallet, publicKey) => {
 	);
 };
 
-const list = (client) => (wallet) => {
-	if (!wallet) {
-		throw requiredParameterError("wallet");
-	}
-
+const list = (client) => () => {
 	return asyncToPromise(
 		pipeK(
-			addHeaders(everydayPayWalletHeader(wallet)),
 			client,
 			fromData(fromWalletContentsDTO)
 		)({
@@ -78,10 +67,7 @@ const deleteInstrument = (client) => (instrument) => {
 	}
 
 	return asyncToPromise(
-		pipeK(
-			addHeaders(everydayPayWalletHeader(instrument.wallet)),
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.DELETE,
 			url: "/instore/customer/instruments/:paymentInstrumentId",
 			pathParams: {
@@ -98,7 +84,6 @@ const initiateAddition = (client) => (instrument) => {
 
 	return asyncToPromise(
 		pipeK(
-			addHeaders(everydayPayWalletHeader(instrument.wallet)),
 			client,
 			fromData(identity)
 		)({

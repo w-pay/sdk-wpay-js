@@ -3,15 +3,11 @@
 const asyncToPromise = require("crocks/Async/asyncToPromise");
 const pipeK = require("crocks/helpers/pipeK");
 
-const { HttpRequestMethod, addHeaders } = require("@api-sdk-creator/http-api-client");
-const { everydayPayWalletHeader } = require("../../headers/everyday-pay-header");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const deleteRoute = (client) => (request) => {
 	return asyncToPromise(
-		pipeK(
-			addHeaders(everydayPayWalletHeader(request.wallet)),
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/wallet/delete",
 			body: request

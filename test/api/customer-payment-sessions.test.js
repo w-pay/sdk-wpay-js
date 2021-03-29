@@ -7,21 +7,18 @@ const { assertThat, hasProperties, is, throws } = require("hamjest");
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/customer-payment-sessions");
-const { X_EVERYDAY_PAY_WALLET } = require("../../src/headers/header-names");
 
 const { aChallengeResponse } = require("../data/challenge-response");
 const {
 	aCustomerUpdatePaymentSessionRequest,
 	paymentSessionDTO
 } = require("../data/payment-session");
-const {
-	aSecondaryPaymentInstrument,
-	aSelectedPaymentInstrument
-} = require("../data/payment-instruments");
+const { aSecondaryPaymentInstrument } = require("../data/payment-instruments");
 const { body, withData, withMeta } = require("../matchers/request-body-matchers");
 const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-matchers");
 const { objFrom } = require("../matchers/map-matchers");
 const { paymentDetailsDTOFrom } = require("../matchers/payment-instrument-matchers");
+const { paymentPreferences } = require("../data/preferences");
 const { paymentSessionFrom } = require("../matchers/payment-session-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
@@ -174,47 +171,35 @@ describe("CustomerPaymentSessionsApi", function () {
 
 	describe("preApprove", function () {
 		const paymentSessionId = uuid();
-		const primaryInstrument = aSelectedPaymentInstrument();
 
 		it("should throw error when paymentSessionId is missing", function () {
 			assertThat(() => api.preApprove(), throws(requiredParameterError("paymentSessionId")));
 		});
 
-		it("should throw error when primaryInstrument is missing", function () {
-			assertThat(
-				() => api.preApprove(paymentSessionId),
-				throws(requiredParameterError("primaryInstrument"))
-			);
-		});
-
 		it("should set request params", async function () {
-			await api.preApprove(paymentSessionId, primaryInstrument);
+			await api.preApprove(paymentSessionId);
 
 			assertThat(
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.PUT,
 					url: "/instore/customer/payment/session/:paymentSessionId",
-					headers: {
-						[X_EVERYDAY_PAY_WALLET]: "false"
-					},
 					pathParams: {
 						paymentSessionId
 					},
 					body: is(
-						body(
-							withData(paymentDetailsDTOFrom(primaryInstrument)),
-							withMeta(challengeResponsesDTOFrom([]))
-						)
+						body(withData(paymentDetailsDTOFrom()), withMeta(challengeResponsesDTOFrom([])))
 					)
 				})
 			);
 		});
 
 		it("should set optional request params", async function () {
+			const primaryInstrument = uuid();
 			const secondaryPaymentInstruments = [aSecondaryPaymentInstrument()];
 			const skipRollback = true;
 			const clientReference = "this is a reference";
+			const prefs = paymentPreferences();
 			const challengeResponses = [aChallengeResponse()];
 
 			await api.preApprove(
@@ -223,6 +208,7 @@ describe("CustomerPaymentSessionsApi", function () {
 				secondaryPaymentInstruments,
 				skipRollback,
 				clientReference,
+				prefs,
 				challengeResponses
 			);
 
@@ -235,7 +221,8 @@ describe("CustomerPaymentSessionsApi", function () {
 								primaryInstrument,
 								secondaryPaymentInstruments,
 								skipRollback,
-								clientReference
+								clientReference,
+								prefs
 							)
 						),
 						withMeta(challengeResponsesDTOFrom(challengeResponses))
