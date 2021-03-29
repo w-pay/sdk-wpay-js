@@ -14,7 +14,15 @@ const {
 	promiseThat
 } = require("hamjest");
 
-const { defaultHeaders, X_API_KEY, X_MERCHANT_ID, X_WALLET_ID } = require("../../src/headers");
+const {
+	defaultHeaders,
+	X_API_KEY,
+	X_EVERYDAY_PAY_WALLET,
+	X_MERCHANT_ID,
+	X_WALLET_ID
+} = require("../../src/headers");
+
+const { Wallet } = require("../../src/model");
 
 const AUTHORISATION = "authorization";
 
@@ -90,6 +98,26 @@ describe("default headers", function () {
 				headers = await getHeaders({ apiKey: "abc123" });
 
 				assertThat(headers, not(hasProperty(option.header)));
+			});
+		});
+
+		describe("wallet", function () {
+			it("should set header to true if wallet everyday pay", async function () {
+				headers = await getHeaders({ apiKey: "abc123", wallet: Wallet.EVERYDAY_PAY });
+
+				assertThat(headers, hasProperty(X_EVERYDAY_PAY_WALLET, equalTo("true")));
+			});
+
+			it("should set header to false it wallet not everyday pay", async function () {
+				headers = await getHeaders({ apiKey: "abc123", wallet: Wallet.MERCHANT });
+
+				assertThat(headers, hasProperty(X_EVERYDAY_PAY_WALLET, equalTo("false")));
+			});
+
+			it("should default header to merchant if no wallet given", async function () {
+				headers = await getHeaders({ apiKey: "abc123" });
+
+				assertThat(headers, hasProperty(X_EVERYDAY_PAY_WALLET, equalTo("false")));
 			});
 		});
 	});
