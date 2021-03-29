@@ -4,9 +4,8 @@ const asyncToPromise = require("crocks/Async/asyncToPromise");
 const mapProps = require("crocks/helpers/mapProps");
 const pipeK = require("crocks/helpers/pipeK");
 
-const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
 const { fromData } = require("../transformers/data");
 const { fromPaymentSessionDTO } = require("../transformers/payment-session");
 const { requiredParameterError } = require("./api-errors");
@@ -113,10 +112,7 @@ const preApprove = (client) => (
 	}
 
 	return asyncToPromise(
-		pipeK(
-			addHeaders(everydayPayWalletHeader(primaryInstrument.wallet)),
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.PUT,
 			url: "/instore/customer/payment/session/:paymentSessionId",
 			pathParams: {

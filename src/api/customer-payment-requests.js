@@ -3,9 +3,8 @@
 const asyncToPromise = require("crocks/Async/asyncToPromise");
 const pipeK = require("crocks/helpers/pipeK");
 
-const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
 const { fromCustomerPaymentRequestDTO } = require("../transformers/payment-request");
 const { fromCustomerTransactionSummaryDTO } = require("../transformers/customer-transactions");
 const { fromData } = require("../transformers/data");
@@ -72,7 +71,6 @@ const makePayment = (client) => (
 
 	return asyncToPromise(
 		pipeK(
-			addHeaders(everydayPayWalletHeader(primaryInstrument.wallet)),
 			client,
 			fromData(fromCustomerTransactionSummaryDTO)
 		)({

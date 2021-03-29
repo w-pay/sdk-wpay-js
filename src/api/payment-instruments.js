@@ -9,9 +9,8 @@ const merge = require("crocks/pointfree/merge");
 const pipe = require("crocks/helpers/pipe");
 const pipeK = require("crocks/helpers/pipeK");
 
-const { addHeaders, HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
+const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { everydayPayWalletHeader } = require("../headers/everyday-pay-header");
 const { fromData } = require("../transformers/data");
 const { fromEncryptedMeta } = require("../transformers/meta");
 const {
@@ -41,7 +40,6 @@ const getByToken = (client) => (paymentToken, wallet, publicKey) => {
 
 	return asyncToPromise(
 		pipeK(
-			addHeaders(everydayPayWalletHeader(wallet)),
 			client,
 			fromGetByTokenResponse
 		)({
@@ -62,7 +60,6 @@ const list = (client) => (wallet) => {
 
 	return asyncToPromise(
 		pipeK(
-			addHeaders(everydayPayWalletHeader(wallet)),
 			client,
 			fromData(fromWalletContentsDTO)
 		)({
@@ -78,10 +75,7 @@ const deleteInstrument = (client) => (instrument) => {
 	}
 
 	return asyncToPromise(
-		pipeK(
-			addHeaders(everydayPayWalletHeader(instrument.wallet)),
-			client
-		)({
+		pipeK(client)({
 			method: HttpRequestMethod.DELETE,
 			url: "/instore/customer/instruments/:paymentInstrumentId",
 			pathParams: {
@@ -98,7 +92,6 @@ const initiateAddition = (client) => (instrument) => {
 
 	return asyncToPromise(
 		pipeK(
-			addHeaders(everydayPayWalletHeader(instrument.wallet)),
 			client,
 			fromData(identity)
 		)({

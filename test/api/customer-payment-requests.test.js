@@ -2,12 +2,11 @@
 
 const { v4: uuid } = require("uuid");
 
-const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
+const { assertThat, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/customer-payment-requests");
-const { X_EVERYDAY_PAY_WALLET } = require("../../src/headers/header-names");
 
 const { aChallengeResponse } = require("../data/challenge-response");
 const {
@@ -123,9 +122,6 @@ describe("CustomerPaymentRequestsApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.PUT,
 					url: "/instore/customer/payments/:paymentRequestId",
-					headers: equalTo({
-						[X_EVERYDAY_PAY_WALLET]: "false"
-					}),
 					pathParams: {
 						paymentRequestId
 					},

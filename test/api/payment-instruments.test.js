@@ -7,7 +7,6 @@ const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/payment-instruments");
-const { X_EVERYDAY_PAY_WALLET } = require("../../src/headers/header-names");
 const { Wallet } = require("../../src/model/enums");
 
 const { body, withData } = require("../matchers/request-body-matchers");
@@ -62,9 +61,6 @@ describe("PaymentInstrumentsApi", function () {
 				is({
 					method: HttpRequestMethod.GET,
 					url: "/instore/customer/instruments/:paymentToken",
-					headers: {
-						[X_EVERYDAY_PAY_WALLET]: "false"
-					},
 					pathParams: {
 						paymentToken
 					},
@@ -112,10 +108,7 @@ describe("PaymentInstrumentsApi", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/instore/customer/instruments",
-					headers: {
-						[X_EVERYDAY_PAY_WALLET]: "true"
-					}
+					url: "/instore/customer/instruments"
 				})
 			);
 		});
@@ -145,9 +138,6 @@ describe("PaymentInstrumentsApi", function () {
 				is({
 					method: HttpRequestMethod.DELETE,
 					url: "/instore/customer/instruments/:paymentInstrumentId",
-					headers: {
-						[X_EVERYDAY_PAY_WALLET]: "false"
-					},
 					pathParams: {
 						paymentInstrumentId: instrument.paymentInstrumentId
 					}
@@ -184,9 +174,6 @@ describe("PaymentInstrumentsApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.POST,
 					url: "/instore/customer/instruments",
-					headers: {
-						[X_EVERYDAY_PAY_WALLET]: "false"
-					},
 					body: is(
 						body(
 							withData(

@@ -7,7 +7,6 @@ const { assertThat, hasProperties, is, throws } = require("hamjest");
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/customer-payment-sessions");
-const { X_EVERYDAY_PAY_WALLET } = require("../../src/headers/header-names");
 
 const { aChallengeResponse } = require("../data/challenge-response");
 const {
@@ -195,9 +194,6 @@ describe("CustomerPaymentSessionsApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.PUT,
 					url: "/instore/customer/payment/session/:paymentSessionId",
-					headers: {
-						[X_EVERYDAY_PAY_WALLET]: "false"
-					},
 					pathParams: {
 						paymentSessionId
 					},
