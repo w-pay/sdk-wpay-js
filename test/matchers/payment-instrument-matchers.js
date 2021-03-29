@@ -11,7 +11,7 @@ const paymentDetailsDTOFrom = (
 	clientReference = undefined
 ) => ({
 	matches(actual) {
-		assertThat(actual.primaryInstrumentId, is(primaryPaymentInstrument.paymentInstrumentId));
+		assertThat(actual.primaryInstrumentId, is(primaryPaymentInstrument));
 
 		assertThat(actual.secondaryInstruments.length, is(secondaryInstruments.length));
 		actual.secondaryInstruments.forEach((instrument, i) => {

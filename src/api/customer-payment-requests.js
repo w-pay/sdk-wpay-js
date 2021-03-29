@@ -52,7 +52,7 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 };
 
 // returns an uncurried function for data so that defaults can be omitted
-// makePayment :: HttpApiClient -> (String, PaymentInstrumentIdentifier, Array, Boolean, String, Array) -> Promise CustomerTransactionSummary
+// makePayment :: HttpApiClient -> (String, String, Array, Boolean, String, Array) -> Promise CustomerTransactionSummary
 const makePayment = (client) => (
 	paymentRequestId,
 	primaryInstrument,

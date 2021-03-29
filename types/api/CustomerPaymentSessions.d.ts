@@ -1,6 +1,6 @@
 import { ChallengeResponse } from "../model";
 import { CustomerUpdatePaymentSessionRequest } from "../model";
-import { PaymentInstrumentIdentifier, SecondaryPaymentInstrument } from "../model";
+import { SecondaryPaymentInstrument } from "../model";
 import { PaymentSession } from "../model";
 
 /**
@@ -48,7 +48,7 @@ export interface CustomerPaymentSessionsApi {
 	 */
 	preApprove(
 		paymentSessionId: string,
-		primaryInstrument: PaymentInstrumentIdentifier,
+		primaryInstrument: string,
 		secondaryInstruments?: SecondaryPaymentInstrument[],
 		skipRollback?: boolean,
 		clientReference?: string,

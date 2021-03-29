@@ -7,7 +7,6 @@ const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../src/api/payment-instruments");
-const { Wallet } = require("../../src/model/enums");
 
 const { body, withData } = require("../matchers/request-body-matchers");
 const {
@@ -17,6 +16,7 @@ const {
 } = require("../matchers/payment-instrument-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const {
+	aNewPaymentInstrument,
 	individualPaymentInstrumentDTO,
 	walletContentsDTO
 } = require("../data/payment-instruments");
@@ -49,12 +49,8 @@ describe("PaymentInstrumentsApi", function () {
 			assertThat(() => api.getByToken(), throws(requiredParameterError("paymentToken")));
 		});
 
-		it("should throw error if wallet is missing", function () {
-			assertThat(() => api.getByToken(paymentToken), throws(requiredParameterError("wallet")));
-		});
-
 		it("should set request parameters", async function () {
-			await api.getByToken(paymentToken, Wallet.MERCHANT);
+			await api.getByToken(paymentToken);
 
 			assertThat(
 				apiClient.request,
@@ -72,7 +68,7 @@ describe("PaymentInstrumentsApi", function () {
 		it("should set optional request parameters", async function () {
 			const publicKey = "dkjfgadko;fgjai;gja;ig";
 
-			await api.getByToken(paymentToken, Wallet.MERCHANT, publicKey);
+			await api.getByToken(paymentToken, publicKey);
 
 			assertThat(
 				apiClient.request.queryParams,
@@ -83,7 +79,7 @@ describe("PaymentInstrumentsApi", function () {
 		});
 
 		it("should get payment instrument", async function () {
-			const result = await api.getByToken(paymentToken, Wallet.EVERYDAY_PAY);
+			const result = await api.getByToken(paymentToken);
 
 			assertThat(result, is(individualPaymentInstrumentFrom(apiClient.response)));
 		});
@@ -97,12 +93,8 @@ describe("PaymentInstrumentsApi", function () {
 			};
 		});
 
-		it("should throw error if wallet is missing", function () {
-			assertThat(() => api.list(), throws(requiredParameterError("wallet")));
-		});
-
 		it("should set request params", async function () {
-			await api.list(Wallet.EVERYDAY_PAY);
+			await api.list();
 
 			assertThat(
 				apiClient.request,
@@ -114,7 +106,7 @@ describe("PaymentInstrumentsApi", function () {
 		});
 
 		it("should list payment instruments", async function () {
-			const result = await api.list(Wallet.MERCHANT);
+			const result = await api.list();
 
 			assertThat(result, is(walletContentsFrom(apiClient.response.data)));
 		});
@@ -122,8 +114,7 @@ describe("PaymentInstrumentsApi", function () {
 
 	describe("delete", function () {
 		const instrument = {
-			paymentInstrumentId: "dfadfdagaeg",
-			wallet: Wallet.MERCHANT
+			paymentInstrumentId: "dfadfdagaeg"
 		};
 
 		it("should throw error if instrument is missing", function () {
@@ -147,10 +138,7 @@ describe("PaymentInstrumentsApi", function () {
 	});
 
 	describe("initiateAddition", function () {
-		const newPaymentInstrument = {
-			clientReference: uuid(),
-			wallet: Wallet.MERCHANT
-		};
+		const newPaymentInstrument = aNewPaymentInstrument();
 
 		beforeEach(function () {
 			apiClient.response = {

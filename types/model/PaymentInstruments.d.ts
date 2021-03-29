@@ -1,5 +1,3 @@
-import { Wallet } from "./Wallet";
-
 /**
  * All the possible {@link PaymentInstrument}s that a customer might have in a wallet.
  *
@@ -28,24 +26,14 @@ export interface PaymentInstruments {
 }
 
 /**
- * Used to identify a {@link PaymentInstrument} to the API
- *
- * @category Model
- */
-export interface PaymentInstrumentIdentifier {
-	/** The payment instrument id. */
-	paymentInstrumentId: string;
-
-	/** Which Wallet the instrument is in */
-	wallet: Wallet;
-}
-
-/**
  * Common properties to all {@link PaymentInstruments}
  *
  * @category Model
  */
-export interface PaymentInstrument extends PaymentInstrumentIdentifier {
+export interface PaymentInstrument {
+	/** The payment instrument id. */
+	paymentInstrumentId: string;
+
 	/** Indicates if the merchant profile in the container allows the use of this payment instrument. */
 	allowed: boolean;
 

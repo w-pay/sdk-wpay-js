@@ -29,13 +29,9 @@ const fromGetByTokenResponse = pipe(
 	merge(liftA2(assign))
 );
 
-const getByToken = (client) => (paymentToken, wallet, publicKey) => {
+const getByToken = (client) => (paymentToken, publicKey) => {
 	if (!paymentToken) {
 		throw requiredParameterError("paymentToken");
-	}
-
-	if (!wallet) {
-		throw requiredParameterError("wallet");
 	}
 
 	return asyncToPromise(
@@ -53,11 +49,7 @@ const getByToken = (client) => (paymentToken, wallet, publicKey) => {
 	);
 };
 
-const list = (client) => (wallet) => {
-	if (!wallet) {
-		throw requiredParameterError("wallet");
-	}
-
+const list = (client) => () => {
 	return asyncToPromise(
 		pipeK(
 			client,

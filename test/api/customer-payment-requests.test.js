@@ -9,10 +9,7 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const apiFactory = require("../../src/api/customer-payment-requests");
 
 const { aChallengeResponse } = require("../data/challenge-response");
-const {
-	aSelectedPaymentInstrument,
-	aSecondaryPaymentInstrument
-} = require("../data/payment-instruments");
+const { aSecondaryPaymentInstrument } = require("../data/payment-instruments");
 const { body, withData, withMeta } = require("../matchers/request-body-matchers");
 const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-matchers");
 const { customerPaymentRequestDTO } = require("../data/payment-request");
@@ -113,7 +110,7 @@ describe("CustomerPaymentRequestsApi", function () {
 
 		it("should set request params", async function () {
 			const paymentRequestId = "fhgut738484dfjkskdk";
-			const primaryPaymentInstrument = aSelectedPaymentInstrument();
+			const primaryPaymentInstrument = uuid();
 
 			await api.makePayment(paymentRequestId, primaryPaymentInstrument);
 
@@ -136,7 +133,7 @@ describe("CustomerPaymentRequestsApi", function () {
 		});
 
 		it("should set optional parameters", async function () {
-			const primaryPaymentInstrument = aSelectedPaymentInstrument();
+			const primaryPaymentInstrument = uuid();
 			const secondaryPaymentInstruments = [aSecondaryPaymentInstrument()];
 			const skipRollback = true;
 			const clientReference = "this is a reference";
@@ -172,7 +169,7 @@ describe("CustomerPaymentRequestsApi", function () {
 		it("should make a payment", async function () {
 			apiClient.response.data = customerTransactionSummaryDTO();
 
-			const result = await api.makePayment(uuid(), aSelectedPaymentInstrument());
+			const result = await api.makePayment(uuid(), uuid());
 
 			assertThat(result, is(customerTransactionSummaryFrom(apiClient.response.data)));
 		});

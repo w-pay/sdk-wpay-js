@@ -13,7 +13,7 @@ exports.toPaymentDetailsDTO = (
 	clientReference
 ) => {
 	const dto = {
-		primaryInstrumentId: primaryInstrument.paymentInstrumentId,
+		primaryInstrumentId: primaryInstrument,
 		secondaryInstruments: secondaryInstruments
 			? secondaryInstruments.map(toSecondaryInstrument)
 			: []

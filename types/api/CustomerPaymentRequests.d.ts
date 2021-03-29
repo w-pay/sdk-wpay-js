@@ -1,7 +1,7 @@
 import { ChallengeResponse } from "../model";
 import { CustomerPaymentRequest } from "../model";
 import { CustomerTransactionSummary } from "../model";
-import { PaymentInstrumentIdentifier, SecondaryPaymentInstrument } from "../model";
+import { SecondaryPaymentInstrument } from "../model";
 
 /**
  * @category API
@@ -33,7 +33,7 @@ export interface CustomerPaymentRequestsApi {
 	 */
 	makePayment(
 		paymentRequestId: string,
-		primaryInstrument: PaymentInstrumentIdentifier,
+		primaryInstrument: string,
 		secondaryInstruments?: SecondaryPaymentInstrument[],
 		skipRollback?: boolean,
 		clientReference?: string,

@@ -13,10 +13,7 @@ const {
 	aCustomerUpdatePaymentSessionRequest,
 	paymentSessionDTO
 } = require("../data/payment-session");
-const {
-	aSecondaryPaymentInstrument,
-	aSelectedPaymentInstrument
-} = require("../data/payment-instruments");
+const { aSecondaryPaymentInstrument } = require("../data/payment-instruments");
 const { body, withData, withMeta } = require("../matchers/request-body-matchers");
 const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-matchers");
 const { objFrom } = require("../matchers/map-matchers");
@@ -173,7 +170,7 @@ describe("CustomerPaymentSessionsApi", function () {
 
 	describe("preApprove", function () {
 		const paymentSessionId = uuid();
-		const primaryInstrument = aSelectedPaymentInstrument();
+		const primaryInstrument = uuid();
 
 		it("should throw error when paymentSessionId is missing", function () {
 			assertThat(() => api.preApprove(), throws(requiredParameterError("paymentSessionId")));
