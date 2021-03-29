@@ -98,8 +98,11 @@ export interface UsedPaymentInstrumentTransaction {
 	/** Timestamp of when the transaction occurred */
 	executionTime?: Date;
 
-	/** The reference for the payment */
+	/** The reference for the payment. If a refund this is the reference to the transaction being refunded. */
 	paymentTransactionRef?: string;
+
+	/** The reference for the refund. */
+	refundTransactionRef?: string;
 
 	/** The current status of the transactions */
 	status?: TransactionSummaryPaymentStatus;

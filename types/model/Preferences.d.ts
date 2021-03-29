@@ -6,6 +6,7 @@
 export interface CustomerPreferences {
 	/** Payment preferences for a customer */
 	payments?: PaymentPreferences;
+
 	/** Map of general preferences. */
 	general?: Preferences;
 }

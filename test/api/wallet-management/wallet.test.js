@@ -9,7 +9,6 @@ const {
 } = require("../../data/wallet-management/WalletDeleteResponse");
 const { aWalletDeleteRequest } = require("../../data/wallet-management/WalletDeleteRequest");
 const apiFactory = require("../../../src/api/wallet-management/wallet");
-const { X_EVERYDAY_PAY_WALLET } = require("../../../src/headers/header-names");
 
 describe("Wallet", function () {
 	let apiClient;
@@ -34,9 +33,6 @@ describe("Wallet", function () {
 				hasProperties({
 					method: HttpRequestMethod.POST,
 					url: "/wallet/delete",
-					headers: {
-						[X_EVERYDAY_PAY_WALLET]: "false"
-					},
 					body: is(aWalletDeleteRequest())
 				})
 			);

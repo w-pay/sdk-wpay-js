@@ -2,19 +2,7 @@
 
 const { v4: uuid } = require("uuid");
 
-const { PaymentInstrumentStatus, Wallet } = require("../../src/model/enums");
-
-const aSelectedPaymentInstrument = () => ({
-	paymentInstrumentId: uuid(),
-	wallet: Wallet.MERCHANT,
-	allowed: true,
-	cardSuffix: "1234",
-	lastUpdated: new Date(),
-	lastUsed: new Date(),
-	paymentToken: uuid(),
-	primary: true,
-	status: PaymentInstrumentStatus.VERIFIED
-});
+const { PaymentInstrumentStatus } = require("../../src/model/enums");
 
 const aSecondaryPaymentInstrument = () => ({
 	paymentInstrumentId: uuid(),
@@ -22,8 +10,7 @@ const aSecondaryPaymentInstrument = () => ({
 });
 
 const aNewPaymentInstrument = () => ({
-	clientReference: "abc123",
-	wallet: Wallet.EVERYDAY_PAY
+	clientReference: "abc123"
 });
 
 const paymentInstrumentDTO = () => ({
@@ -91,7 +78,6 @@ const individualPaymentInstrumentDTO = () => ({
 
 module.exports = {
 	aNewPaymentInstrument,
-	aSelectedPaymentInstrument,
 	aSecondaryPaymentInstrument,
 	creditCardDTO,
 	giftCardDTO,
