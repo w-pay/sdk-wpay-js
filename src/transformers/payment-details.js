@@ -13,14 +13,14 @@ exports.toPaymentDetailsDTO = (
 	clientReference,
 	preferences
 ) => {
-	const dto = {
-		secondaryInstruments: secondaryInstruments
-			? secondaryInstruments.map(toSecondaryInstrument)
-			: []
-	};
+	const dto = {};
 
 	if (primaryInstrument) {
 		dto.primaryInstrumentId = primaryInstrument;
+	}
+
+	if (secondaryInstruments) {
+		dto.secondaryInstruments = secondaryInstruments.map(toSecondaryInstrument);
 	}
 
 	if (skipRollback) {
