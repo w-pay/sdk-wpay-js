@@ -6,7 +6,7 @@ const { urlFrom } = require("./url-matches");
 
 const paymentDetailsDTOFrom = (
 	primaryPaymentInstrument,
-	secondaryInstruments = [],
+	secondaryInstruments = undefined,
 	skipRollback = undefined,
 	clientReference = undefined,
 	preferences = undefined
@@ -14,10 +14,14 @@ const paymentDetailsDTOFrom = (
 	matches(actual) {
 		assertThat(actual.primaryInstrumentId, is(primaryPaymentInstrument));
 
-		assertThat(actual.secondaryInstruments.length, is(secondaryInstruments.length));
-		actual.secondaryInstruments.forEach((instrument, i) => {
-			assertThat(instrument, is(secondaryInstrumentDTOFrom(secondaryInstruments[i])));
-		});
+		if (secondaryInstruments) {
+			assertThat(actual.secondaryInstruments.length, is(secondaryInstruments.length));
+			actual.secondaryInstruments.forEach((instrument, i) => {
+				assertThat(instrument, is(secondaryInstrumentDTOFrom(secondaryInstruments[i])));
+			});
+		} else {
+			assertThat(actual.secondaryInstruments, is(undefined));
+		}
 
 		assertThat(actual.skipRollback, is(skipRollback));
 		assertThat(actual.clientReference, is(clientReference));
