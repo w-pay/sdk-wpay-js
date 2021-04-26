@@ -163,6 +163,7 @@ export interface SecondaryPaymentInstrument {
 export interface IndividualPaymentInstrument extends PaymentInstrument {
 	/** The type of the payment instrument. */
 	paymentInstrumentType: string;
+
 	paymentInstrumentDetail: {
 		/** The gift card program name. */
 		programName: string;
