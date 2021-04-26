@@ -6,10 +6,7 @@ trigger:
       - main
       - release/*
 
-pr:
-  - master
-  - main
-  - release/*
+pr: none
 
 variables:
   nodeVersion: 15.x
