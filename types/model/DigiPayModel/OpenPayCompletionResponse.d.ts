@@ -50,5 +50,5 @@ export interface OpenPayTransactionCompletionResponse {
 	externalServiceMessage: string;
 
 	/** This array is only included in the response if it is enabled in the consumers API configuration. */
-	extendedTransactionData?: OpenPayExtendedTransactionData;
+	extendedTransactionData?: OpenPayExtendedTransactionData[];
 }
