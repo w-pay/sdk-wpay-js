@@ -32,7 +32,7 @@ export interface OpenPayRefundTransactionResponse {
 	amount: number;
 
 	/** This array is only included in the response if it is enabled in the consumers API configuration. */
-	extendedTransactionData?: OpenPayExtendedTransactionData;
+	extendedTransactionData?: OpenPayExtendedTransactionData[];
 
 	/**
 	 * The external service code (from eg. Openpay).
