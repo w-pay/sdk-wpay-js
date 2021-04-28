@@ -1,3 +1,5 @@
+import { TransactionType } from "../TransactionType";
+
 /**
  * The JSON response structure of the Transaction History endpoint.
  *
@@ -15,7 +17,7 @@ export interface TransactionHistoryResponse {
 
 interface Transaction {
 	/* The container transaction type. */
-	transactionType: "PREAUTH" | "PURCHASE" | "COMPLETION" | "VOID" | "REFUND";
+	transactionType: TransactionType;
 
 	/* Container reference in the transaction logs. This number uniquely identifies the transaction in the container. */
 	transactionRef: string;

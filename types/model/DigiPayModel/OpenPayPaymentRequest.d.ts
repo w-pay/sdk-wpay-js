@@ -5,9 +5,7 @@
  */
 export interface OpenPayPaymentRequest {
 	/** The container transaction type to use for openpay instruments */
-	transactionType: {
-		openPay: "PREAUTH" | "PURCHASE";
-	};
+	transactionType: OpenPayTransactionType;
 
 	/**
 	 * A merchant application specific reference number.
@@ -59,4 +57,10 @@ export interface OpenPayPayments {
 
 	/** The GST amount of the full amount you want to pay with the payment instrument. */
 	gstAmount?: number;
+}
+
+/** The container transaction type to use for openpay instruments */
+export enum OpenPayTransactionType {
+	PREAUTH = "PREAUTH",
+	PURCHASE = "PURCHASE"
 }
