@@ -1,4 +1,4 @@
-import { DigitalPayTransactionType } from "./DigiPayModel";
+import { TransactionType } from "./TransactionType";
 
 /**
  * Data required to charge against a {@link PaymentAgreement}
@@ -23,7 +23,7 @@ export interface ChargePaymentAgreementRequest {
 	orderNumber: string;
 
 	/** Transaction type containers to use for all instruments. */
-	transactionType: DigitalPayTransactionType;
+	transactionType: TransactionType;
 
 	/** A merchant application specific reference number for the customer. */
 	customerRef?: string;
