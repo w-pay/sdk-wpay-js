@@ -22,13 +22,6 @@ export interface DigitalPayUpdatePaymentAgreementRequest {
 	 */
 	customerRef?: string;
 
-	/**
-	 * The merchant order number of the transaction.
-	 *
-	 * This property is only required if the 'immediateCharge' property is true.
-	 */
-	orderNumber?: string;
-
 	/** Customer billing address for this payment agreement */
 	billingAddress?: DigitalPayAddress;
 
