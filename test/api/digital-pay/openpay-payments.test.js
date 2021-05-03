@@ -8,10 +8,10 @@ const apiFactory = require("../../../src/api/digital-pay/openpay-payments");
 const { requiredParameterError } = require("../../matchers/required-parameters");
 const { StubApiClient } = require("../../stub-api-client");
 const {
-	openPayPaymentResponse,
 	openPayPaymentRequest,
 	openPayCompletionRequest,
 	openPayCompletionResponse,
+	openPayTransactionResponse,
 	openPayVoidRequest,
 	openPayRefundRequest,
 	openPayRefundResponse,
@@ -31,7 +31,7 @@ describe("OpenPayApi", function () {
 
 	describe("pay", function () {
 		beforeEach(function () {
-			apiClient.response = openPayPaymentResponse();
+			apiClient.response = openPayTransactionResponse();
 		});
 
 		it("should throw error when payment request is missing", function () {
@@ -55,7 +55,7 @@ describe("OpenPayApi", function () {
 		it("should create payment request", async function () {
 			const result = await api.pay(openPayPaymentRequest());
 
-			assertThat(result, is(openPayPaymentResponse()));
+			assertThat(result, is(openPayTransactionResponse()));
 		});
 	});
 

@@ -1,7 +1,7 @@
 import { OpenPayCompletionRequest } from "../../model/DigiPayModel/OpenPayCompletionRequest";
 import { OpenPayCompletionResponse } from "../../model/DigiPayModel/OpenPayCompletionResponse";
 import { OpenPayPaymentRequest } from "../../model/DigiPayModel/OpenPayPaymentRequest";
-import { OpenPayPaymentResponse } from "../../model/DigiPayModel/OpenPayPaymentResponse";
+import { OpenPayPaymentTransactionResponse } from "../../model/DigiPayModel/OpenPayPaymentResponse";
 import { OpenPayVoidRequest } from "../../model/DigiPayModel/OpenPayVoidRequest";
 import { OpenPayVoidResponse } from "../../model/DigiPayModel/OpenPayVoidResponse";
 import { OpenPayRefundRequest } from "../../model/DigiPayModel/OpenPayRefundRequest";
@@ -16,7 +16,7 @@ export interface OpenPayApi {
 	 *
 	 * @param paymentRequest detail of payment to be made
 	 */
-	pay(paymentRequest: OpenPayPaymentRequest): Promise<OpenPayPaymentResponse>;
+	pay(paymentRequest: OpenPayPaymentRequest): Promise<OpenPayPaymentTransactionResponse>;
 
 	/**
 	 * Complete pre-authed Openpay payments. This API is IP restricted to allow unauthenticated server side calls.

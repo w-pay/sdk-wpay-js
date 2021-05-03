@@ -17,6 +17,11 @@ const openPayPaymentRequest = () => ({
 	}
 });
 
+const openPayTransactionResponse = () => ({
+	transactionReceipt: "receipt-123",
+	paymentResponses: [openPayPaymentResponse()]
+});
+
 const openPayPaymentResponse = () => ({
 	paymentToken: "54321",
 	paymentTransactionRef: "pay-ref-1234"
@@ -93,6 +98,7 @@ module.exports = {
 	openPayPaymentResponse,
 	openPayCompletionRequest,
 	openPayCompletionResponse,
+	openPayTransactionResponse,
 	openPayVoidRequest,
 	openPayVoidResponse,
 	openPayRefundRequest,
