@@ -15,7 +15,7 @@ export interface DigitalPayRefundResponse {
 	partialSuccess: boolean;
 
 	/** List of refund response */
-	refundResponses: DigitalPayRefundTransactionResponse;
+	refundResponses: DigitalPayRefundTransactionResponse[];
 }
 
 export interface DigitalPayRefundTransactionResponse {
