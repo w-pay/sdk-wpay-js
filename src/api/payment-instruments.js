@@ -61,9 +61,9 @@ const list = (client) => () => {
 	);
 };
 
-const deleteInstrument = (client) => (instrument) => {
-	if (!instrument) {
-		throw requiredParameterError("instrument");
+const deleteInstrument = (client) => (paymentInstrumentId) => {
+	if (!paymentInstrumentId) {
+		throw requiredParameterError("paymentInstrumentId");
 	}
 
 	return asyncToPromise(
@@ -71,7 +71,7 @@ const deleteInstrument = (client) => (instrument) => {
 			method: HttpRequestMethod.DELETE,
 			url: "/instore/customer/instruments/:paymentInstrumentId",
 			pathParams: {
-				paymentInstrumentId: instrument.paymentInstrumentId
+				paymentInstrumentId: paymentInstrumentId
 			}
 		})
 	);
