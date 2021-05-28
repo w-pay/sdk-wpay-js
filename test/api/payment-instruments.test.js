@@ -113,16 +113,14 @@ describe("PaymentInstrumentsApi", function () {
 	});
 
 	describe("delete", function () {
-		const instrument = {
-			paymentInstrumentId: "dfadfdagaeg"
-		};
+		const paymentInstrumentId = "dfadfdagaeg";
 
 		it("should throw error if instrument is missing", function () {
-			assertThat(() => api.delete(), throws(requiredParameterError("instrument")));
+			assertThat(() => api.delete(), throws(requiredParameterError("paymentInstrumentId")));
 		});
 
 		it("should set request params", async function () {
-			await api.delete(instrument);
+			await api.delete(paymentInstrumentId);
 
 			assertThat(
 				apiClient.request,
@@ -130,7 +128,7 @@ describe("PaymentInstrumentsApi", function () {
 					method: HttpRequestMethod.DELETE,
 					url: "/instore/customer/instruments/:paymentInstrumentId",
 					pathParams: {
-						paymentInstrumentId: instrument.paymentInstrumentId
+						paymentInstrumentId: paymentInstrumentId
 					}
 				})
 			);

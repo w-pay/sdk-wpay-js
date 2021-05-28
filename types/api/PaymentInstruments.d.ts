@@ -22,9 +22,9 @@ export interface PaymentInstrumentsApi {
 	/**
 	 * Delete a {@link PaymentInstrument} from a {@link Wallet}
 	 *
-	 * @param instrument The payment instrument to delete.
+	 * @param paymentInstrumentId The id of the payment instrument to delete.
 	 */
-	delete(instrument: string): Promise<void>;
+	delete(paymentInstrumentId: string): Promise<void>;
 
 	/**
 	 * Initiate the addition of a new {@link PaymentInstrument} for the customer.
