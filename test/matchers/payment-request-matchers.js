@@ -2,8 +2,8 @@
 
 const { assertThat, is } = require("hamjest");
 
-const { basketFrom, basketDTOFrom } = require("./basket-matchers");
-const { dynamicPayloadDTOFrom } = require("./dynamic-payload-matchers");
+const { basketFrom } = require("./basket-matchers");
+const { dynamicPayloadFrom } = require("./dynamic-payload-matchers");
 const { qrCodeFrom } = require("./qr-code-matchers");
 
 exports.createPaymentRequestResultFrom = (dto) => ({
@@ -52,9 +52,9 @@ exports.newPaymentRequestDTOFrom = (model) => ({
 		assertThat(actual.timeToLivePayment, is(model.timeToLivePayment));
 		assertThat(actual.timeToLiveQR, is(model.timeToLiveQR));
 		assertThat(actual.specificWalletId, is(model.specificWalletId));
-		assertThat(actual.basket, is(basketDTOFrom(model.basket)));
-		assertThat(actual.posPayload, is(dynamicPayloadDTOFrom(model.posPayload)));
-		assertThat(actual.merchantPayload, is(dynamicPayloadDTOFrom(model.merchantPayload)));
+		assertThat(actual.basket, is(basketFrom(model.basket)));
+		assertThat(actual.posPayload, is(dynamicPayloadFrom(model.posPayload)));
+		assertThat(actual.merchantPayload, is(dynamicPayloadFrom(model.merchantPayload)));
 
 		return true;
 	},

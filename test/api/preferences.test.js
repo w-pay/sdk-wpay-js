@@ -6,7 +6,7 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { body, withData } = require("../matchers/request-body-matchers");
 const { preferences, preferencesDTO } = require("../data/preferences");
-const { preferencesDTOFrom, preferencesFrom } = require("../matchers/preferences-matchers");
+const { preferencesFrom } = require("../matchers/preferences-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
 
@@ -77,7 +77,7 @@ describe("Preferences Apis", function () {
 						hasProperties({
 							method: HttpRequestMethod.POST,
 							url: apiDef.url,
-							body: is(body(withData(preferencesDTOFrom(prefs))))
+							body: is(body(withData(preferencesFrom(prefs))))
 						})
 					);
 				});

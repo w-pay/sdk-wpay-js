@@ -1,7 +1,6 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const mapProps = require("crocks/helpers/mapProps");
 const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
@@ -15,8 +14,6 @@ const {
 const { fromMerchantTransactionSummaryDTO } = require("../transformers/merchant-transactions");
 const { optionalParam, params } = require("../helpers/params");
 const { requiredParameterError } = require("./api-errors");
-const { toBasketDTO } = require("../transformers/basket");
-const { toDynamicPayloadDTO } = require("../transformers/dynamic-payload");
 
 const listPayments = (client) => (type, page, pageSize) => {
 	return asyncToPromise(
@@ -48,14 +45,7 @@ const createPaymentRequest = (client) => (paymentRequest) => {
 			method: HttpRequestMethod.POST,
 			url: "/instore/merchant/payments",
 			body: {
-				data: mapProps(
-					{
-						basket: toBasketDTO,
-						posPayload: toDynamicPayloadDTO,
-						merchantPayload: toDynamicPayloadDTO
-					},
-					paymentRequest
-				),
+				data: paymentRequest,
 				meta: {}
 			}
 		})

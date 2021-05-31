@@ -1,34 +1,16 @@
 "use strict";
 
-const { assertThat, is } = require("hamjest");
+const { assertThat, equalTo, is } = require("hamjest");
 
-const { mapFrom, objFrom } = require("./map-matchers");
-
-exports.preferencesFrom = (dto) => ({
+exports.preferencesFrom = (prefs) => ({
 	matches(actual) {
-		assertThat(actual, is(mapFrom(dto)));
+		assertThat(actual, is(equalTo(prefs)));
 
 		return true;
 	},
 
 	describeTo(description) {
-		description.append(`Preferences from ${JSON.stringify(dto)}`);
-	},
-
-	describeMismatch(value, description) {
-		description.appendValue(value);
-	}
-});
-
-exports.preferencesDTOFrom = (model) => ({
-	matches(actual) {
-		assertThat(actual, is(objFrom(model)));
-
-		return true;
-	},
-
-	describeTo(description) {
-		description.append(`Preferences from ${model.toString()}`);
+		description.append(`Preferences from ${JSON.stringify(prefs)}`);
 	},
 
 	describeMismatch(value, description) {

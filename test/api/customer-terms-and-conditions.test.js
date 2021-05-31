@@ -8,9 +8,6 @@ const {
 	acceptTermsAndConditionsRequest,
 	termsAndConditionsDTO
 } = require("../data/terms-and-conditions");
-const {
-	termsAndConditionsAcceptancesDTOFrom
-} = require("../matchers/terms-and-conditions-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
 
@@ -49,7 +46,7 @@ describe("Terms and Conditions Apis", function () {
 		it("should get terms and conditions acceptances", async function () {
 			const result = await api.get();
 
-			assertThat(result, is(termsAndConditionsAcceptancesDTOFrom(apiClient.response.data)));
+			assertThat(result, is(apiClient.response.data));
 		});
 	});
 

@@ -1,7 +1,6 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const mapProps = require("crocks/helpers/mapProps");
 const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
@@ -9,7 +8,6 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { fromData } = require("../transformers/data");
 const { fromPaymentSessionDTO } = require("../transformers/payment-session");
 const { requiredParameterError } = require("./api-errors");
-const { toDynamicPayloadDTO } = require("../transformers/dynamic-payload");
 const { toPaymentDetailsDTO } = require("../transformers/payment-details");
 
 const getById = (client) => (paymentSessionId) => {
@@ -67,12 +65,7 @@ const update = (client) => (paymentSessionId, session) => {
 				paymentSessionId
 			},
 			body: {
-				data: mapProps(
-					{
-						customerInfo: toDynamicPayloadDTO
-					},
-					session
-				),
+				data: session,
 				meta: {}
 			}
 		})

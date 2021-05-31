@@ -4,10 +4,7 @@ const { assertThat, is } = require("hamjest");
 
 const {
 	fromCreatePaymentSessionResultDTO,
-	fromPaymentSessionDTO,
-	toCreatePaymentSessionRequestDTO,
-	toCustomerUpdatePaymentSessionRequestDTO,
-	toMerchantUpdatePaymentSessionRequestDTO
+	fromPaymentSessionDTO
 } = require("../../src/transformers/payment-session");
 
 const {
@@ -34,10 +31,7 @@ describe("Payment Session Transformers", function () {
 			it("should convert merchant info", function () {
 				const request = aCreatePaymentSessionRequest();
 
-				assertThat(
-					toCreatePaymentSessionRequestDTO(request),
-					is(createPaymentSessionRequestDTOFrom(request))
-				);
+				assertThat(request, is(createPaymentSessionRequestDTOFrom(request)));
 			});
 		});
 	});
@@ -60,10 +54,7 @@ describe("Payment Session Transformers", function () {
 			it("should convert customer info", function () {
 				const request = aCustomerUpdatePaymentSessionRequest();
 
-				assertThat(
-					toCustomerUpdatePaymentSessionRequestDTO(request),
-					is(customerUpdatePaymentSessionRequestDTOFrom(request))
-				);
+				assertThat(request, is(customerUpdatePaymentSessionRequestDTOFrom(request)));
 			});
 		});
 	});
@@ -73,10 +64,7 @@ describe("Payment Session Transformers", function () {
 			it("should convert merchant info", function () {
 				const request = aMerchantUpdatePaymentSessionRequest();
 
-				assertThat(
-					toMerchantUpdatePaymentSessionRequestDTO(request),
-					is(merchantUpdatePaymentSessionRequestDTOFrom(request))
-				);
+				assertThat(request, is(merchantUpdatePaymentSessionRequestDTOFrom(request)));
 			});
 		});
 	});

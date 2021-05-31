@@ -2,7 +2,7 @@
 
 const { v4: uuid } = require("uuid");
 
-const { assertThat, hasProperties, is, throws } = require("hamjest");
+const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
@@ -16,7 +16,6 @@ const {
 const { aSecondaryPaymentInstrument } = require("../data/payment-instruments");
 const { body, withData, withMeta } = require("../matchers/request-body-matchers");
 const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-matchers");
-const { objFrom } = require("../matchers/map-matchers");
 const { paymentDetailsDTOFrom } = require("../matchers/payment-instrument-matchers");
 const { paymentPreferences } = require("../data/preferences");
 const { paymentSessionFrom } = require("../matchers/payment-session-matchers");
@@ -129,18 +128,7 @@ describe("CustomerPaymentSessionsApi", function () {
 					pathParams: {
 						paymentSessionId
 					},
-					body: is(
-						body(
-							withData(
-								hasProperties({
-									customerInfo: hasProperties({
-										schemaId: is(session.customerInfo.schemaId),
-										payload: objFrom(session.customerInfo.payload)
-									})
-								})
-							)
-						)
-					)
+					body: is(body(withData(equalTo(session))))
 				})
 			);
 		});

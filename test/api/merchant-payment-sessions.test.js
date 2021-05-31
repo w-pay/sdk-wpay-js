@@ -2,7 +2,7 @@
 
 const { v4: uuid } = require("uuid");
 
-const { assertThat, hasProperties, is, throws } = require("hamjest");
+const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
@@ -15,7 +15,6 @@ const {
 	paymentSessionDTO
 } = require("../data/payment-session");
 const { body, withData } = require("../matchers/request-body-matchers");
-const { objFrom } = require("../matchers/map-matchers");
 const {
 	paymentSessionFrom,
 	paymentSessionCreatedFrom
@@ -55,22 +54,7 @@ describe("MerchantPaymentSessionsApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.POST,
 					url: "/instore/merchant/payment/session",
-					body: is(
-						body(
-							withData(
-								hasProperties({
-									generateQR: is(request.generateQR),
-									timeToLivePaymentSession: is(request.timeToLivePaymentSession),
-									timeToLiveQR: is(request.timeToLiveQR),
-									location: is(request.location),
-									merchantInfo: hasProperties({
-										schemaId: is(request.merchantInfo.schemaId),
-										payload: objFrom(request.merchantInfo.payload)
-									})
-								})
-							)
-						)
-					)
+					body: is(body(withData(equalTo(request))))
 				})
 			);
 		});
@@ -141,19 +125,7 @@ describe("MerchantPaymentSessionsApi", function () {
 					pathParams: {
 						paymentSessionId
 					},
-					body: is(
-						body(
-							withData(
-								hasProperties({
-									paymentRequestId: is(session.paymentRequestId),
-									merchantInfo: hasProperties({
-										schemaId: is(session.merchantInfo.schemaId),
-										payload: objFrom(session.merchantInfo.payload)
-									})
-								})
-							)
-						)
-					)
+					body: is(body(withData(equalTo(session))))
 				})
 			);
 		});

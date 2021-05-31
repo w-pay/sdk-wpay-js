@@ -73,4 +73,4 @@ export enum SecondaryInstrumentOrder {
  *
  * @category Model
  */
-export type Preferences = Map<string, Map<string, string>>;
+export type Preferences = any;
