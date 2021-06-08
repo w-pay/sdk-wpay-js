@@ -8,5 +8,5 @@ export interface DynamicPayload {
 	schemaId?: string;
 
 	/** The payload aligned to the supplied schema. */
-	payload: Map<string, any>;
+	payload: any;
 }

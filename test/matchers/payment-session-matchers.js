@@ -1,7 +1,7 @@
 const { assertThat, is } = require("hamjest");
 
 const { dateFrom } = require("./date-matchers");
-const { dynamicPayloadFrom, dynamicPayloadDTOFrom } = require("./dynamic-payload-matchers");
+const { dynamicPayloadFrom } = require("./dynamic-payload-matchers");
 const { qrCodeFrom } = require("./qr-code-matchers");
 
 exports.paymentSessionFrom = (dto) => ({
@@ -33,7 +33,7 @@ exports.createPaymentSessionRequestDTOFrom = (model) => ({
 		assertThat(actual.generateQR, is(model.generateQR));
 		assertThat(actual.timeToLivePaymentSession, is(model.timeToLivePaymentSession));
 		assertThat(actual.timeToLiveQR, is(model.timeToLiveQR));
-		assertThat(actual.merchantInfo, is(dynamicPayloadDTOFrom(model.merchantInfo)));
+		assertThat(actual.merchantInfo, is(dynamicPayloadFrom(model.merchantInfo)));
 
 		return true;
 	},
@@ -49,7 +49,7 @@ exports.createPaymentSessionRequestDTOFrom = (model) => ({
 
 exports.customerUpdatePaymentSessionRequestDTOFrom = (model) => ({
 	matches(actual) {
-		assertThat(actual.customerInfo, is(dynamicPayloadDTOFrom(model.customerInfo)));
+		assertThat(actual.customerInfo, is(dynamicPayloadFrom(model.customerInfo)));
 
 		return true;
 	},
@@ -66,7 +66,7 @@ exports.customerUpdatePaymentSessionRequestDTOFrom = (model) => ({
 exports.merchantUpdatePaymentSessionRequestDTOFrom = (model) => ({
 	matches(actual) {
 		assertThat(actual.paymentRequestId, is(model.paymentRequestId));
-		assertThat(actual.merchantInfo, is(dynamicPayloadDTOFrom(model.merchantInfo)));
+		assertThat(actual.merchantInfo, is(dynamicPayloadFrom(model.merchantInfo)));
 
 		return true;
 	},

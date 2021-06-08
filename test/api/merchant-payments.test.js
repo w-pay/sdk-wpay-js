@@ -12,9 +12,9 @@ const {
 	aNewPaymentRequest,
 	createPaymentRequestResultDTO
 } = require("../data/payment-request");
-const { basketDTOFrom } = require("../matchers/basket-matchers");
+const { basketFrom } = require("../matchers/basket-matchers");
 const { body, withData } = require("../matchers/request-body-matchers");
-const { dynamicPayloadDTOFrom } = require("../matchers/dynamic-payload-matchers");
+const { dynamicPayloadFrom } = require("../matchers/dynamic-payload-matchers");
 const {
 	merchantPaymentDetailsFrom,
 	merchantPaymentSummariesFrom,
@@ -120,9 +120,9 @@ describe("MerchantPaymentsApi", function () {
 									timeToLivePayment: is(request.timeToLivePayment),
 									timeToLiveQR: is(request.timeToLiveQR),
 									specificWalletId: is(request.specificWalletId),
-									basket: basketDTOFrom(request.basket),
-									posPayload: dynamicPayloadDTOFrom(request.posPayload),
-									merchantPayload: dynamicPayloadDTOFrom(request.merchantPayload)
+									basket: basketFrom(request.basket),
+									posPayload: dynamicPayloadFrom(request.posPayload),
+									merchantPayload: dynamicPayloadFrom(request.merchantPayload)
 								})
 							)
 						)

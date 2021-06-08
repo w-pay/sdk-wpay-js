@@ -1,11 +1,11 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
+const identity = require("crocks/combinators/identity");
 const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
-const { fromCustomerPaymentRequestDTO } = require("../transformers/payment-request");
 const { fromCustomerTransactionSummaryDTO } = require("../transformers/customer-transactions");
 const { fromData } = require("../transformers/data");
 const { requiredParameterError } = require("./api-errors");
@@ -20,7 +20,7 @@ const getById = (client) => (paymentRequestId) => {
 	return asyncToPromise(
 		pipeK(
 			client,
-			fromData(fromCustomerPaymentRequestDTO)
+			fromData(identity)
 		)({
 			method: HttpRequestMethod.GET,
 			url: "/instore/customer/payments/:paymentRequestId",
@@ -40,7 +40,7 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 	return asyncToPromise(
 		pipeK(
 			client,
-			fromData(fromCustomerPaymentRequestDTO)
+			fromData(identity)
 		)({
 			method: HttpRequestMethod.GET,
 			url: "/instore/customer/qr/:qrCodeId",

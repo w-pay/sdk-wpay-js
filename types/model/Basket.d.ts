@@ -33,5 +33,5 @@ export interface BasketItem {
 	totalPrice?: number;
 
 	/** Additional key/value pairs for the item defined by the merchant. */
-	tags?: Map<string, string>;
+	tags?: any;
 }

@@ -3,7 +3,6 @@
 const mapProps = require("crocks/helpers/mapProps");
 const map = require("crocks/pointfree/map");
 
-const { fromBasketDTO } = require("./basket");
 const { toDate, toUpperCase } = require("../helpers/props");
 
 const fromCustomerTransactionSummaryDTO = mapProps({
@@ -21,8 +20,7 @@ const fromCustomerTransactionDetailsDTO = mapProps({
 	executionTime: toDate,
 	status: toUpperCase,
 	rollback: toUpperCase,
-	type: toUpperCase,
-	basket: fromBasketDTO
+	type: toUpperCase
 });
 
 module.exports = {

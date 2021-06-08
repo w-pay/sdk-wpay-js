@@ -1,7 +1,6 @@
 "use strict";
 
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const mapProps = require("crocks/helpers/mapProps");
 const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
@@ -10,7 +9,6 @@ const { fromCreatePaymentSessionResultDTO } = require("../transformers/payment-s
 const { fromData } = require("../transformers/data");
 const { fromPaymentSessionDTO } = require("../transformers/payment-session");
 const { requiredParameterError } = require("./api-errors");
-const { toDynamicPayloadDTO } = require("../transformers/dynamic-payload");
 
 const create = (client) => (request) => {
 	if (!request) {
@@ -25,12 +23,7 @@ const create = (client) => (request) => {
 			method: HttpRequestMethod.POST,
 			url: "/instore/merchant/payment/session",
 			body: {
-				data: mapProps(
-					{
-						merchantInfo: toDynamicPayloadDTO
-					},
-					request
-				),
+				data: request,
 				meta: {}
 			}
 		})
@@ -73,12 +66,7 @@ const update = (client) => (paymentSessionId, session) => {
 				paymentSessionId
 			},
 			body: {
-				data: mapProps(
-					{
-						merchantInfo: toDynamicPayloadDTO
-					},
-					session
-				),
+				data: session,
 				meta: {}
 			}
 		})

@@ -9,5 +9,5 @@ export interface MerchantPayload {
 	schemaId?: string;
 
 	/** The contents of the message */
-	payload: Map<string, any>;
+	payload: any;
 }
