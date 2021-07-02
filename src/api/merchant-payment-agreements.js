@@ -26,7 +26,11 @@ const deletePaymentAgreement = (client) => (paymentToken) => {
 };
 
 // charge :: HttpApiClient -> (String, ChargePaymentAgreementRequest) -> Promise DigitalPayPaymentAgreementResponse
-const charge = (client) => (paymentToken, chargePaymentAgreementRequest) => {
+const charge = (client) => (
+	paymentToken, 
+	chargePaymentAgreementRequest,
+	fraud
+) => {
 	if (!paymentToken) {
 		throw requiredParameterError("paymentToken");
 	}
@@ -45,7 +49,10 @@ const charge = (client) => (paymentToken, chargePaymentAgreementRequest) => {
 			pathParams: {
 				paymentToken
 			},
-			body: chargePaymentAgreementRequest
+			body: {
+				data: chargePaymentAgreementRequest,
+				meta: fraud ? { fraud } : {}
+			}
 		})
 	);
 };

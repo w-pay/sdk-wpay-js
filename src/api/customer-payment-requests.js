@@ -60,7 +60,8 @@ const makePayment = (client) => (
 	skipRollback,
 	clientReference,
 	preferences,
-	challengeResponses
+	challengeResponses,
+	fraud
 ) => {
 	if (!paymentRequestId) {
 		throw requiredParameterError("paymentRequestId");
@@ -85,7 +86,8 @@ const makePayment = (client) => (
 					preferences
 				),
 				meta: {
-					challengeResponses: challengeResponses ? challengeResponses : []
+					challengeResponses: challengeResponses ? challengeResponses : [],
+					fraud
 				}
 			}
 		})

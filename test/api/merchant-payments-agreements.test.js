@@ -4,6 +4,7 @@ const { assertThat, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { paymentAgreementFrom } = require("../matchers/payment-agreements-matchers");
+const { body, withData, withMeta } = require("../matchers/request-body-matchers");
 
 const apiFactory = require("../../src/api/merchant-payment-agreements");
 
@@ -13,6 +14,8 @@ const {
 	PaymentAgreementResponse,
 	ChargePaymentAgreementRequest
 } = require("../data/payment-agreements");
+const { fraudPayloadDTO } = require("../data/fraud-payload");
+const { fraudPayloadDTOFrom } = require("../matchers/fraud-payload-matchers");
 
 describe("MerchantPaymentAgreementsApi", function () {
 	let apiClient;
@@ -54,7 +57,27 @@ describe("MerchantPaymentAgreementsApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.PUT,
 					url: "/instore/merchant/payments/agreements/:paymentToken",
-					body: is(request)
+					body: is(body(
+						withData(request)
+					))
+				})
+			);
+		});
+
+		it("should set optional params", async function () {
+			const request = ChargePaymentAgreementRequest();
+			const fraudPayload = fraudPayloadDTO();
+			await api.charge(paymentToken, request, fraudPayload);
+
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.PUT,
+					url: "/instore/merchant/payments/agreements/:paymentToken",
+					body: is(body(
+						withData(request), 
+						withMeta(fraudPayloadDTOFrom(fraudPayload))
+					))
 				})
 			);
 		});

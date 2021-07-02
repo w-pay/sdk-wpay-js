@@ -148,17 +148,14 @@ const UpdatePaymentAgreementRequest = () => ({
 });
 
 const ChargePaymentAgreementRequest = () => ({
-	data: {
-		transactionType: {
-			creditCard: "PURCHASE"
-		},
-		amount: 25.53,
-		clientReference: "client-ref",
-		customerRef: "customer-ref",
-		orderNumber: "order-12345",
-		paymentToken: "11111111-1111-1111-111111111111"
+	transactionType: {
+		creditCard: "PURCHASE"
 	},
-	meta: {}
+	amount: 25.53,
+	clientReference: "client-ref",
+	customerRef: "customer-ref",
+	orderNumber: "order-12345",
+	paymentToken: "11111111-1111-1111-111111111111"
 });
 
 module.exports = {

@@ -45,7 +45,11 @@ const getById = (client) => (paymentToken) => {
 };
 
 // create :: HttpApiClient -> (CreatePaymentAgreementRequest, [ChallengeResponse]?) -> Promise PaymentAgreements
-const create = (client) => (createPaymentAgreementRequest, challengeResponses) => {
+const create = (client) => (
+	createPaymentAgreementRequest, 
+	challengeResponses, 
+	fraud
+) => {
 	if (!createPaymentAgreementRequest) {
 		throw requiredParameterError("createPaymentAgreementRequest");
 	}
@@ -60,7 +64,8 @@ const create = (client) => (createPaymentAgreementRequest, challengeResponses) =
 			body: {
 				data: createPaymentAgreementRequest,
 				meta: {
-					challengeResponses: challengeResponses ? challengeResponses : []
+					challengeResponses: challengeResponses ? challengeResponses : [],
+					fraud
 				}
 			}
 		})
@@ -71,7 +76,8 @@ const create = (client) => (createPaymentAgreementRequest, challengeResponses) =
 const update = (client) => (
 	paymentToken,
 	updatePaymentAgreementRequest,
-	challengeResponses
+	challengeResponses,
+	fraud
 ) => {
 	if (!paymentToken) {
 		throw requiredParameterError("paymentToken");
@@ -94,7 +100,8 @@ const update = (client) => (
 			body: {
 				data: updatePaymentAgreementRequest,
 				meta: {
-					challengeResponses: challengeResponses ? challengeResponses : []
+					challengeResponses: challengeResponses ? challengeResponses : [],
+					fraud
 				}
 			}
 		})
