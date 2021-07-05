@@ -2,6 +2,7 @@ import { ChallengeResponse, PaymentPreferences } from "../model";
 import { CustomerPaymentRequest } from "../model";
 import { CustomerTransactionSummary } from "../model";
 import { SecondaryPaymentInstrument } from "../model";
+import { FraudPayload } from "../model/FraudPayload";
 
 /**
  * @category API
@@ -31,6 +32,7 @@ export interface CustomerPaymentRequestsApi {
 	 * @param clientReference An optional client reference to be associated with the transaction.
 	 * @param preferences Optional payment preferences.
 	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
+	 * @param fraudPayload Used to complete the fraud check.
 	 */
 	makePayment(
 		paymentRequestId: string,
@@ -39,6 +41,7 @@ export interface CustomerPaymentRequestsApi {
 		skipRollback?: boolean,
 		clientReference?: string,
 		preferences?: PaymentPreferences,
-		challengeResponses?: ChallengeResponse[]
+		challengeResponses?: ChallengeResponse[],
+		fraudPayload?: FraudPayload
 	): Promise<CustomerTransactionSummary>;
 }
