@@ -6,9 +6,9 @@ The goal of this doc is to outline the steps needed to uplift the SDK to a new A
 
 ## Target a spec version
 
-The SDK targets a particular version of the [WPay API specification](https://github.com/woolworthslimited/oas-wow-pay-wallet/). When uplifting the SDK the first task is to 
-identify what the changes are between the version the SDK was targeting, and the new version
-of the specification.
+The SDK targets a particular version of the [WPay API specification](https://github.com/woolworthslimited/oas-wow-pay-wallet/). 
+When uplifting the SDK the first task is to identify what the changes are between the version 
+the SDK was targeting, and the new version of the specification.
 
 Once the differences are analysed the Typescript definitions need to be updated. This includes
 defining new model types that model the inputs and outputs of the SDK, and the interfaces that
