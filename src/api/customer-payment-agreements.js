@@ -45,11 +45,7 @@ const getById = (client) => (paymentToken) => {
 };
 
 // create :: HttpApiClient -> (CreatePaymentAgreementRequest, [ChallengeResponse]?, FraudPayload?) -> Promise PaymentAgreements
-const create = (client) => (
-	createPaymentAgreementRequest, 
-	challengeResponses, 
-	fraud
-) => {
+const create = (client) => (createPaymentAgreementRequest, challengeResponses, fraud) => {
 	if (!createPaymentAgreementRequest) {
 		throw requiredParameterError("createPaymentAgreementRequest");
 	}

@@ -3,11 +3,7 @@ const { assertThat, is } = require("hamjest");
 const { fraudPayloadDTOFrom } = require("./fraud-payload-matchers");
 const { challengeResponsesDTOFrom } = require("./challenge-response-matchers");
 
-
-exports.paymentMetaDTOFrom = (
-	challengeResponses = undefined,
-	fraudPayload = undefined
-) => ({
+exports.paymentMetaDTOFrom = (challengeResponses = undefined, fraudPayload = undefined) => ({
 	matches(actual) {
 		if (challengeResponses && challengeResponses.length > 0) {
 			assertThat(actual.challengeResponses.length, is(challengeResponses.length));
@@ -16,8 +12,8 @@ exports.paymentMetaDTOFrom = (
 			assertThat(actual.challengeResponses, is(undefined));
 		}
 
-        if (fraudPayload) {
-            assertThat(actual, is(fraudPayloadDTOFrom(fraudPayload)));
+		if (fraudPayload) {
+			assertThat(actual, is(fraudPayloadDTOFrom(fraudPayload)));
 		} else {
 			assertThat(actual.fraud, is(undefined));
 		}

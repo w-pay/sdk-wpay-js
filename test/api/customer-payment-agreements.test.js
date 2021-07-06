@@ -110,7 +110,7 @@ describe("CustomerPaymentAgreementsApi", function () {
 		it("should set request params", async function () {
 			const request = CreatePaymentAgreementRequest();
 			const challengeResponses = [aChallengeResponse()];
-			const fraudPayload = fraudPayloadDTO()
+			const fraudPayload = fraudPayloadDTO();
 			await api.create(request, challengeResponses, fraudPayload);
 
 			assertThat(
@@ -120,7 +120,7 @@ describe("CustomerPaymentAgreementsApi", function () {
 					url: "/instore/customer/payments/agreements",
 					body: is(
 						body(
-							withData(request), 
+							withData(request),
 							withMeta(paymentMetaDTOFrom(challengeResponses, fraudPayload))
 						)
 					)
@@ -175,10 +175,12 @@ describe("CustomerPaymentAgreementsApi", function () {
 
 			assertThat(
 				apiClient.request.body,
-				is(body(
-					withData(request), 
-					withMeta(paymentMetaDTOFrom(challengeResponses, fraudPayload))
-				))
+				is(
+					body(
+						withData(request),
+						withMeta(paymentMetaDTOFrom(challengeResponses, fraudPayload))
+					)
+				)
 			);
 		});
 

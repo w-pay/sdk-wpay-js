@@ -57,9 +57,7 @@ describe("MerchantPaymentAgreementsApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.PUT,
 					url: "/instore/merchant/payments/agreements/:paymentToken",
-					body: is(body(
-						withData(request)
-					))
+					body: is(body(withData(request)))
 				})
 			);
 		});
@@ -74,10 +72,7 @@ describe("MerchantPaymentAgreementsApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.PUT,
 					url: "/instore/merchant/payments/agreements/:paymentToken",
-					body: is(body(
-						withData(request), 
-						withMeta(fraudPayloadDTOFrom(fraudPayload))
-					))
+					body: is(body(withData(request), withMeta(fraudPayloadDTOFrom(fraudPayload))))
 				})
 			);
 		});
