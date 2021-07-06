@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> api/MerchantPayments.d.ts</title>
+  <title> model/FraudPayload.d.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>api/MerchantPayments.d.ts</h1>
+                    <h1>model/FraudPayload.d.ts</h1>
                 </header>
                 
 
@@ -85,60 +85,34 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { CreatePaymentRequestResult } from "../model";
-import { MerchantPaymentDetails, MerchantPaymentSummaries } from "../model";
-import { MerchantTransactionSummary } from "../model";
-import { NewPaymentRequest } from "../model";
-import { TransactionRefundDetails } from "../model";
+            <pre class="prettyprint source linenums"><code>/**
+ * Digital Pay Fraud Payload, set to null to skip the fraud check.
+ *
+ * @category Model
+ */
+ export interface FraudPayload {
+	/** The fraud check message */
+    message: string;
+    /** The fraud check provider. */
+    provider: string;
+    /** The fraud check message format */
+    format: FraudPayloadFormat;
+    /** The fraud check response message format */
+    responseFormat: FraudPayloadFormat;
+    /** The fraud check version */
+    version: string;
+}
 
 /**
- * @category API
+ * Possible fraud payload formats
+ *
+ * @category Model
  */
-export interface MerchantPaymentsApi {
-	/**
-	 * Retrieve a list of the payments initiated by the merchant, both pending and complete
-	 *
-	 * @param type The type of payment requests to return
-	 * @param page The page of results to return with 1 indicating the first page (defaults to 1).
-	 * @param pageSize The number of records to return for this page (current default is 25)
-	 */
-	listPayments(
-		type?: string,
-		page?: number,
-		pageSize?: number
-	): Promise&lt;MerchantPaymentSummaries>;
-
-	/**
-	 * Create a new payment request for a customer
-	 *
-	 * @param paymentRequest The details of the new payment request
-	 */
-	createPaymentRequest(paymentRequest: NewPaymentRequest): Promise&lt;CreatePaymentRequestResult>;
-
-	/**
-	 * Retrieve a payment request by it's ID. The request may have been "completed" that is the customer has made a payment.
-	 *
-	 * @param paymentRequestId The ID of the payment request to return.
-	 */
-	getPaymentRequestDetailsBy(paymentRequestId: string): Promise&lt;MerchantPaymentDetails>;
-
-	/**
-	 * Delete a payment request
-	 *
-	 * @param paymentRequestId The payment request to delete
-	 */
-	deletePaymentRequest(paymentRequestId: string): Promise&lt;void>;
-
-	/**
-	 * Refund a transaction to a customer
-	 *
-	 * @param transactionId The transaction to refund.
-	 * @param refundDetails The details of the refund.
-	 */
-	refundTransaction(
-		transactionId: string,
-		refundDetails: TransactionRefundDetails
-	): Promise&lt;MerchantTransactionSummary>;
+ export enum FraudPayloadFormat{
+    /** ZIP BASE64 Formatting */
+    ZipBase64Encoded = "ZIP_BASE_64_ENCODED",
+    /** XML Formatting */
+    Xml = "XML"
 }
 </code></pre>
         </article>
