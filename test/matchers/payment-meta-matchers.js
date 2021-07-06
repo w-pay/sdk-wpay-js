@@ -11,7 +11,7 @@ exports.paymentMetaDTOFrom = (
 	matches(actual) {
 		if (challengeResponses && challengeResponses.length > 0) {
 			assertThat(actual.challengeResponses.length, is(challengeResponses.length));
-            assertThat(actual, is(challengeResponsesDTOFrom(challengeResponses)));
+			assertThat(actual, is(challengeResponsesDTOFrom(challengeResponses)));
 		} else {
 			assertThat(actual.challengeResponses, is(undefined));
 		}

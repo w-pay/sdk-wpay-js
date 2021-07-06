@@ -59,7 +59,7 @@ As such if the API specification changes in a way that introduces breaking
 changes (eg: path change or data changes) the major version of the SDK
 will be increased.
 
-The SDK currently supports version 1.0.3 of the API spec.
+The SDK currently supports version 1.0.5 of the API spec.
 
 ## Getting started
 

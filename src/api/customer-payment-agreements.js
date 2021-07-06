@@ -44,7 +44,7 @@ const getById = (client) => (paymentToken) => {
 	);
 };
 
-// create :: HttpApiClient -> (CreatePaymentAgreementRequest, [ChallengeResponse]?) -> Promise PaymentAgreements
+// create :: HttpApiClient -> (CreatePaymentAgreementRequest, [ChallengeResponse]?, FraudPayload?) -> Promise PaymentAgreements
 const create = (client) => (
 	createPaymentAgreementRequest, 
 	challengeResponses, 
@@ -72,7 +72,7 @@ const create = (client) => (
 	);
 };
 
-// update :: HttpApiClient -> (String, UpdatePaymentAgreementRequest, [ChallengeResponse]?) -> Promise PaymentAgreements
+// update :: HttpApiClient -> (String, UpdatePaymentAgreementRequest, [ChallengeResponse]?, FraudPayload?) -> Promise PaymentAgreements
 const update = (client) => (
 	paymentToken,
 	updatePaymentAgreementRequest,

@@ -25,7 +25,7 @@ const deletePaymentAgreement = (client) => (paymentToken) => {
 	);
 };
 
-// charge :: HttpApiClient -> (String, ChargePaymentAgreementRequest) -> Promise DigitalPayPaymentAgreementResponse
+// charge :: HttpApiClient -> (String, ChargePaymentAgreementRequest, FraudPayload?) -> Promise DigitalPayPaymentAgreementResponse
 const charge = (client) => (
 	paymentToken, 
 	chargePaymentAgreementRequest,
