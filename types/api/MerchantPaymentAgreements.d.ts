@@ -1,5 +1,5 @@
 import { ChargePaymentAgreementRequest } from "../model/ChargePaymentAgreement";
-import { DigitalPayPaymentAgreementResponse } from "../model/DigiPayModel/DigitalPayPaymentAgreementResponse";
+import { DigitalPayPaymentAgreementResponse, FraudPayload } from "../model";
 
 /**
  * @category API
