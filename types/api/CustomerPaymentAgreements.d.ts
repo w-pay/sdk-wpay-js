@@ -1,4 +1,5 @@
 import {
+	FraudPayload,
 	PaymentAgreement,
 	PaymentAgreements,
 	CreatePaymentAgreementRequest,
