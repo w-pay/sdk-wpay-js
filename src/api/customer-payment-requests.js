@@ -52,7 +52,7 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 };
 
 // returns an uncurried function for data so that defaults can be omitted
-// makePayment :: HttpApiClient -> (String, String, Array, Boolean, String, PaymentPreferences, Array) -> Promise CustomerTransactionSummary
+// makePayment :: HttpApiClient -> (String, String, Array, Boolean, String, PaymentPreferences, [ChallengeResponse]?, FraudPayload?) -> Promise CustomerTransactionSummary
 const makePayment = (client) => (
 	paymentRequestId,
 	primaryInstrument,
@@ -60,7 +60,8 @@ const makePayment = (client) => (
 	skipRollback,
 	clientReference,
 	preferences,
-	challengeResponses
+	challengeResponses,
+	fraud
 ) => {
 	if (!paymentRequestId) {
 		throw requiredParameterError("paymentRequestId");
@@ -85,7 +86,8 @@ const makePayment = (client) => (
 					preferences
 				),
 				meta: {
-					challengeResponses: challengeResponses ? challengeResponses : []
+					challengeResponses: challengeResponses ? challengeResponses : [],
+					fraud
 				}
 			}
 		})

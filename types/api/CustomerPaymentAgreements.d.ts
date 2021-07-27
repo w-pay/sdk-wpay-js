@@ -1,4 +1,5 @@
 import {
+	FraudPayload,
 	PaymentAgreement,
 	PaymentAgreements,
 	CreatePaymentAgreementRequest,
@@ -27,10 +28,12 @@ export interface CustomerPaymentAgreementsApi {
 	 *
 	 * @param paymentAgreement The details for the new payment agreement
 	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
+	 * @param fraudPayload Used to complete the fraud check
 	 */
 	create(
 		paymentAgreement: CreatePaymentAgreementRequest,
-		challengeResponses?: ChallengeResponse[]
+		challengeResponses?: ChallengeResponse[],
+		fraudPayload?: FraudPayload
 	): Promise<PaymentAgreement>;
 
 	/**
@@ -39,10 +42,12 @@ export interface CustomerPaymentAgreementsApi {
 	 * @param paymentToken The payment token to update
 	 * @param paymentAgreement The updates to apply to the payment agreement
 	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
+	 * @param fraudPayload Used to complete the fraud check
 	 */
 	update(
 		paymentToken: string,
 		paymentAgreement: UpdatePaymentAgreementRequest,
-		challengeResponses?: ChallengeResponse[]
+		challengeResponses?: ChallengeResponse[],
+		fraudPayload?: FraudPayload
 	): Promise<PaymentAgreement>;
 }

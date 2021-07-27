@@ -11,7 +11,7 @@ const {
 const apiFactory = require("../../src/api/customer-payment-agreements");
 const { aChallengeResponse } = require("../data/challenge-response");
 const { body, withData, withMeta } = require("../matchers/request-body-matchers");
-const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-matchers");
+const { paymentMetaDTOFrom } = require("../matchers/payment-meta-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
 const {
@@ -20,6 +20,7 @@ const {
 	UpdatePaymentAgreementRequest,
 	ListPaymentAgreementsResponse
 } = require("../data/payment-agreements");
+const { fraudPayloadDTO } = require("../data/fraud-payload");
 
 describe("CustomerPaymentAgreementsApi", function () {
 	let apiClient;
@@ -109,7 +110,8 @@ describe("CustomerPaymentAgreementsApi", function () {
 		it("should set request params", async function () {
 			const request = CreatePaymentAgreementRequest();
 			const challengeResponses = [aChallengeResponse()];
-			await api.create(request, challengeResponses);
+			const fraudPayload = fraudPayloadDTO();
+			await api.create(request, challengeResponses, fraudPayload);
 
 			assertThat(
 				apiClient.request,
@@ -117,7 +119,10 @@ describe("CustomerPaymentAgreementsApi", function () {
 					method: HttpRequestMethod.POST,
 					url: "/instore/customer/payments/agreements",
 					body: is(
-						body(withData(request), withMeta(challengeResponsesDTOFrom(challengeResponses)))
+						body(
+							withData(request),
+							withMeta(paymentMetaDTOFrom(challengeResponses, fraudPayload))
+						)
 					)
 				})
 			);
@@ -154,7 +159,8 @@ describe("CustomerPaymentAgreementsApi", function () {
 		it("should set request params", async function () {
 			const request = UpdatePaymentAgreementRequest();
 			const challengeResponses = [aChallengeResponse()];
-			await api.update(paymentToken, request, challengeResponses);
+			const fraudPayload = fraudPayloadDTO();
+			await api.update(paymentToken, request, challengeResponses, fraudPayload);
 
 			assertThat(
 				apiClient.request,
@@ -169,7 +175,12 @@ describe("CustomerPaymentAgreementsApi", function () {
 
 			assertThat(
 				apiClient.request.body,
-				is(body(withData(request), withMeta(challengeResponsesDTOFrom(challengeResponses))))
+				is(
+					body(
+						withData(request),
+						withMeta(paymentMetaDTOFrom(challengeResponses, fraudPayload))
+					)
+				)
 			);
 		});
 

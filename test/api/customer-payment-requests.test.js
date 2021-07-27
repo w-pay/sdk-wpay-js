@@ -15,6 +15,8 @@ const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-ma
 const { customerPaymentRequestDTO } = require("../data/payment-request");
 const { customerPaymentRequestFrom } = require("../matchers/payment-request-matchers");
 const { customerTransactionSummaryDTO } = require("../data/customer-transactions");
+const { fraudPayloadDTO } = require("../data/fraud-payload");
+const { paymentMetaDTOFrom } = require("../matchers/payment-meta-matchers");
 const {
 	customerTransactionSummaryFrom
 } = require("../matchers/customer-transactions-matchers");
@@ -129,6 +131,7 @@ describe("CustomerPaymentRequestsApi", function () {
 			const clientReference = "this is a reference";
 			const prefs = paymentPreferences();
 			const challengeResponses = [aChallengeResponse()];
+			const fraudPayload = fraudPayloadDTO();
 
 			await api.makePayment(
 				uuid(),
@@ -137,7 +140,8 @@ describe("CustomerPaymentRequestsApi", function () {
 				skipRollback,
 				clientReference,
 				prefs,
-				challengeResponses
+				challengeResponses,
+				fraudPayload
 			);
 
 			assertThat(
@@ -153,7 +157,7 @@ describe("CustomerPaymentRequestsApi", function () {
 								prefs
 							)
 						),
-						withMeta(challengeResponsesDTOFrom(challengeResponses))
+						withMeta(paymentMetaDTOFrom(challengeResponses, fraudPayload))
 					)
 				)
 			);

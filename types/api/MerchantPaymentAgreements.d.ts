@@ -1,5 +1,5 @@
 import { ChargePaymentAgreementRequest } from "../model/ChargePaymentAgreement";
-import { DigitalPayPaymentAgreementResponse } from "../model/DigiPayModel/DigitalPayPaymentAgreementResponse";
+import { DigitalPayPaymentAgreementResponse, FraudPayload } from "../model";
 
 /**
  * @category API
@@ -10,10 +10,12 @@ export interface MerchantPaymentAgreementsApi {
 	 *
 	 * @param paymentToken The ID.
 	 * @param chargePaymentAgreementRequest details of charge to make against the payment agreement
+	 * @param fraudPayload used to complete the fraud check
 	 */
 	charge(
 		paymentToken: string,
-		chargePaymentAgreementRequest: ChargePaymentAgreementRequest
+		chargePaymentAgreementRequest: ChargePaymentAgreementRequest,
+		fraudPayload?: FraudPayload
 	): Promise<DigitalPayPaymentAgreementResponse>;
 
 	/**
