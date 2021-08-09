@@ -1,0 +1,47 @@
+body, html {
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+body.small-header #main {
+    padding-top: 0;
+}
+
+body.small-header .top-nav {
+    height: 0;
+    padding: 0;
+}
+
+.top-nav .inner .menu {
+    display: none;
+}
+
+#hamburger {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 5px;
+    background: white;
+    height: 2.75rem;
+    width: 2.75rem;
+    -webkit-box-shadow: 0px 1px 15px 2px rgba(0,0,0,0.5); 
+    box-shadow: 0px 1px 15px 2px rgba(0,0,0,0.5);
+}
+
+#main>.core {
+    padding: 0;
+}
+
+#main>.sidebar {
+    padding: 40px 20px;
+}
+
+#main>.core>.content {
+    padding: 20px 30px;
+    margin-bottom: 0;
+}

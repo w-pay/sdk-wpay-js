@@ -13,7 +13,18 @@
 		"dictionaries": [ "jsdoc" ]
 	},
 	"templates": {
-		"cleverLinks": true
+		"cleverLinks": true,
+		"default": {
+			"staticFiles": {
+				"include": [
+					"./docs-resources"
+				]
+			}
+		},
+		"better-docs": {
+            "css": "style.css",
+			"hideGenerator": true
+		}
 	},
 	"opts": {
 		"readme": "./README.md",
