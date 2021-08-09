@@ -27,7 +27,7 @@ const getProductById = (client) => (productId) => {
 	);
 };
 
-// complete :: HttpApiClient -> (String, String, Date) -> Promise DigitalPayGiftingProduct[]
+// complete :: HttpApiClient -> (Number, Number, Date) -> Promise DigitalPayGiftingProduct[]
 const listProducts = (client) => (page, pageSize, lastUpdateDateTime) => {
 	return asyncToPromise(
 		pipeK(client)({
