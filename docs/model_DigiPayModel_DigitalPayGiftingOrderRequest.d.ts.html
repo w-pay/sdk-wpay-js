@@ -112,13 +112,13 @@ export interface DigitalPayGiftingOrderRequest {
 	totalOrderAmount: number;
 
 	/** Billing address for the order */
-	billingAddress: GiftingBillingAddress;
+	billingContact: GiftingBillingContact;
 
 	/** Gift cards to be included in the order.  Currently only supports a single entry.  Array is for future roadmap */
 	orderItems: GiftingProductOrderItem[];
 }
 
-interface GiftingBillingAddress {
+interface GiftingBillingContact {
 	/** The customer's first name. */
 	firstName: string;
 
