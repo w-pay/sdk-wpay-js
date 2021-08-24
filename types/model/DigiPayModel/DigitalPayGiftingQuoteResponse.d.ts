@@ -28,10 +28,10 @@ interface GiftingProductQuoteResponseItem {
 	amount: number;
 
 	/** Sale price of the gift card */
-	unitSalePrice: number;
+	unitPrice: number;
 
 	/** Total order price */
-	totalSalePrice: number;
+	totalPrice: number;
 
 	/** For self use card, this can be any value between 1 and 10. For a gifting card, it must be 1 */
 	quantity: number;
