@@ -1,4 +1,4 @@
-export interface DigitalPayTransactionType {
+export interface PaymentTransactionType {
 	/** The container transaction type to use for credit card instruments. */
 	creditCard?: "PREAUTH" | "PURCHASE";
 

@@ -11,7 +11,9 @@ exports.toPaymentDetailsDTO = (
 	secondaryInstruments,
 	skipRollback,
 	clientReference,
-	preferences
+	preferences,
+	transactionType,
+	allowPartialSuccess
 ) => {
 	const dto = {};
 
@@ -27,12 +29,20 @@ exports.toPaymentDetailsDTO = (
 		dto.skipRollback = skipRollback;
 	}
 
+	if (allowPartialSuccess) {
+		dto.allowPartialSuccess = allowPartialSuccess;
+	}
+
 	if (clientReference) {
 		dto.clientReference = clientReference;
 	}
 
 	if (preferences) {
 		dto.preferences = preferences;
+	}
+
+	if (transactionType) {
+		dto.transactionType = transactionType;
 	}
 
 	return dto;

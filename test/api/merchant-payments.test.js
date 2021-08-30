@@ -252,4 +252,103 @@ describe("MerchantPaymentsApi", function () {
 			assertThat(result, is(merchantTransactionSummaryFrom(apiClient.response.data)));
 		});
 	});
+
+	describe("completeTransaction", function () {
+		const transactionId = uuid();
+		const completionDetails = {
+			clientReference: "ref-123",
+			orderNumber: "order-123"
+		};
+
+		beforeEach(function () {
+			apiClient.response = {
+				data: merchantTransactionSummaryDTO(),
+				meta: {}
+			};
+		});
+
+		it("should throw error when transactionId is missing", function () {
+			assertThat(
+				() => api.completeTransaction(),
+				throws(requiredParameterError("transactionId"))
+			);
+		});
+
+		it("should throw error when completionDetails is missing", function () {
+			assertThat(
+				() => api.completeTransaction(transactionId),
+				throws(requiredParameterError("completionDetails"))
+			);
+		});
+
+		it("should set request params", async function () {
+			await api.completeTransaction(transactionId, completionDetails);
+
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.POST,
+					url: "/instore/merchant/transactions/:transactionId/completion",
+					pathParams: {
+						transactionId
+					},
+					body: is(body(withData(equalTo(completionDetails))))
+				})
+			);
+		});
+
+		it("should complete transaction", async function () {
+			const result = await api.completeTransaction(transactionId, completionDetails);
+
+			assertThat(result, is(merchantTransactionSummaryFrom(apiClient.response.data)));
+		});
+	});
+
+	describe("voidTransaction", function () {
+		const transactionId = uuid();
+		const voidDetails = {
+			clientReference: "ref-123",
+			orderNumber: "order-123"
+		};
+
+		beforeEach(function () {
+			apiClient.response = {
+				data: merchantTransactionSummaryDTO(),
+				meta: {}
+			};
+		});
+
+		it("should throw error when transactionId is missing", function () {
+			assertThat(() => api.voidTransaction(), throws(requiredParameterError("transactionId")));
+		});
+
+		it("should throw error when voidDetails is missing", function () {
+			assertThat(
+				() => api.voidTransaction(transactionId),
+				throws(requiredParameterError("voidDetails"))
+			);
+		});
+
+		it("should set request params", async function () {
+			await api.voidTransaction(transactionId, voidDetails);
+
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.POST,
+					url: "/instore/merchant/transactions/:transactionId/void",
+					pathParams: {
+						transactionId
+					},
+					body: is(body(withData(equalTo(voidDetails))))
+				})
+			);
+		});
+
+		it("should complete transaction", async function () {
+			const result = await api.voidTransaction(transactionId, voidDetails);
+
+			assertThat(result, is(merchantTransactionSummaryFrom(apiClient.response.data)));
+		});
+	});
 });

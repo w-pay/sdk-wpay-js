@@ -1,6 +1,6 @@
+import { PaymentTransactionType } from "../PaymentTransactionType";
 import { DigitalPayAddress } from "./DigitalPayAddress";
 import { DigitalPayFraudPayload } from "./DigitalPayFraudPayload";
-import { DigitalPayTransactionType } from "./DigitalPayTransactionType";
 
 /**
  * The JSON request structure of the Payments endpoint
@@ -13,7 +13,7 @@ export interface DigitalPayPaymentRequest {
 	 *
 	 * This object is only required if the payments request contains apple pay instruments.
 	 */
-	transactionType: DigitalPayTransactionType;
+	transactionType: PaymentTransactionType;
 
 	/** A merchant application specific reference number. This number should uniquely identify the transaction in the merchant’s system. */
 	clientReference: string;

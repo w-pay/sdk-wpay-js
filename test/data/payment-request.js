@@ -38,3 +38,14 @@ exports.customerPaymentRequestDTO = () => ({
 	merchantReferenceId: uuid(),
 	basket: basketDTO()
 });
+
+exports.immediatePaymentRequest = () => ({
+	clientReference: "client-ref",
+	orderNumber: "order-123",
+	payments: [
+		{
+			paymentInstrumentId: "123456",
+			amount: 100
+		}
+	]
+});

@@ -28,3 +28,5 @@ export * from "./TransactionSummary";
 export * from "./Wallet";
 export * from "./DigiPayModel";
 export * from "./FraudPayload";
+export * from "./PaymentTransactionType";
+export * from "./ImmediatePaymentRequest";

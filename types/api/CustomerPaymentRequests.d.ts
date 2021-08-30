@@ -1,4 +1,9 @@
-import { ChallengeResponse, PaymentPreferences } from "../model";
+import {
+	ChallengeResponse,
+	ImmediatePaymentRequest,
+	PaymentPreferences,
+	PaymentTransactionType
+} from "../model";
 import { CustomerPaymentRequest } from "../model";
 import { CustomerTransactionSummary } from "../model";
 import { SecondaryPaymentInstrument } from "../model";
@@ -33,6 +38,8 @@ export interface CustomerPaymentRequestsApi {
 	 * @param preferences Optional payment preferences.
 	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
 	 * @param fraudPayload Used to complete the fraud check.
+	 * @param transactionType  The transaction types to use for each instrument type.
+	 * @param allowPartialSuccess An optional flag allowing the consumer to indicate that a partial success will not trigger a failure and rollback
 	 */
 	makePayment(
 		paymentRequestId: string,
@@ -41,6 +48,21 @@ export interface CustomerPaymentRequestsApi {
 		skipRollback?: boolean,
 		clientReference?: string,
 		preferences?: PaymentPreferences,
+		challengeResponses?: ChallengeResponse[],
+		fraudPayload?: FraudPayload,
+		transactionType?: PaymentTransactionType,
+		allowPartialSuccess?: boolean
+	): Promise<CustomerTransactionSummary>;
+
+	/**
+	 * Create a new {@link CustomerPaymentRequest} and immediately make a charge against it
+	 *
+	 * @param immediatePaymentRequest Details of the payment being made
+	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
+	 * @param fraudPayload Used to complete the fraud check.
+	 */
+	makeImmediatePayment(
+		immediatePaymentRequest: ImmediatePaymentRequest,
 		challengeResponses?: ChallengeResponse[],
 		fraudPayload?: FraudPayload
 	): Promise<CustomerTransactionSummary>;
