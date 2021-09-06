@@ -4,12 +4,11 @@ const Assign = require("crocks/Assign");
 const Async = require("crocks/Async");
 const Result = require("crocks/Result");
 
-const applyTo = require("crocks/combinators/applyTo");
 const chain = require("crocks/pointfree/chain");
+const compose = require("crocks/helpers/compose");
 const constant = require("crocks/combinators/constant");
 const curry = require("crocks/core/curry");
 const either = require("crocks/pointfree/either");
-const flip = require("crocks/combinators/flip");
 const fold = require("crocks/pointfree/fold");
 const getProp = require("crocks/Maybe/getProp");
 const isNil = require("crocks/predicates/isNil");
@@ -21,6 +20,8 @@ const pipe = require("crocks/helpers/pipe");
 const safe = require("crocks/Maybe/safe");
 const sequence = require("crocks/pointfree/sequence");
 const valueOf = require("crocks/pointfree/valueOf");
+
+const { applyFunctor } = require("@epistemology-factory/crocks-ext/helpers");
 
 const {
 	bearerToken,
@@ -40,20 +41,6 @@ const { Wallet } = require("../../src/model");
 
 const { getPropOrError } = require("../helpers/props");
 
-/*
- * While `map` is very handy in that it will take a function and apply it to a value, what
- * happens when we want to take an array of functions and apply them to a value?
- *
- * Because Array is a Functor (as it has a `map` method) we can take the array and apply it
- * to a given value returning a new array with the results.
- *
- * `applyFunctor` can be used with any Functor without needing the Functor to be an Applicative
- * or needing to lift the value into a Functor first; as is needed when applying an Applicative
- * to a value.
- */
-// applyFunctor :: Functor f => f (a -> b) -> a -> f b
-const applyFunctor = flip(pipe(applyTo, map));
-
 // getHeaderOrError :: String -> String -> Object -> Result Error Assign
 const getHeaderOrError = curry((prop, headerName) =>
 	pipe(getPropOrError(prop), map(pipe(objOf(headerName), Assign)))
@@ -61,20 +48,16 @@ const getHeaderOrError = curry((prop, headerName) =>
 
 // getHeaderOrNothing :: String -> String -> Object -> Result Assign
 const getHeaderOrNothing = curry((prop, headerName) =>
-	pipe(getProp(prop), either(constant({}), objOf(headerName)), Assign, Result.of)
+	pipe(getProp(prop), either(constant({}), objOf(headerName)), Assign, Result.Ok)
 );
 
 // everydayPayWalletHeader :: Object -> Result Assign
 const everydayPayWalletHeader = pipe(
 	getProp("wallet"),
 	either(constant("false"), (wallet) => (wallet === Wallet.EVERYDAY_PAY).toString()),
-	objOf(X_EVERYDAY_PAY_WALLET),
-	Assign,
-	Result.of
+	compose(Assign, objOf(X_EVERYDAY_PAY_WALLET)),
+	Result.Ok
 );
-
-// safeGetProp :: String -> Object -> Maybe a
-const safeGetProp = (prop) => pipe(getProp(prop), chain(safe(not(isNil))));
 
 // apiAuthenticatorToRequestHeaderFactory :: ApiAuthenticator -> RequestHeaderFactory
 const apiAuthenticatorToRequestHeaderFactory = pipe(
@@ -84,24 +67,25 @@ const apiAuthenticatorToRequestHeaderFactory = pipe(
 
 // constantOptsToHeaders :: Object -> Result Error RequestHeaderFactory
 const constantOptsToHeaders = pipe(
-	applyFunctor([
-		pipe(getHeaderOrError("apiKey", X_API_KEY)),
-		pipe(getHeaderOrNothing("walletId", X_WALLET_ID)),
-		pipe(getHeaderOrNothing("merchantId", X_MERCHANT_ID)),
-		pipe(everydayPayWalletHeader)
-	]),
-	fold,
-	map(valueOf),
-	map(constantHeaders)
+	compose(
+		fold,
+		applyFunctor([
+			getHeaderOrError("apiKey", X_API_KEY),
+			getHeaderOrNothing("walletId", X_WALLET_ID),
+			getHeaderOrNothing("merchantId", X_MERCHANT_ID),
+			everydayPayWalletHeader
+		])
+	),
+	map(compose(constantHeaders, valueOf))
 );
 
 // accessTokenToHeader :: Object -> Result RequestHeaderFactory
 const accessTokenToHeader = pipe(
-	safeGetProp("accessToken"),
+	compose(chain(safe(not(isNil))), getProp("accessToken")),
 	map(toApiAuthenticator),
 	map(apiAuthenticatorToRequestHeaderFactory),
-	option(() => Async.of({})),
-	Result.of
+	option(() => Async.Resolved({})),
+	Result.Ok
 );
 
 /**
@@ -114,7 +98,7 @@ const accessTokenToHeader = pipe(
 // defaultHeaders :: Object -> Result Error RequestHeadersFactory
 const defaultHeaders = pipe(
 	applyFunctor([constantOptsToHeaders, accessTokenToHeader]),
-	sequence(Result.of),
+	sequence(Result),
 	map(createHeaders)
 );
 
