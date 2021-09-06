@@ -38,7 +38,8 @@
   },
   "homepage": "https://github.com/woolworthslimited/sdk-wpay-js#readme",
   "dependencies": {
-    "@api-sdk-creator/http-api-client": "^0.1.1",
+    "@api-sdk-creator/http-api-client": "^0.1.4",
+    "@epistemology-factory/crocks-ext": "0.0.14",
     "crocks": "^0.12.4"
   },
   "devDependencies": {
