@@ -110,6 +110,9 @@ export interface DigitalPayCreditCard extends DigitalPayPaymentInstrument {
 	 * Only present if no error occurred during payment.
 	 */
 	handlingInstructions?: DigitalPayHandlingInstructions;
+
+	/** This object is only present if the payments response contains 3DS data from Digital Pay. */
+	threeDS?: DigitalPayThreeDSResponse;
 }
 
 export interface DigitalPayHandlingInstructions {
@@ -212,6 +215,17 @@ export interface DigitalPayExtendedTransactionData {
 
 	/** The value of the extended transaction data field. */
 	value: string;
+}
+
+export interface DigitalPayThreeDSResponse {
+	/** Received in response to a Visa authenticated Purchase and PreAuth. Only present for Visa. */
+	car?: string;
+
+	/** The Directory Server (DS) authentication identification code. A universally unique transaction identifier assigned by the DS to identify a single transaction. The format of the value is defined in IETF RFC 4122. It may utilise any of the specified versions if the output meets specific requirements. */
+	dsTransID: string;
+
+	/** The SLI from the the schemes. */
+	sli: string;
 }
 
 export enum DigitalPayExtendedTransactionDataFieldName {

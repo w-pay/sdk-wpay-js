@@ -33,7 +33,7 @@ export interface DigitalPayPaymentRequest {
 	/** Set to null to skip the cybersource fraud check. */
 	fraudPayload?: DigitalPayFraudPayload;
 
-	/** Store data */
+	/** This object is only required if the payments request is for an in-store payment transaction. */
 	storeData?: DigitalPayStoreData;
 }
 
@@ -72,11 +72,29 @@ export interface DigitalPayPayment {
 	 * This property should NOT be used with credit card instruments (see stepUpToken).
 	 */
 	passcode?: string;
+
+	/** This object is used to pass additonal control data to Digital Pay */
+	controlData?: DigitalPayControlData;
+
+	/** This object is only required if the payments request requires 3DS challenge response data to be sent to Digital Pay. */
+	threeDS?: DigitalPayThreeDS;
 }
 
 export interface DigitalPayStoreData {
+	/** The payment transaction merchant group id. The group id is defined as a logical grouping of merchants or stores. A default configured group id is set in Apigee if absent in the payload. */
+	groupId?: string;
+
+	/** The in-store payment transaction terminal id. This is a 8 character alphanumeric string. If present in the payload the 'storeId' has to be omitted. */
+	terminalId: string;
+
 	/** The in-store payment transaction store id. */
 	storeId: string;
+
+	/** The in-store payment transaction lane id. */
+	laneId?: string;
+
+	/** The System Trace Audit Number (STAN) used to identify the transaction. This is a 6 digit numeric string. */
+	stan: string;
 
 	/** The in-store payment transaction store id. This is a 12 digit \"0\" [zero] padded numeric string. */
 	rrn: string;
@@ -91,4 +109,59 @@ export interface ExtendedMerchantData {
 
 	/** The value of the extended merchant data field. */
 	value: string;
+}
+
+export interface DigitalPayControlData {
+	/** The Digital Pay token type to use for a scheme card instrument during 3DS processing for merchants that have 3DS enabled. Defaults to 'PAN' if absent. **/
+	tokenType?: "SCHEME_TOKEN" | "SCDR" | "PAN";
+}
+
+export interface DigitalPayThreeDS {
+	/** The Protocol Version Number of the specification utilised by the system creating this message. */
+	messageVersion: string;
+
+	/** The transaction identifier. Required for Mastercard and Amex. Not applicable for Visa. */
+	xid: string;
+
+	/** The payment system-specific value provided by the ACS or the Directory Server (DS) using an algorithm defined by Payment System. */
+	authenticationValue: string;
+
+	/** The Directory Server (DS) authentication identification code. A universally unique transaction identifier assigned by the DS to identify a single transaction. The format of the value is defined in IETF RFC 4122. It may utilise any of the specified versions if the output meets specific requirements. */
+	dsTransID: string;
+
+	/** The electronic commerce indicator. Required for calculating the SLI. A Payment System-specific value provided by the ACS or DS to indicate the results of the attempt to authenticate the Cardholder. */
+	eci: string;
+
+	/** The payer authentication response status. Required for Visa.
+	 *  Y: Customer was successfully authenticated
+	 *  N: Customer failed or canceled authentication
+	 *  C: Card challenged
+	 *  R: Authentication rejected
+	 *  A: Proof of authentication attempt was generated
+	 *  U: Authentication not completed regardless of the reason
+	 */
+	aresStatus: "Y" | "N" | "C" | "R" | "A" | "U";
+
+	/** The verification response enrollment status. Required for Visa.
+	 *  Y: Card enrolled, must authenticate
+	 *  N: Card not enrolled, proceed with authorization
+	 *  U: Unable to authenticate regardless of the reason
+	 *  B: Indicates that authentication was bypassed
+	 */
+	veresEnrolled: "Y" | "N" | "U" | "B";
+
+	/** Indicates whether a transaction qualifies as an authenticated transaction or account verification.
+	 *  Y: Authentication Successful
+	 *  N: Not Authenticated
+	 *  U: Authentication could not be performed
+	 *  A: Attempts Processing Performed; Not authenticated
+	 *  C: Challenge Required. Additional authentication is required
+	 *  D: Challenge Required; Decoupled Authentication performed
+	 *  R: Authentication Rejected. Issuer is rejecting
+	 *  I: Informational Only
+	 */
+	transStatus: "Y" | "N" | "A" | "U" | "C" | "D" | "R" | "I";
+
+	/** The SLI from the merchant */
+	sli?: string;
 }
