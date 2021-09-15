@@ -200,7 +200,7 @@ export interface ExtendedMerchantData {
 
 export interface DigitalPayControlData {
 	/** The Digital Pay token type to use for a scheme card instrument during 3DS processing for merchants that have 3DS enabled. Defaults to 'PAN' if absent. **/
-	tokenType?: "SCHEME_TOKEN" | "SCDR" | "PAN"
+	tokenType?: "SCHEME_TOKEN" | "SCDR" | "PAN";
 }
 
 export interface DigitalPayThreeDS {
@@ -219,39 +219,40 @@ export interface DigitalPayThreeDS {
 	/** The electronic commerce indicator. Required for calculating the SLI. A Payment System-specific value provided by the ACS or DS to indicate the results of the attempt to authenticate the Cardholder. */
 	eci: string;
 
-	/** The payer authentication response status. Required for Visa. 
+	/** The payer authentication response status. Required for Visa.
 	 *  Y: Customer was successfully authenticated
-     *  N: Customer failed or canceled authentication
-     *  C: Card challenged
-     *  R: Authentication rejected
-     *  A: Proof of authentication attempt was generated
-     *  U: Authentication not completed regardless of the reason
-	*/
-	aresStatus: "Y" | "N" | "C" | "R" | "A" | "U"
+	 *  N: Customer failed or canceled authentication
+	 *  C: Card challenged
+	 *  R: Authentication rejected
+	 *  A: Proof of authentication attempt was generated
+	 *  U: Authentication not completed regardless of the reason
+	 */
+	aresStatus: "Y" | "N" | "C" | "R" | "A" | "U";
 
-	/** The verification response enrollment status. Required for Visa. 
+	/** The verification response enrollment status. Required for Visa.
 	 *  Y: Card enrolled, must authenticate
-     *  N: Card not enrolled, proceed with authorization
-     *  U: Unable to authenticate regardless of the reason
-     *  B: Indicates that authentication was bypassed
-	*/
-	veresEnrolled: "Y" | "N" | "U" | "B"
+	 *  N: Card not enrolled, proceed with authorization
+	 *  U: Unable to authenticate regardless of the reason
+	 *  B: Indicates that authentication was bypassed
+	 */
+	veresEnrolled: "Y" | "N" | "U" | "B";
 
 	/** Indicates whether a transaction qualifies as an authenticated transaction or account verification.
-     *  Y: Authentication Successful
-     *  N: Not Authenticated
-     *  U: Authentication could not be performed
-     *  A: Attempts Processing Performed; Not authenticated
-     *  C: Challenge Required. Additional authentication is required
-     *  D: Challenge Required; Decoupled Authentication performed
-     *  R: Authentication Rejected. Issuer is rejecting
-     *  I: Informational Only 
-	*/
-	transStatus: "Y" | "N" | "A" | "U" | "C" | "D" | "R" | "I" 
+	 *  Y: Authentication Successful
+	 *  N: Not Authenticated
+	 *  U: Authentication could not be performed
+	 *  A: Attempts Processing Performed; Not authenticated
+	 *  C: Challenge Required. Additional authentication is required
+	 *  D: Challenge Required; Decoupled Authentication performed
+	 *  R: Authentication Rejected. Issuer is rejecting
+	 *  I: Informational Only
+	 */
+	transStatus: "Y" | "N" | "A" | "U" | "C" | "D" | "R" | "I";
 
 	/** The SLI from the merchant */
 	sli?: string;
-}</code></pre>
+}
+</code></pre>
         </article>
     </section>
 
