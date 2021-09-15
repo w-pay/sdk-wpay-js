@@ -14,6 +14,7 @@ module.exports = (client) => {
 		payments: require("./digital-pay/payments")(client),
 		paypal: require("./wallet-management/paypal")(client),
 		transactions: require("./wallet-management/transactions")(client),
-		wallet: require("./wallet-management/wallet")(client)
+		wallet: require("./wallet-management/wallet")(client),
+		gifting: require("./digital-pay/gifting")(client)
 	};
 };

@@ -11,6 +11,7 @@ import { PaymentAgreementApi } from "./PaymentAgreements";
 import { PaymentApi } from "./Payments";
 import { TransactionsApi } from "../WalletManagement/Transactions";
 import { WalletApi } from "../WalletManagement/Wallet";
+import { GiftingApi } from "./Gifting";
 
 export * from "./OpenPay";
 export * from "./PaymentAgreements";
@@ -26,6 +27,7 @@ export interface DigitalPayApi {
 	applePay: ApplePayApi;
 	cards: CardsApi;
 	giftcards: GiftcardsApi;
+	gifting: GiftingApi;
 	googlePay: GooglePayApi;
 	instruments: InstrumentsApi;
 	merchants: MerchantsApi;
