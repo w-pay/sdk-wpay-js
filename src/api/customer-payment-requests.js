@@ -52,7 +52,7 @@ const getByQRCodeId = (client) => (qrCodeId) => {
 };
 
 // returns an uncurried function for data so that defaults can be omitted
-// makePayment :: HttpApiClient -> (String, String, Array, Boolean, String, PaymentPreferences, [ChallengeResponse]?, FraudPayload?) -> Promise CustomerTransactionSummary
+// makePayment :: HttpApiClient -> (String, String, Array, Boolean, String, PaymentPreferences, [ChallengeResponse]?, FraudPayload?, Boolean?, PaymentTransactionType?) -> Promise CustomerTransactionSummary
 const makePayment = (client) => (
 	paymentRequestId,
 	primaryInstrument,
@@ -61,7 +61,9 @@ const makePayment = (client) => (
 	clientReference,
 	preferences,
 	challengeResponses,
-	fraud
+	fraud,
+	transactionType,
+	allowPartialSuccess
 ) => {
 	if (!paymentRequestId) {
 		throw requiredParameterError("paymentRequestId");
@@ -83,8 +85,34 @@ const makePayment = (client) => (
 					secondaryInstruments,
 					skipRollback,
 					clientReference,
-					preferences
+					preferences,
+					transactionType,
+					allowPartialSuccess
 				),
+				meta: {
+					challengeResponses: challengeResponses ? challengeResponses : [],
+					fraud
+				}
+			}
+		})
+	);
+};
+
+// makeImmediatePayment :: HttpApiClient -> (ImmediatePaymentRequest, [ChallengeResponse]?, FraudPayload?) -> Promise CustomerTransactionSummary
+const makeImmediatePayment = (client) => (paymentRequest, challengeResponses, fraud) => {
+	if (!paymentRequest) {
+		throw requiredParameterError("paymentRequest");
+	}
+
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromCustomerTransactionSummaryDTO)
+		)({
+			method: HttpRequestMethod.POST,
+			url: "/instore/customer/payments",
+			body: {
+				data: paymentRequest,
 				meta: {
 					challengeResponses: challengeResponses ? challengeResponses : [],
 					fraud
@@ -99,6 +127,7 @@ module.exports = (client) => {
 	return {
 		getById: getById(client),
 		getByQRCodeId: getByQRCodeId(client),
-		makePayment: makePayment(client)
+		makePayment: makePayment(client),
+		makeImmediatePayment: makeImmediatePayment(client)
 	};
 };

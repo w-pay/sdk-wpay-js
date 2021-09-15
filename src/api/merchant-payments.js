@@ -87,6 +87,7 @@ const deletePaymentRequest = (client) => (paymentRequestId) => {
 	);
 };
 
+// refundTransaction :: HttpApiClient -> (String, TransactionRefundDetails) -> Promise MerchantTransactionSummary
 const refundTransaction = (client) => (transactionId, refundDetails) => {
 	if (!transactionId) {
 		throw requiredParameterError("transactionId");
@@ -114,6 +115,62 @@ const refundTransaction = (client) => (transactionId, refundDetails) => {
 	);
 };
 
+// completeTransaction :: HttpApiClient -> (String, TransactionCompletionDetails) -> Promise MerchantTransactionSummary
+const completeTransaction = (client) => (transactionId, completionDetails) => {
+	if (!transactionId) {
+		throw requiredParameterError("transactionId");
+	}
+
+	if (!completionDetails) {
+		throw requiredParameterError("completionDetails");
+	}
+
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantTransactionSummaryDTO)
+		)({
+			method: HttpRequestMethod.POST,
+			url: "/instore/merchant/transactions/:transactionId/completion",
+			pathParams: {
+				transactionId
+			},
+			body: {
+				data: completionDetails,
+				meta: {}
+			}
+		})
+	);
+};
+
+// voidTransaction :: HttpApiClient -> (String, TransactionVoidDetails) -> Promise MerchantTransactionSummary
+const voidTransaction = (client) => (transactionId, voidDetails) => {
+	if (!transactionId) {
+		throw requiredParameterError("transactionId");
+	}
+
+	if (!voidDetails) {
+		throw requiredParameterError("voidDetails");
+	}
+
+	return asyncToPromise(
+		pipeK(
+			client,
+			fromData(fromMerchantTransactionSummaryDTO)
+		)({
+			method: HttpRequestMethod.POST,
+			url: "/instore/merchant/transactions/:transactionId/void",
+			pathParams: {
+				transactionId
+			},
+			body: {
+				data: voidDetails,
+				meta: {}
+			}
+		})
+	);
+};
+
 module.exports = (client) => {
 	/** @implements {import('../../types/api/MerchantPayments').MerchantPaymentsApi} */
 	return {
@@ -121,6 +178,8 @@ module.exports = (client) => {
 		createPaymentRequest: createPaymentRequest(client),
 		getPaymentRequestDetailsBy: getPaymentRequestDetailsBy(client),
 		deletePaymentRequest: deletePaymentRequest(client),
-		refundTransaction: refundTransaction(client)
+		refundTransaction: refundTransaction(client),
+		completeTransaction: completeTransaction(client),
+		voidTransaction: voidTransaction(client)
 	};
 };

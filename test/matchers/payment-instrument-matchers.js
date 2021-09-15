@@ -9,7 +9,9 @@ const paymentDetailsDTOFrom = (
 	secondaryInstruments = undefined,
 	skipRollback = undefined,
 	clientReference = undefined,
-	preferences = undefined
+	preferences = undefined,
+	transactionType = undefined,
+	allowPartialSuccess = undefined
 ) => ({
 	matches(actual) {
 		assertThat(actual.primaryInstrumentId, is(primaryPaymentInstrument));
@@ -24,8 +26,10 @@ const paymentDetailsDTOFrom = (
 		}
 
 		assertThat(actual.skipRollback, is(skipRollback));
+		assertThat(actual.allowPartialSuccess, is(allowPartialSuccess));
 		assertThat(actual.clientReference, is(clientReference));
 		assertThat(actual.preferences, is(preferences));
+		assertThat(actual.transactionType, is(transactionType));
 
 		return true;
 	},

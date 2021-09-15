@@ -9,7 +9,6 @@ export * from "./DigitalPayPaymentRequest";
 export * from "./DigitalPayPaymentResponse";
 export * from "./DigitalPayRefundRequest";
 export * from "./DigitalPayRefundResponse";
-export * from "./DigitalPayTransactionType";
 export * from "./DigitalPayUpdatePaymentAgreementRequest";
 export * from "./DigitalPayVoidRequest";
 export * from "./DigitalPayVoidResponse";

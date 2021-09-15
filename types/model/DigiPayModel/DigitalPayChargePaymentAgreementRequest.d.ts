@@ -1,5 +1,5 @@
 import { DigitalPayFraudPayload } from "./DigitalPayFraudPayload";
-import { DigitalPayTransactionType } from "./DigitalPayTransactionType";
+import { PaymentTransactionType } from "../PaymentTransactionType";
 
 /**
  * The JSON request structure of the Charge Payment Agreement endpoint.
@@ -8,7 +8,7 @@ import { DigitalPayTransactionType } from "./DigitalPayTransactionType";
  */
 export interface DigitalPayChargePaymentAgreementRequest {
 	/** Transaction type containers to use for all instruments. */
-	transactionType: DigitalPayTransactionType;
+	transactionType: PaymentTransactionType;
 
 	/**
 	 * A merchant application specific reference number.

@@ -2,7 +2,7 @@
 
 const { v4: uuid } = require("uuid");
 
-const { assertThat, hasProperties, is, throws } = require("hamjest");
+const { assertThat, equalTo, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
@@ -12,7 +12,10 @@ const { aChallengeResponse } = require("../data/challenge-response");
 const { aSecondaryPaymentInstrument } = require("../data/payment-instruments");
 const { body, withData, withMeta } = require("../matchers/request-body-matchers");
 const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-matchers");
-const { customerPaymentRequestDTO } = require("../data/payment-request");
+const {
+	customerPaymentRequestDTO,
+	immediatePaymentRequest
+} = require("../data/payment-request");
 const { customerPaymentRequestFrom } = require("../matchers/payment-request-matchers");
 const { customerTransactionSummaryDTO } = require("../data/customer-transactions");
 const { fraudPayloadDTO } = require("../data/fraud-payload");
@@ -24,6 +27,7 @@ const { paymentDetailsDTOFrom } = require("../matchers/payment-instrument-matche
 const { paymentPreferences } = require("../data/preferences");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
+const { paymentTransactionType } = require("../data/payment-transaction-type");
 
 describe("CustomerPaymentRequestsApi", function () {
 	let apiClient;
@@ -128,10 +132,12 @@ describe("CustomerPaymentRequestsApi", function () {
 			const primaryPaymentInstrument = uuid();
 			const secondaryPaymentInstruments = [aSecondaryPaymentInstrument()];
 			const skipRollback = true;
+			const allowPartialSuccess = true;
 			const clientReference = "this is a reference";
 			const prefs = paymentPreferences();
 			const challengeResponses = [aChallengeResponse()];
 			const fraudPayload = fraudPayloadDTO();
+			const transactionType = paymentTransactionType();
 
 			await api.makePayment(
 				uuid(),
@@ -141,7 +147,9 @@ describe("CustomerPaymentRequestsApi", function () {
 				clientReference,
 				prefs,
 				challengeResponses,
-				fraudPayload
+				fraudPayload,
+				transactionType,
+				allowPartialSuccess
 			);
 
 			assertThat(
@@ -154,7 +162,9 @@ describe("CustomerPaymentRequestsApi", function () {
 								secondaryPaymentInstruments,
 								skipRollback,
 								clientReference,
-								prefs
+								prefs,
+								transactionType,
+								allowPartialSuccess
 							)
 						),
 						withMeta(paymentMetaDTOFrom(challengeResponses, fraudPayload))
@@ -169,6 +179,37 @@ describe("CustomerPaymentRequestsApi", function () {
 			const result = await api.makePayment(uuid(), uuid());
 
 			assertThat(result, is(customerTransactionSummaryFrom(apiClient.response.data)));
+		});
+	});
+
+	describe("makeImmediatePayment", function () {
+		it("should throw error if paymentRequest is missing", function () {
+			assertThat(
+				() => api.makeImmediatePayment(),
+				throws(requiredParameterError("paymentRequest"))
+			);
+		});
+
+		it("should set request params", async function () {
+			const request = immediatePaymentRequest();
+			const challenges = [aChallengeResponse()];
+			const fraudPayload = fraudPayloadDTO();
+
+			await api.makeImmediatePayment(request, challenges, fraudPayload);
+
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.POST,
+					url: "/instore/customer/payments",
+					body: is(
+						body(
+							withData(equalTo(request)),
+							withMeta(paymentMetaDTOFrom(challenges, fraudPayload))
+						)
+					)
+				})
+			);
 		});
 	});
 });

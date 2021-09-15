@@ -45,10 +45,32 @@ export interface MerchantPaymentsApi {
 	/**
 	 * Refund a transaction to a customer
 	 *
-	 * @param transactionId The transaction to refund.
+	 * @param transactionId The transaction to be refunded.
 	 * @param refundDetails The details of the refund.
 	 */
 	refundTransaction(
+		transactionId: string,
+		refundDetails: TransactionRefundDetails
+	): Promise<MerchantTransactionSummary>;
+
+	/**
+	 * Complete a pre-authorised transaction
+	 *
+	 * @param transactionId The transaction to be completed.
+	 * @param refundDetails The details of the completions.
+	 */
+	completeTransaction(
+		transactionId: string,
+		refundDetails: TransactionRefundDetails
+	): Promise<MerchantTransactionSummary>;
+
+	/**
+	 * Void a pre-authorised transaction
+	 *
+	 * @param transactionId The transaction to be voided.
+	 * @param refundDetails The details of the voids.
+	 */
+	voidTransaction(
 		transactionId: string,
 		refundDetails: TransactionRefundDetails
 	): Promise<MerchantTransactionSummary>;
