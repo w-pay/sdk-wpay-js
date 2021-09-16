@@ -3,6 +3,8 @@ import { MerchantPaymentDetails, MerchantPaymentSummaries } from "../model";
 import { MerchantTransactionSummary } from "../model";
 import { NewPaymentRequest } from "../model";
 import { TransactionRefundDetails } from "../model";
+import { TransactionCompletionDetails } from "../model/TransactionCompletionDetails";
+import { TransactionVoidDetails } from "../model/TransactionVoidDetails";
 
 /**
  * @category API
@@ -57,21 +59,21 @@ export interface MerchantPaymentsApi {
 	 * Complete a pre-authorised transaction
 	 *
 	 * @param transactionId The transaction to be completed.
-	 * @param refundDetails The details of the completions.
+	 * @param completionDetails The details of the completions.
 	 */
 	completeTransaction(
 		transactionId: string,
-		refundDetails: TransactionRefundDetails
+		completionDetails: TransactionCompletionDetails
 	): Promise<MerchantTransactionSummary>;
 
 	/**
 	 * Void a pre-authorised transaction
 	 *
 	 * @param transactionId The transaction to be voided.
-	 * @param refundDetails The details of the voids.
+	 * @param voidDetails The details of the voids.
 	 */
 	voidTransaction(
 		transactionId: string,
-		refundDetails: TransactionRefundDetails
+		voidDetails: TransactionVoidDetails
 	): Promise<MerchantTransactionSummary>;
 }
