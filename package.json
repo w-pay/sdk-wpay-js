@@ -29,14 +29,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/woolworthslimited/sdk-wpay-js"
+    "url": "https://github.com/w-pay/sdk-wpay-js"
   },
   "author": "",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/woolworthslimited/sdk-wpay-js/issues"
+    "url": "https://github.com/w-pay/sdk-wpay-js/issues"
   },
-  "homepage": "https://github.com/woolworthslimited/sdk-wpay-js#readme",
+  "homepage": "hhttps://github.com/w-pay/sdk-wpay-js/#readme",
   "dependencies": {
     "@api-sdk-creator/http-api-client": "^0.1.4",
     "@epistemology-factory/crocks-ext": "0.0.14",
