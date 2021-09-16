@@ -44,7 +44,16 @@ export enum TransactionSummaryPaymentType {
 	PAYMENT = "PAYMENT",
 
 	/** A payment by a merchant to a customer undoing a previously made customer payment */
-	REFUND = "REFUND"
+	REFUND = "REFUND",
+
+	/** A preauthorised amount is reserved but will not be taken from a customer's account until a completion is performed */
+	PREAUTH = "PREAUTH",
+
+	/** Complete a preauthorised transaction and take the amount from the customer's account */
+	COMPLETION = "COMPLETION",
+
+	/** Void a preauthorised transaction so that the money will not be taken from the customer's account */
+	VOID = "VOID"
 }
 
 /**
