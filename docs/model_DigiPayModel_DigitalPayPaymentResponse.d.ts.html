@@ -172,7 +172,7 @@ export interface DigitalPayCreditCard extends DigitalPayPaymentInstrument {
 	stepUp?: CreditCardStepUp;
 
 	/** This object is only included in the response if it is enabled in the consumers API configuration. */
-	receiptData?: DigitalPayRecieptData;
+	receiptData?: DigitalPayCreditCardReceiptData;
 
 	/** This array is only included in the response if it is enabled in the consumers API configuration. */
 	extendedTransactionData?: DigitalPayExtendedTransactionData[];
@@ -215,7 +215,7 @@ export interface DigitalPayGiftCard extends DigitalPayPaymentInstrument {
 	stepUp?: CreditCardStepUp;
 
 	/** This object is only included in the response if it is enabled in the consumers API configuration. */
-	receiptData?: DigitalPayRecieptData;
+	receiptData?: DigitalPayGiftCardReceiptData;
 
 	/**
 	 * The external service code (from eg. Webpay).
@@ -234,7 +234,7 @@ export interface DigitalPayGiftCard extends DigitalPayPaymentInstrument {
 
 export interface DigitalPayPayPal extends DigitalPayPaymentInstrument {
 	/** This object is only included in the response if it is enabled in the consumers API configuration. */
-	receiptData?: DigitalPayRecieptData;
+	receiptData?: DigitalPayPayPalReceiptData;
 
 	/**
 	 * The external service code (from eg. Webpay).
@@ -278,7 +278,7 @@ export interface DigitalPayApplePay extends DigitalPayPaymentInstrument {
 	stepUp?: CreditCardStepUp;
 }
 
-export interface DigitalPayRecieptData {
+export interface DigitalPayCreditCardReceiptData {
 	/** The suffix (last 4 digits) of the credit card number used in the WebPay transaction. */
 	cardSuffix: string;
 
@@ -290,6 +290,19 @@ export interface DigitalPayRecieptData {
 
 	/** The year of the expiry date of the credit card. */
 	expiryYear: string;
+}
+
+export interface DigitalPayGiftCardReceiptData {
+	/** The suffix (last 4 digits) of the gift card number used in the WEX transaction. */
+	cardSuffix: string;
+}
+
+export interface DigitalPayPayPalReceiptData {
+	/** The Paypal email id. */
+	payPalId: string;
+
+	/** The Paypal customer id. */
+	customerId: string;
 }
 
 export interface DigitalPayExtendedTransactionData {
