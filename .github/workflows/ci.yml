@@ -1,0 +1,70 @@
+name: '@wpay/sdk build'
+
+on:
+  push:
+    branches: [ main ]
+
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+          registry-url: https://registry.npmjs.org/
+
+      - name: Git setup
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: NPM install
+        run: npm install
+
+      - name: NPM Build
+        run: npm run dist
+
+      - name: Commit formating changes
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          git add src/ test/ types/ || echo "No changes to stage"
+          git commit -m 'Formatting changes' || echo "No changes to commit"
+
+      - name: Commit dist changes
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          git add dist/ || echo "No changes to stage"
+          git commit -m 'Updated dists' || echo "No changes to commit"
+
+      - name: Regen docs
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          npm run doc
+          git add docs/ || echo "No changes to stage"
+          git commit -m 'Regen docs' || echo "No changes to commit"
+
+      # Can't be in a separate job as we need the results of any build to be included in
+      # any published module.
+      - name: Publish
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: npm publish --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Tag
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          version=$(npm -s run env echo '$npm_package_version') && git tag v${version}
+
+      - name: Push changes
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          git push
+          git push --tags
