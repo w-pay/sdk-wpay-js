@@ -4,6 +4,7 @@ import { DigitalPayGiftingQuoteRequest } from "../../model/DigiPayModel/DigitalP
 import { DigitalPayGiftingQuoteResponse } from "../../model/DigiPayModel/DigitalPayGiftingQuoteResponse";
 import { DigitalPayGiftingOrderRequest } from "../../model/DigiPayModel/DigitalPayGiftingOrderRequest";
 import { DigitalPayGiftingOrderResponse } from "../../model/DigiPayModel/DigitalPayGiftingOrderResponse";
+import { ChallengeResponse, FraudPayload } from "../..";
 
 /**
  * @category API
@@ -45,7 +46,8 @@ export interface GiftingApi {
 	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
 	 * @param fraudPayload Used to complete the fraud check.
 	 */
-	order(orderRequest: DigitalPayGiftingOrderRequest,
+	order(
+		orderRequest: DigitalPayGiftingOrderRequest,
 		challengeResponses?: ChallengeResponse[],
 		fraudPayload?: FraudPayload
 	): Promise<DigitalPayGiftingOrderResponse>;

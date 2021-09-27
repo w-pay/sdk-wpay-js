@@ -57,7 +57,10 @@ const getQuote = (client) => (quoteRequest) => {
 		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/gifting/products/quote",
-			body: quoteRequest
+			body: {
+				data: quoteRequest,
+				meta: {}
+			}
 		})
 	);
 };

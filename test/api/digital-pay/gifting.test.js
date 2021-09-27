@@ -129,7 +129,7 @@ describe("GiftingApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.POST,
 					url: "/gifting/products/quote",
-					body: is(request)
+					body: is(body(withData(equalTo(request))))
 				})
 			);
 		});
@@ -162,12 +162,7 @@ describe("GiftingApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.POST,
 					url: "/gifting/products/order",
-					body: is(
-						body(
-							withData(equalTo(request)),
-							withMeta(challengeResponsesDTOFrom([]))
-						)
-					)
+					body: is(body(withData(equalTo(request)), withMeta(challengeResponsesDTOFrom([]))))
 				})
 			);
 		});
