@@ -42,6 +42,11 @@ export interface GiftingApi {
 	 * Order a gift card product.
 	 *
 	 * @param orderRequest detail of gift card order being made
+	 * @param challengeResponses Used when needing to complete challenge(s) to complete payment.
+	 * @param fraudPayload Used to complete the fraud check.
 	 */
-	order(orderRequest: DigitalPayGiftingOrderRequest): Promise<DigitalPayGiftingOrderResponse>;
+	order(orderRequest: DigitalPayGiftingOrderRequest,
+		challengeResponses?: ChallengeResponse[],
+		fraudPayload?: FraudPayload
+	): Promise<DigitalPayGiftingOrderResponse>;
 }
