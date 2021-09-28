@@ -53,8 +53,8 @@ jobs:
       # Can't be in a separate job as we need the results of any build to be included in
       # any published module.
       - name: Publish
-        if: ${{ github.ref == 'refs/heads/main' }}
-        run: npm publish --access=public
+        #if: ${{ github.ref == 'refs/heads/main' }}
+        run: ./scripts/publish.sh
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
