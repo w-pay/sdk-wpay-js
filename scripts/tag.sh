@@ -6,5 +6,6 @@ version="v${version}"
 if git show-ref --tags $version --quiet; then
   echo "Tag exists"
 else
+  echo "Tagging with ${version}"
   git tag $version
 fi
