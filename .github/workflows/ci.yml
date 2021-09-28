@@ -60,8 +60,7 @@ jobs:
 
       - name: Tag
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
-          version=$(npm -s run env echo '$npm_package_version') && git tag v${version}
+        run: ./scripts/tag.sh
 
       - name: Push changes
         if: ${{ github.ref == 'refs/heads/main' }}
