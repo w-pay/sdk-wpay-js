@@ -9,13 +9,25 @@ if (process.argv.length < 3) {
 }
 
 const packageData = fetchPackageData();
-const version = packageData.versions.find((v) => v === process.argv[2]);
+const version = process.argv[2];
 
-const result = version ? 1 : 0;
+console.log(`Searching for ${version}`);
+const found = packageData.versions.find((v) => v === version);
+const result = checkResult(found);
+
 process.exit(result);
 
 function fetchPackageData() {
 	const data = spawnSync("npm", [ "view", "@wpay/sdk", "--json" ], { encoding: "utf8" }).stdout;
 
 	return JSON.parse(data);
+}
+
+function checkResult(result) {
+	if (result !== undefined) {
+		return 1;
+	}
+	else {
+		return  0;
+	}
 }
