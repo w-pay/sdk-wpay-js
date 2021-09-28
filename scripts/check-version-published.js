@@ -13,7 +13,7 @@ const version = process.argv[2];
 
 console.log(`Searching for ${version}`);
 const found = packageData.versions.find((v) => v === version);
-const result = checkResult(found);
+const result = checkResult(found, version);
 
 process.exit(result);
 
@@ -23,11 +23,15 @@ function fetchPackageData() {
 	return JSON.parse(data);
 }
 
-function checkResult(result) {
+function checkResult(result, version) {
 	if (result !== undefined) {
+		console.log(`Found ${version}`);
+
 		return 1;
 	}
 	else {
+		console.log(`Didn't find ${version}`);
+
 		return  0;
 	}
 }
