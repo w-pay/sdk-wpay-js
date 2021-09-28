@@ -16,7 +16,9 @@ assignees: ''
 - [ ] Add/update models
 - [ ] Add/update API interface definitions
 - [ ] Add tests (if required) for new functionality
-- [ ] Regenerate SDK docs
-- [ ] Bump version of lib
-- [ ] Publish
-- [ ] Tag repo
+- [ ] Bump version of lib - is this a minor version bump?
+
+Submit the PR.
+
+Note: The CI pipeline will take care of regenerating docs, and the distribution so this is not
+required pre merge.
