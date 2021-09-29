@@ -24,5 +24,7 @@ export interface ChallengeResponse {
  */
 export enum ChallengeResponseType {
 	STEP_UP = "STEP_UP",
-	PASSCODE = "PASSCODE"
+	PASSCODE = "PASSCODE",
+	THREEDS = "3ds",
+	THREEDS_FRICTIONLESS = "3ds-frictionless"
 }
