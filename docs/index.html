@@ -192,7 +192,7 @@ const options = {
 </code></pre>
 <h4>Accessing an unauthenticated API</h4>
 <pre class="prettyprint source lang-javascript"><code>const { createAxiosHttpClient } = require(&quot;@api-sdk-creator/axios-http-client&quot;);
-import { createCustomerSDK } from &quot;@wpay/sdk&quot;
+const { createCustomerSDK } = require(&quot;@wpay/sdk&quot;);
 
 const sdk = createCustomerSDK(createAxiosHttpClient, options);
 
@@ -201,7 +201,7 @@ await sdk.admin.checkHealth();
 <h4>Using a preprovided access token</h4>
 <p>If an access token is acquired outside the SDK, it can be given to the SDK and used for as long
 as the token is valid.</p>
-<pre class="prettyprint source lang-javascript"><code>import { createCustomerSDK } from &quot;@wpay/sdk&quot;
+<pre class="prettyprint source lang-javascript"><code>const { createCustomerSDK } = require(&quot;@wpay/sdk&quot;);
 
 options.accessToken = aquireAccessToken();
 
@@ -214,7 +214,7 @@ await sdk.preferences.get();
 custom <code>ApiAuthenticator</code> can be given to the SDK. However it becomes the
 responsibility of the client application to manage that token.</p>
 <p>(This example is written in Typescript so that type information can be used).</p>
-<pre class="prettyprint source lang-typescript"><code>import { createCustomerSDK } from &quot;@wpay/sdk&quot;
+<pre class="prettyprint source lang-typescript"><code>const { createCustomerSDK } = require(&quot;@wpay/sdk&quot;);
 
 const authenticator: ApiAuthenticator = createAuthenticator();
 options.accessToken = authenticator;
@@ -232,7 +232,7 @@ await sdk.preferences.get();
 <pre class="prettyprint source lang-shell"><code>$ npm run doc
 </code></pre>
 <h2>Publishing</h2>
-<p>Currently, publishing requires write access to the NPM organisation.</p></article>
+<p>Currently, publishing requires write access to the <code>@wpay</code> NPM organisation.</p></article>
     </section>
 
 
