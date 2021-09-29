@@ -1,11 +1,16 @@
 "use strict";
-const { assertThat, hasProperties, is, throws } = require("hamjest");
+const { assertThat, hasProperties, is, throws, equalTo } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const apiFactory = require("../../../src/api/digital-pay/gifting");
 
+const { aChallengeResponse } = require("../../data/challenge-response");
+const { fraudPayloadDTO } = require("../../data/fraud-payload");
 const { requiredParameterError } = require("../../matchers/required-parameters");
+const { body, withData, withMeta } = require("../../matchers/request-body-matchers");
+const { challengeResponsesDTOFrom } = require("../../matchers/challenge-response-matchers");
+const { giftingMetaDTOFrom } = require("../../matchers/gifting-meta-matchers");
 const { StubApiClient } = require("../../stub-api-client");
 const {
 	giftingProductDetail,
@@ -124,7 +129,7 @@ describe("GiftingApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.POST,
 					url: "/gifting/products/quote",
-					body: is(request)
+					body: is(body(withData(equalTo(request))))
 				})
 			);
 		});
@@ -157,7 +162,28 @@ describe("GiftingApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.POST,
 					url: "/gifting/products/order",
-					body: is(request)
+					body: is(body(withData(equalTo(request)), withMeta(challengeResponsesDTOFrom([]))))
+				})
+			);
+		});
+
+		it("should set optional request params", async function () {
+			const request = giftingOrderRequest();
+			const challengeResponses = [aChallengeResponse()];
+			const fraudPayload = fraudPayloadDTO();
+			await api.order(request, challengeResponses, fraudPayload);
+
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.POST,
+					url: "/gifting/products/order",
+					body: is(
+						body(
+							withData(equalTo(request)),
+							withMeta(giftingMetaDTOFrom(challengeResponses, fraudPayload))
+						)
+					)
 				})
 			);
 		});

@@ -57,13 +57,16 @@ const getQuote = (client) => (quoteRequest) => {
 		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/gifting/products/quote",
-			body: quoteRequest
+			body: {
+				data: quoteRequest,
+				meta: {}
+			}
 		})
 	);
 };
 
-// order :: HttpApiClient -> (DigitalPayGiftingOrderRequest) -> Promise DigitalPayGiftingOrderResponse
-const order = (client) => (orderRequest) => {
+// order :: HttpApiClient -> (DigitalPayGiftingOrderRequest, [ChallengeResponse]?, FraudPayload?) -> Promise DigitalPayGiftingOrderResponse
+const order = (client) => (orderRequest, challengeResponses, fraud) => {
 	if (!orderRequest) {
 		throw requiredParameterError("orderRequest");
 	}
@@ -72,7 +75,13 @@ const order = (client) => (orderRequest) => {
 		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/gifting/products/order",
-			body: orderRequest
+			body: {
+				data: orderRequest,
+				meta: {
+					challengeResponses: challengeResponses ? challengeResponses : [],
+					fraud
+				}
+			}
 		})
 	);
 };
