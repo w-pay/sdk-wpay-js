@@ -111,7 +111,7 @@ const options = {
 
 ```javascript
 const { createAxiosHttpClient } = require("@api-sdk-creator/axios-http-client");
-import { createCustomerSDK } from "@wpay/sdk"
+const { createCustomerSDK } = require("@wpay/sdk");
 
 const sdk = createCustomerSDK(createAxiosHttpClient, options);
 
@@ -124,7 +124,7 @@ If an access token is acquired outside the SDK, it can be given to the SDK and u
 as the token is valid.
 
 ```javascript
-import { createCustomerSDK } from "@wpay/sdk"
+const { createCustomerSDK } = require("@wpay/sdk");
 
 options.accessToken = aquireAccessToken();
 
@@ -142,7 +142,7 @@ responsibility of the client application to manage that token.
 (This example is written in Typescript so that type information can be used).
 
 ```typescript
-import { createCustomerSDK } from "@wpay/sdk"
+const { createCustomerSDK } = require("@wpay/sdk");
 
 const authenticator: ApiAuthenticator = createAuthenticator();
 options.accessToken = authenticator;
@@ -170,4 +170,4 @@ $ npm run doc
 
 ## Publishing
 
-Currently, publishing requires write access to the NPM organisation.
+Currently, publishing requires write access to the `@wpay` NPM organisation.
