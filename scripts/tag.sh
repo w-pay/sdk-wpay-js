@@ -16,5 +16,6 @@ else
   # Need to push to GH to then create a release
   git push --tags
 
+  echo $GH_AUTH_TOKEN | gh auth login --with-token
   gh release create $version
 fi

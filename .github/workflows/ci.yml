@@ -61,6 +61,8 @@ jobs:
       - name: Tag
         if: ${{ github.ref == 'refs/heads/main' }}
         run: ./scripts/tag.sh
+        env:
+          GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
 
       - name: Push changes
         if: ${{ github.ref == 'refs/heads/main' }}
