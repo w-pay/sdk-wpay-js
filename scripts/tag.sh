@@ -12,4 +12,9 @@ if git show-ref --tags $version --quiet; then
 else
   echo "Tagging with ${version}"
   git tag $version
+
+  # Need to push to GH to then create a release
+  git push --tags
+
+  gh release create $version
 fi
