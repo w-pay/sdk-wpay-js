@@ -22,14 +22,14 @@ export interface PaymentPreferences {
 	 *
 	 * The primary instrument will be used for the balance of the payment after any specified secondary instruments are used first.
 	 */
-	primaryInstrumentId: string;
+	primaryInstrumentId?: string;
 
 	/**
 	 * Rules for the creation of a default set of secondary instruments to be used for a payment if a specific set is not specified.
 	 *
 	 *  Secondary instruments are used in order until the full amount of the payment has been paid.
 	 */
-	secondaryInstruments: SecondaryInstrumentPreferences;
+	secondaryInstruments?: SecondaryInstrumentPreferences;
 }
 
 export interface SecondaryInstrumentPreferences {
