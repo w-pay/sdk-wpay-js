@@ -1,6 +1,6 @@
 "use strict";
 
-const asyncToPromise = require("crocks/Async/asyncToPromise");
+const { asyncToPromise, unsetProp } = require("crocks");
 
 const { assertThat, instanceOf, is, throws } = require("hamjest");
 
@@ -25,7 +25,11 @@ describe("WPay Factory", function () {
 
 	describe("createApiClient", function () {
 		it("should throw when default headers can't be created", function () {
-			assertThat(() => factory({}), throws(instanceOf(Error)));
+			assertThat(() => factory(unsetProp("apiKey", config)), throws(instanceOf(Error)));
+		});
+
+		it("should throw error when baseUrl not set", function () {
+			assertThat(() => factory(unsetProp("baseUrl", config)), throws(instanceOf(Error)));
 		});
 
 		it("should resolve url to baseUrl config", async function () {
@@ -37,7 +41,7 @@ describe("WPay Factory", function () {
 				})
 			);
 
-			assertThat(httpClient.request.url, is("http://foo.com/foo/bar"));
+			assertThat(httpClient.request.url, is(`${config.baseUrl}/foo/bar`));
 		});
 	});
 });
