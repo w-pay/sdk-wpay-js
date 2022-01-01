@@ -9,17 +9,16 @@ const compose = require("crocks/helpers/compose");
 const constant = require("crocks/combinators/constant");
 const curry = require("crocks/core/curry");
 const either = require("crocks/pointfree/either");
-const fold = require("crocks/pointfree/fold");
 const getProp = require("crocks/Maybe/getProp");
 const isNil = require("crocks/predicates/isNil");
 const map = require("crocks/pointfree/map");
+const mreduce = require("crocks/helpers/mreduce");
 const not = require("crocks/logic/not");
 const objOf = require("crocks/helpers/objOf");
 const option = require("crocks/pointfree/option");
 const pipe = require("crocks/helpers/pipe");
 const safe = require("crocks/Maybe/safe");
 const sequence = require("crocks/pointfree/sequence");
-const valueOf = require("crocks/pointfree/valueOf");
 
 const { applyFunctor } = require("@epistemology-factory/crocks-ext/helpers");
 
@@ -41,22 +40,28 @@ const { Wallet } = require("../../src/model");
 
 const { getPropOrError } = require("../helpers/props");
 
-// getHeaderOrError :: String -> String -> Object -> Result Error Assign
+/*
+ * Turns an array of Result producing functions into a Result with an array of the results
+ * of calling those functions with the input.
+ */
+// sequenceResults :: [ (a -> Result Error b) ] -> a -> Result Error [ b ]
+const sequenceResults = (fns) => compose(sequence(Result), applyFunctor(fns));
+
+// getHeaderOrError :: String -> String -> Object -> Result Error Object
 const getHeaderOrError = curry((prop, headerName) =>
-	pipe(getPropOrError(prop), map(pipe(objOf(headerName), Assign)))
+	compose(map(objOf(headerName)), getPropOrError(prop))
 );
 
-// getHeaderOrNothing :: String -> String -> Object -> Result Assign
+// getHeaderOrNothing :: String -> String -> Object -> Result Object
 const getHeaderOrNothing = curry((prop, headerName) =>
-	pipe(getProp(prop), either(constant({}), objOf(headerName)), Assign, Result.Ok)
+	compose(Result.Ok, either(constant({}), objOf(headerName)), getProp(prop))
 );
 
-// everydayPayWalletHeader :: Object -> Result Assign
+// everydayPayWalletHeader :: Object -> Result Object
 const everydayPayWalletHeader = pipe(
 	getProp("wallet"),
 	either(constant("false"), (wallet) => (wallet === Wallet.EVERYDAY_PAY).toString()),
-	compose(Assign, objOf(X_EVERYDAY_PAY_WALLET)),
-	Result.Ok
+	compose(Result.Ok, objOf(X_EVERYDAY_PAY_WALLET))
 );
 
 // apiAuthenticatorToRequestHeaderFactory :: ApiAuthenticator -> RequestHeaderFactory
@@ -67,23 +72,19 @@ const apiAuthenticatorToRequestHeaderFactory = pipe(
 
 // constantOptsToHeaders :: Object -> Result Error RequestHeaderFactory
 const constantOptsToHeaders = pipe(
-	compose(
-		fold,
-		applyFunctor([
-			getHeaderOrError("apiKey", X_API_KEY),
-			getHeaderOrNothing("walletId", X_WALLET_ID),
-			getHeaderOrNothing("merchantId", X_MERCHANT_ID),
-			everydayPayWalletHeader
-		])
-	),
-	map(compose(constantHeaders, valueOf))
+	sequenceResults([
+		getHeaderOrError("apiKey", X_API_KEY),
+		getHeaderOrNothing("walletId", X_WALLET_ID),
+		getHeaderOrNothing("merchantId", X_MERCHANT_ID),
+		everydayPayWalletHeader
+	]),
+	map(compose(constantHeaders, mreduce(Assign)))
 );
 
 // accessTokenToHeader :: Object -> Result RequestHeaderFactory
 const accessTokenToHeader = pipe(
 	compose(chain(safe(not(isNil))), getProp("accessToken")),
-	map(toApiAuthenticator),
-	map(apiAuthenticatorToRequestHeaderFactory),
+	map(compose(apiAuthenticatorToRequestHeaderFactory, toApiAuthenticator)),
 	option(() => Async.Resolved({})),
 	Result.Ok
 );
@@ -97,8 +98,7 @@ const accessTokenToHeader = pipe(
  */
 // defaultHeaders :: Object -> Result Error RequestHeadersFactory
 const defaultHeaders = pipe(
-	applyFunctor([constantOptsToHeaders, accessTokenToHeader]),
-	sequence(Result),
+	sequenceResults([constantOptsToHeaders, accessTokenToHeader]),
 	map(createHeaders)
 );
 
