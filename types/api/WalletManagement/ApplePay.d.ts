@@ -1,3 +1,4 @@
+import { StartSessionApplePayRequest } from "../../model/WalletManagementModel/StartSessionApplePayRequest";
 import { TokenizeApplePayRequest } from "../../model/WalletManagementModel/TokenizeApplePayRequest";
 import { TokenizeApplePayResponse } from "../../model/WalletManagementModel/TokenizeApplePayResponse";
 
@@ -5,6 +6,13 @@ import { TokenizeApplePayResponse } from "../../model/WalletManagementModel/Toke
  * @category API
  */
 export interface ApplePayApi {
+	/**
+	 * Start a session with Apple using validationUrl during onvalidatemerchant event. Merchant must be registered with WPay for Apple Pay before using this call.
+	 *
+	 * @param startSessionApplePayRequest Detail of the start session request.
+	 */
+	startSession(startSessionApplePayRequest: StartSessionApplePayRequest): Promise<any>;
+	 
 	/**
 	 * Create a payment instrument id for a provided Apple Pay wallet item.
 	 *

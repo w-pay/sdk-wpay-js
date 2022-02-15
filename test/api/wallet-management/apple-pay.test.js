@@ -12,6 +12,7 @@ const {
 	TokenizeApplePayRequestDTO
 } = require("../../data/wallet-management/TokenizeApplePayRequest");
 const apiFactory = require("../../../src/api/wallet-management/apple-pay");
+const { StartSessionApplePayRequestDTO } = require("../../data/wallet-management/StartSessionApplePayRequest");
 
 describe("ApplePay", function () {
 	let apiClient;
@@ -24,6 +25,18 @@ describe("ApplePay", function () {
 			data: TokenizeApplePayResponseDTO(),
 			meta: {}
 		};
+	});
+
+	describe("startSession", function () {
+		it("should set request params", async function () {
+			await api.tokenize(StartSessionApplePayRequestDTO());
+			const request = apiClient.request;
+
+			assertThat(request.method, is(HttpRequestMethod.POST));
+			assertThat(request.url, is("/applepay/startSession"));
+			assertThat(request.body, is(StartSessionApplePayRequestDTO()));
+		});
+
 	});
 
 	describe("tokenize", function () {
