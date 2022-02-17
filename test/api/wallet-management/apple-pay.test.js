@@ -29,7 +29,7 @@ describe("ApplePay", function () {
 
 	describe("startSession", function () {
 		it("should set request params", async function () {
-			await api.tokenize(StartSessionApplePayRequestDTO());
+			await api.startSession(StartSessionApplePayRequestDTO());
 			const request = apiClient.request;
 
 			assertThat(request.method, is(HttpRequestMethod.POST));
