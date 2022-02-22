@@ -2,12 +2,11 @@
 
 const ap = require("crocks/pointfree/ap");
 const compose = require("crocks/helpers/compose");
+const converge = require("crocks/combinators/converge");
 const curry = require("crocks/core/curry");
 const either = require("crocks/pointfree/either");
-const fanout = require("crocks/Pair/fanout");
 const identity = require("crocks/combinators/identity");
 const map = require("crocks/pointfree/map");
-const merge = require("crocks/pointfree/merge");
 const pipe = require("crocks/helpers/pipe");
 const pipeK = require("crocks/helpers/pipeK");
 
@@ -28,6 +27,9 @@ const sdkApiClient = curry((httpClient, baseUrl, headers) =>
 	)
 );
 
+// setBaseUrl :: (String -> RequestHeadersFactory -> SdkApiClient) -> Object -> Result Error (RequestHeadersFactory -> SdkApiClient)
+const setBaseUrl = (factory) => compose(map(factory), getPropOrError("baseUrl"));
+
 const throwError = (err) => {
 	throw err;
 };
@@ -35,8 +37,7 @@ const throwError = (err) => {
 // createApiClient :: HttpClientFactory -> Object -> SdkApiClient
 const createApiClient = (httpClient) =>
 	pipe(
-		fanout(defaultHeaders, compose(map(sdkApiClient(httpClient)), getPropOrError("baseUrl"))),
-		merge(ap),
+		converge(ap, defaultHeaders, setBaseUrl(sdkApiClient(httpClient))),
 		either(throwError, identity)
 	);
 
