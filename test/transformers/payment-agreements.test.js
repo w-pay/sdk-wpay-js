@@ -14,7 +14,7 @@ const {
 	paymentAgreementFrom
 } = require("../matchers/payment-agreements-matchers");
 
-describe(" Payment Agreement Transformers", function () {
+describe("Payment Agreement Transformers", function () {
 	describe("PaymentAgreements", function () {
 		describe("from DTO", function () {
 			it("should convert dto", function () {
