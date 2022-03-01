@@ -11,8 +11,8 @@ const apiFactory = require("../../src/api/merchant-payment-agreements");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
 const {
-	PaymentAgreementResponse,
-	ChargePaymentAgreementRequest
+	chargePaymentAgreementRequest,
+	paymentAgreementDTO
 } = require("../data/payment-agreements");
 const { fraudPayloadDTO } = require("../data/fraud-payload");
 const { fraudPayloadDTOFrom } = require("../matchers/fraud-payload-matchers");
@@ -32,7 +32,7 @@ describe("MerchantPaymentAgreementsApi", function () {
 
 		beforeEach(function () {
 			apiClient.response = {
-				data: PaymentAgreementResponse(),
+				data: paymentAgreementDTO(),
 				meta: {}
 			};
 		});
@@ -49,7 +49,7 @@ describe("MerchantPaymentAgreementsApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = ChargePaymentAgreementRequest();
+			const request = chargePaymentAgreementRequest();
 			await api.charge(paymentToken, request);
 
 			assertThat(
@@ -63,7 +63,7 @@ describe("MerchantPaymentAgreementsApi", function () {
 		});
 
 		it("should set optional params", async function () {
-			const request = ChargePaymentAgreementRequest();
+			const request = chargePaymentAgreementRequest();
 			const fraudPayload = fraudPayloadDTO();
 			await api.charge(paymentToken, request, fraudPayload);
 
@@ -78,7 +78,7 @@ describe("MerchantPaymentAgreementsApi", function () {
 		});
 
 		it("should charge payment agreement", async function () {
-			const result = await api.charge(paymentToken, ChargePaymentAgreementRequest());
+			const result = await api.charge(paymentToken, chargePaymentAgreementRequest());
 
 			assertThat(result, is(paymentAgreementFrom(apiClient.response.data)));
 		});

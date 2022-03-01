@@ -15,10 +15,10 @@ const { paymentMetaDTOFrom } = require("../matchers/payment-meta-matchers");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
 const {
-	PaymentAgreementResponse,
-	CreatePaymentAgreementRequest,
-	UpdatePaymentAgreementRequest,
-	ListPaymentAgreementsResponse
+	createPaymentAgreementRequest,
+	paymentAgreementsDTO,
+	paymentAgreementDTO,
+	updatePaymentAgreementRequest
 } = require("../data/payment-agreements");
 const { fraudPayloadDTO } = require("../data/fraud-payload");
 
@@ -35,7 +35,7 @@ describe("CustomerPaymentAgreementsApi", function () {
 	describe("list", function () {
 		beforeEach(function () {
 			apiClient.response = {
-				data: ListPaymentAgreementsResponse(),
+				data: paymentAgreementsDTO(),
 				meta: {}
 			};
 		});
@@ -64,7 +64,7 @@ describe("CustomerPaymentAgreementsApi", function () {
 
 		beforeEach(function () {
 			apiClient.response = {
-				data: PaymentAgreementResponse(),
+				data: paymentAgreementDTO(),
 				meta: {}
 			};
 		});
@@ -80,7 +80,10 @@ describe("CustomerPaymentAgreementsApi", function () {
 				apiClient.request,
 				hasProperties({
 					method: HttpRequestMethod.GET,
-					url: "/instore/customer/payments/agreements/:paymentToken"
+					url: "/instore/customer/payments/agreements/:paymentToken",
+					pathParams: {
+						paymentToken
+					}
 				})
 			);
 		});
@@ -95,7 +98,7 @@ describe("CustomerPaymentAgreementsApi", function () {
 	describe("create", function () {
 		beforeEach(function () {
 			apiClient.response = {
-				data: PaymentAgreementResponse(),
+				data: paymentAgreementDTO(),
 				meta: {}
 			};
 		});
@@ -108,7 +111,7 @@ describe("CustomerPaymentAgreementsApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = CreatePaymentAgreementRequest();
+			const request = createPaymentAgreementRequest();
 			const challengeResponses = [aChallengeResponse()];
 			const fraudPayload = fraudPayloadDTO();
 			await api.create(request, challengeResponses, fraudPayload);
@@ -129,7 +132,7 @@ describe("CustomerPaymentAgreementsApi", function () {
 		});
 
 		it("should create payment agreement", async function () {
-			const result = await api.create(CreatePaymentAgreementRequest());
+			const result = await api.create(createPaymentAgreementRequest());
 
 			assertThat(result, is(paymentAgreementFrom(apiClient.response.data)));
 		});
@@ -140,7 +143,7 @@ describe("CustomerPaymentAgreementsApi", function () {
 
 		beforeEach(function () {
 			apiClient.response = {
-				data: PaymentAgreementResponse(),
+				data: paymentAgreementDTO(),
 				meta: {}
 			};
 		});
@@ -157,7 +160,7 @@ describe("CustomerPaymentAgreementsApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = UpdatePaymentAgreementRequest();
+			const request = updatePaymentAgreementRequest();
 			const challengeResponses = [aChallengeResponse()];
 			const fraudPayload = fraudPayloadDTO();
 			await api.update(paymentToken, request, challengeResponses, fraudPayload);
@@ -185,7 +188,7 @@ describe("CustomerPaymentAgreementsApi", function () {
 		});
 
 		it("should update payment agreement", async function () {
-			const result = await api.update(paymentToken, UpdatePaymentAgreementRequest());
+			const result = await api.update(paymentToken, updatePaymentAgreementRequest());
 
 			assertThat(result, is(paymentAgreementFrom(apiClient.response.data)));
 		});
