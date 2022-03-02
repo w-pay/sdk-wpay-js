@@ -9,19 +9,25 @@ const fromCustomerTransactionSummaryDTO = mapProps({
 	executionTime: toDate,
 	status: toUpperCase,
 	rollback: toUpperCase,
-	type: toUpperCase
+	type: toUpperCase,
+	instruments: map(
+		mapProps({
+			transactions: map(
+				mapProps({
+					type: toUpperCase,
+					executionTime: toDate,
+					status: toUpperCase
+				})
+			)
+		})
+	)
 });
 
 const fromCustomerTransactionSummariesDTO = mapProps({
 	transactions: map(fromCustomerTransactionSummaryDTO)
 });
 
-const fromCustomerTransactionDetailsDTO = mapProps({
-	executionTime: toDate,
-	status: toUpperCase,
-	rollback: toUpperCase,
-	type: toUpperCase
-});
+const fromCustomerTransactionDetailsDTO = fromCustomerTransactionSummaryDTO;
 
 module.exports = {
 	fromCustomerTransactionDetailsDTO,

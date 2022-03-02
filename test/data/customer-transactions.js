@@ -20,8 +20,16 @@ const customerTransactionSummaryDTO = () => ({
 	instruments: [
 		{
 			paymentInstrumentId: uuid(),
-			amount: 232.34,
-			paymentTransactionRef: uuid()
+			instrumentType: "card",
+			transactions: [
+				{
+					type: TransactionSummaryPaymentType.PAYMENT.toLowerCase(),
+					executionTime: "2021-02-17T06:31:46.358Z",
+					paymentTransactionRef: uuid(),
+					status: TransactionSummaryPaymentStatus.APPROVED.toLowerCase(),
+					amount: 12.32
+				}
+			]
 		}
 	]
 });

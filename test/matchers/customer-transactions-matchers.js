@@ -21,7 +21,7 @@ const customerTransactionSummaryFrom = (dto) => ({
 		assertThat(actual.clientReference, is(dto.clientReference));
 
 		actual.instruments.forEach((instrument, i) => {
-			assertThat(instrument, is(customerPaymentInstrumentFrom(dto.instruments[i])));
+			assertThat(instrument, is(customerUsedPaymentInstrumentFrom(dto.instruments[i])));
 		});
 
 		return true;
@@ -73,16 +73,46 @@ const customerTransactionDetailsFrom = (dto) => ({
 	}
 });
 
-const customerPaymentInstrumentFrom = (dto) => ({
+const customerUsedPaymentInstrumentFrom = (dto) => ({
 	matches(item) {
 		assertThat(item.paymentInstrumentId, is(dto.paymentInstrumentId));
+		assertThat(item.instrumentType, is(dto.instrumentType));
+
+		assertThat(item.transactions.length, is(dto.transactions.length));
+
+		item.transactions.forEach((transaction, i) => {
+			assertThat(
+				transaction,
+				is(customerUsedPaymentInstrumentTransaction(dto.transactions[i]))
+			);
+		});
+
+		return true;
+	},
+
+	describeTo(description) {
+		description.append(`A TransactionUsedPaymentInstrument from ${JSON.stringify(dto)}`);
+	},
+
+	describeMismatch(value, description) {
+		description.appendValue(value);
+	}
+});
+
+const customerUsedPaymentInstrumentTransaction = (dto) => ({
+	matches(item) {
+		assertThat(item.type, is(uppercase(dto.type)));
+		assertThat(item.executionTime, is(dateFrom(dto.executionTime)));
+		assertThat(item.paymentTransactionRef, is(dto.paymentTransactionRef));
+		assertThat(item.refundTransactionRef, is(dto.refundTransactionRef));
+		assertThat(item.status, is(uppercase(dto.status)));
 		assertThat(item.amount, is(dto.amount));
 
 		return true;
 	},
 
 	describeTo(description) {
-		description.append(`A CustomerTransactionSummary from ${JSON.stringify(dto)}`);
+		description.append(`A UsedPaymentInstrumentTransaction from ${JSON.stringify(dto)}`);
 	},
 
 	describeMismatch(value, description) {
@@ -91,7 +121,7 @@ const customerPaymentInstrumentFrom = (dto) => ({
 });
 
 module.exports = {
-	customerPaymentInstrumentFrom,
+	customerUsedPaymentInstrumentFrom,
 	customerTransactionDetailsFrom,
 	customerTransactionSummaryFrom,
 	customerTransactionSummariesFrom
