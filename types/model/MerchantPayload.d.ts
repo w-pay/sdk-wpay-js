@@ -3,11 +3,6 @@
  *
  * @category Model
  */
-// TODO: Consider removing in favour of DynamicPayload
-export interface MerchantPayload {
-	/** The ID of the previously configured schema that will be used to validate the contents of the payload */
-	schemaId?: string;
+import { DynamicPayload } from "./DynamicPayload";
 
-	/** The contents of the message */
-	payload: any;
-}
+export type MerchantPayload = DynamicPayload;
