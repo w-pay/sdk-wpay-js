@@ -10,7 +10,7 @@ exports.basketFrom = (basket) => ({
 		assertThat(items.length, is(basket.items.length));
 
 		items.forEach((item, i) => {
-			assertThat(item, is(basketItem(basket.items[i])));
+			assertThat(item, is(basketItemFrom(basket.items[i])));
 		});
 
 		return true;
@@ -25,7 +25,7 @@ exports.basketFrom = (basket) => ({
 	}
 });
 
-const basketItem = (item) => ({
+const basketItemFrom = (item) => ({
 	matches(actual) {
 		assertThat(actual, is(defined()));
 		assertThat(actual.label, is(item.label));
