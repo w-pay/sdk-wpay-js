@@ -10,6 +10,9 @@ const {
 } = require("../../src/model");
 
 const customerTransactionSummaryDTO = () => ({
+	paymentRequestId: uuid(),
+	merchantReferenceId: uuid(),
+	grossAmount: 12.32,
 	transactionId: uuid(),
 	clientReference: uuid(),
 	type: TransactionSummaryPaymentType.PAYMENT.toLowerCase(),

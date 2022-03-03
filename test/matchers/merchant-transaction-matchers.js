@@ -35,6 +35,7 @@ const merchantTransactionSummaryFrom = (dto) => ({
 		assertThat(item.executionTime, is(dateFrom(dto.executionTime)));
 		assertThat(item.status, is(uppercase(dto.status)));
 		assertThat(item.rollback, is(uppercase(dto.rollback)));
+		assertThat(item.refundReason, is(dto.refundReason));
 		assertThat(item.transactionId, is(dto.transactionId));
 		assertThat(item.clientReference, is(dto.clientReference));
 

@@ -16,6 +16,7 @@ const customerTransactionSummaryFrom = (dto) => ({
 		assertThat(actual.executionTime, is(dateFrom(dto.executionTime)));
 		assertThat(actual.status, is(uppercase(dto.status)));
 		assertThat(actual.rollback, is(uppercase(dto.rollback)));
+		assertThat(actual.refundReason, is(dto.refundReason));
 		assertThat(actual.instruments.length, is(dto.instruments.length));
 		assertThat(actual.transactionId, is(dto.transactionId));
 		assertThat(actual.clientReference, is(dto.clientReference));
