@@ -9,13 +9,9 @@ exports.aCreatePaymentSessionRequest = () => ({
 	location: "somewhere",
 	merchantInfo: {
 		schemaId: uuid(),
-		payload: (function () {
-			const payload = new Map();
-
-			payload.set("merchantInfoKey", "some value");
-
-			return payload;
-		})()
+		payload: {
+			merchantInfoKey: "some value"
+		}
 	}
 });
 
@@ -27,13 +23,9 @@ exports.createPaymentSessionResultDTO = () => ({
 exports.aCustomerUpdatePaymentSessionRequest = () => ({
 	customerInfo: {
 		schemaId: uuid(),
-		payload: (function () {
-			const payload = new Map();
-
-			payload.set("customerInfoKey", "some value");
-
-			return payload;
-		})()
+		payload: {
+			customerInfoKey: "some value"
+		}
 	}
 });
 
@@ -41,13 +33,9 @@ exports.aMerchantUpdatePaymentSessionRequest = () => ({
 	paymentRequestId: uuid(),
 	merchantInfo: {
 		schemaId: uuid(),
-		payload: (function () {
-			const payload = new Map();
-
-			payload.set("merchantInfoKey", "some value");
-
-			return payload;
-		})()
+		payload: {
+			merchantInfoKey: "some value"
+		}
 	}
 });
 
