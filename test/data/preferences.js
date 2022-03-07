@@ -15,7 +15,7 @@ exports.preferences = () =>
 
 exports.paymentPreferences = () => ({
 	primaryPaymentId: uuid(),
-	secondaryInstruments: []
+	secondaryInstruments: null
 });
 
 exports.preferencesDTO = () => ({
