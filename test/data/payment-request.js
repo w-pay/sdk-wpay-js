@@ -49,3 +49,8 @@ exports.immediatePaymentRequest = () => ({
 		}
 	]
 });
+
+exports.paymentTransactionType = () => ({
+	creditCard: "PURCHASE",
+	giftCard: "PURCHASE"
+});

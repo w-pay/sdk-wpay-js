@@ -14,7 +14,8 @@ const { body, withData, withMeta } = require("../matchers/request-body-matchers"
 const { challengeResponsesDTOFrom } = require("../matchers/challenge-response-matchers");
 const {
 	customerPaymentRequestDTO,
-	immediatePaymentRequest
+	immediatePaymentRequest,
+	paymentTransactionType
 } = require("../data/payment-request");
 const { customerPaymentRequestFrom } = require("../matchers/payment-request-matchers");
 const { customerTransactionSummaryDTO } = require("../data/customer-transactions");
@@ -27,7 +28,6 @@ const { paymentDetailsDTOFrom } = require("../matchers/payment-instrument-matche
 const { paymentPreferences } = require("../data/preferences");
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
-const { paymentTransactionType } = require("../data/payment-transaction-type");
 
 describe("CustomerPaymentRequestsApi", function () {
 	let apiClient;
@@ -38,14 +38,16 @@ describe("CustomerPaymentRequestsApi", function () {
 		apiClient = new StubApiClient();
 
 		api = apiFactory(apiClient.client());
-
-		apiClient.response = {
-			data: customerPaymentRequestDTO(),
-			meta: {}
-		};
 	});
 
 	describe("getById", function () {
+		beforeEach(function () {
+			apiClient.response = {
+				data: customerPaymentRequestDTO(),
+				meta: {}
+			};
+		});
+
 		it("should throw error if paymentRequestId is missing", async function () {
 			assertThat(() => api.getById(), throws(requiredParameterError("paymentRequestId")));
 		});
@@ -75,6 +77,13 @@ describe("CustomerPaymentRequestsApi", function () {
 	});
 
 	describe("getByQRCodeId", function () {
+		beforeEach(function () {
+			apiClient.response = {
+				data: customerPaymentRequestDTO(),
+				meta: {}
+			};
+		});
+
 		it("should throw error if qrCodeId is missing", async function () {
 			assertThat(() => api.getByQRCodeId(), throws(requiredParameterError("qrCodeId")));
 		});
@@ -104,6 +113,13 @@ describe("CustomerPaymentRequestsApi", function () {
 	});
 
 	describe("makePayment", function () {
+		beforeEach(function () {
+			apiClient.response = {
+				data: customerTransactionSummaryDTO(),
+				meta: {}
+			};
+		});
+
 		it("should throw error if paymentRequestId is missing", function () {
 			assertThat(() => api.makePayment(), throws(requiredParameterError("paymentRequestId")));
 		});
@@ -183,6 +199,17 @@ describe("CustomerPaymentRequestsApi", function () {
 	});
 
 	describe("makeImmediatePayment", function () {
+		beforeEach(function () {
+			apiClient = new StubApiClient();
+
+			api = apiFactory(apiClient.client());
+
+			apiClient.response = {
+				data: customerTransactionSummaryDTO(),
+				meta: {}
+			};
+		});
+
 		it("should throw error if paymentRequest is missing", function () {
 			assertThat(
 				() => api.makeImmediatePayment(),
@@ -191,6 +218,21 @@ describe("CustomerPaymentRequestsApi", function () {
 		});
 
 		it("should set request params", async function () {
+			const request = immediatePaymentRequest();
+
+			await api.makeImmediatePayment(request);
+
+			assertThat(
+				apiClient.request,
+				hasProperties({
+					method: HttpRequestMethod.POST,
+					url: "/instore/customer/payments",
+					body: is(body(withData(equalTo(request)), withMeta(challengeResponsesDTOFrom([]))))
+				})
+			);
+		});
+
+		it("should set optional parameters", async function () {
 			const request = immediatePaymentRequest();
 			const challenges = [aChallengeResponse()];
 			const fraudPayload = fraudPayloadDTO();
@@ -210,6 +252,12 @@ describe("CustomerPaymentRequestsApi", function () {
 					)
 				})
 			);
+		});
+
+		it("should make an immediate payment", async function () {
+			const result = await api.makeImmediatePayment(immediatePaymentRequest());
+
+			assertThat(result, is(customerTransactionSummaryFrom(apiClient.response.data)));
 		});
 	});
 });
