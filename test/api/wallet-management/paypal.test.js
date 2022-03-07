@@ -11,7 +11,7 @@ const {
 } = require("../../data/wallet-management/TokenizePaypalRequest");
 const apiFactory = require("../../../src/api/wallet-management/paypal");
 
-describe("AndroidPay", function () {
+describe("PayPal", function () {
 	let apiClient;
 	let api;
 
