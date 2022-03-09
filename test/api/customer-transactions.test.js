@@ -67,7 +67,7 @@ describe("CustomerTransactionsApi", function () {
 					page,
 					pageSize,
 					endTime: endTime.toISOString(),
-					startTime: endTime.toISOString()
+					startTime: startTime.toISOString()
 				})
 			);
 		});
