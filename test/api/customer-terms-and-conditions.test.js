@@ -38,7 +38,27 @@ describe("Terms and Conditions Apis", function () {
 				apiClient.request,
 				is({
 					method: HttpRequestMethod.GET,
-					url: "/instore/customer/termsandconditions/acceptance"
+					url: "/instore/customer/termsandconditions/acceptance",
+					queryParams: {}
+				})
+			);
+		});
+
+		it("should set optional parameters", async function () {
+			const type = "EVERYDAY_PAY";
+			const version = "1.0.0";
+
+			await api.get(type, version);
+
+			assertThat(
+				apiClient.request,
+				is({
+					method: HttpRequestMethod.GET,
+					url: "/instore/customer/termsandconditions/acceptance",
+					queryParams: {
+						type,
+						version
+					}
 				})
 			);
 		});
@@ -68,7 +88,10 @@ describe("Terms and Conditions Apis", function () {
 				hasProperties({
 					method: HttpRequestMethod.POST,
 					url: "/instore/customer/termsandconditions/acceptance",
-					body: request
+					body: {
+						data: request,
+						meta: {}
+					}
 				})
 			);
 		});

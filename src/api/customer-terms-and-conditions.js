@@ -5,19 +5,21 @@ const identity = require("crocks/combinators/identity");
 const pipeK = require("crocks/helpers/pipeK");
 
 const { fromData } = require("../transformers/data");
+const { optionalParam, params } = require("../helpers/params");
 const { requiredParameterError } = require("./api-errors");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 // get :: HttpApiClient -> (String, String) -> Promise TermsAndConditionsAcceptances
-const get = (client) => () => {
+const get = (client) => (type, version) => {
 	return asyncToPromise(
 		pipeK(
 			client,
 			fromData(identity)
 		)({
 			method: HttpRequestMethod.GET,
-			url: "/instore/customer/termsandconditions/acceptance"
+			url: "/instore/customer/termsandconditions/acceptance",
+			queryParams: params([optionalParam("type", type), optionalParam("version", version)])
 		})
 	);
 };
@@ -32,7 +34,10 @@ const accept = (client) => (acceptTermsAndConditionsRequest) => {
 		pipeK(client)({
 			method: HttpRequestMethod.POST,
 			url: "/instore/customer/termsandconditions/acceptance",
-			body: acceptTermsAndConditionsRequest
+			body: {
+				data: acceptTermsAndConditionsRequest,
+				meta: {}
+			}
 		})
 	);
 };
