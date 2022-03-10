@@ -3,17 +3,17 @@ const { v4: uuid } = require("uuid");
 const { assertThat, hasProperties, is, throws } = require("hamjest");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
-const { paymentAgreementFrom } = require("../matchers/payment-agreements-matchers");
+const {
+	digitalPayPaymentAgreementFrom
+} = require("../matchers/digitalpay/payment-agreements-matchers");
 const { body, withData, withMeta } = require("../matchers/request-body-matchers");
 
 const apiFactory = require("../../src/api/merchant-payment-agreements");
 
 const { requiredParameterError } = require("../matchers/required-parameters");
 const { StubApiClient } = require("../stub-api-client");
-const {
-	chargePaymentAgreementRequest,
-	paymentAgreementDTO
-} = require("../data/payment-agreements");
+const { chargePaymentAgreementRequest } = require("../data/payment-agreements");
+const { digitalPayPaymentAgreementDTO } = require("../data/digitalpay/payment-agreements");
 const { fraudPayloadDTO } = require("../data/fraud-payload");
 const { fraudPayloadDTOFrom } = require("../matchers/fraud-payload-matchers");
 
@@ -32,7 +32,7 @@ describe("MerchantPaymentAgreementsApi", function () {
 
 		beforeEach(function () {
 			apiClient.response = {
-				data: paymentAgreementDTO(),
+				data: digitalPayPaymentAgreementDTO(),
 				meta: {}
 			};
 		});
@@ -57,6 +57,9 @@ describe("MerchantPaymentAgreementsApi", function () {
 				hasProperties({
 					method: HttpRequestMethod.PUT,
 					url: "/instore/merchant/payments/agreements/:paymentToken",
+					pathParams: {
+						paymentToken
+					},
 					body: is(body(withData(request)))
 				})
 			);
@@ -80,7 +83,7 @@ describe("MerchantPaymentAgreementsApi", function () {
 		it("should charge payment agreement", async function () {
 			const result = await api.charge(paymentToken, chargePaymentAgreementRequest());
 
-			assertThat(result, is(paymentAgreementFrom(apiClient.response.data)));
+			assertThat(result, is(digitalPayPaymentAgreementFrom(apiClient.response.data)));
 		});
 	});
 

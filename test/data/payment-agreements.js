@@ -82,9 +82,7 @@ const updatePaymentAgreementRequest = () => ({
 });
 
 const chargePaymentAgreementRequest = () => ({
-	transactionType: {
-		creditCard: "PURCHASE"
-	},
+	transactionType: "PURCHASE",
 	amount: 25.53,
 	clientReference: "client-ref",
 	customerRef: "customer-ref",
