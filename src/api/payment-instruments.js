@@ -2,17 +2,15 @@
 
 const assign = require("crocks/helpers/assign");
 const asyncToPromise = require("crocks/Async/asyncToPromise");
-const fanout = require("crocks/Pair/fanout");
+const converge = require("crocks/combinators/converge");
 const identity = require("crocks/combinators/identity");
 const liftA2 = require("crocks/helpers/liftA2");
-const merge = require("crocks/pointfree/merge");
-const pipe = require("crocks/helpers/pipe");
 const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
 const { fromData } = require("../transformers/data");
-const { fromEncryptedMeta } = require("../transformers/meta");
+const { fromMeta } = require("../transformers/meta");
 const {
 	fromPaymentInstrumentDTO,
 	fromWalletContentsDTO
@@ -24,9 +22,10 @@ const { requiredParameterError } = require("./api-errors");
  * Merges any cipher text from the 'meta' into the result
  */
 // fromGetByTokenResponse :: Object -> Async Error Object
-const fromGetByTokenResponse = pipe(
-	fanout(fromEncryptedMeta, fromData(fromPaymentInstrumentDTO)),
-	merge(liftA2(assign))
+const fromGetByTokenResponse = converge(
+	liftA2(assign),
+	fromData(fromPaymentInstrumentDTO),
+	fromMeta(identity)
 );
 
 const getByToken = (client) => (paymentToken, publicKey) => {
