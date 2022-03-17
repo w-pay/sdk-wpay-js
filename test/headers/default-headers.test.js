@@ -112,7 +112,7 @@ describe("default headers", function () {
 				assertThat(headers, hasProperty(X_EVERYDAY_PAY_WALLET, equalTo("true")));
 			});
 
-			it("should set header to false it wallet not everyday pay", async function () {
+			it("should set header to false if wallet not everyday pay", async function () {
 				headers = await getHeaders({ apiKey: "abc123", wallet: Wallet.MERCHANT });
 
 				assertThat(headers, hasProperty(X_EVERYDAY_PAY_WALLET, equalTo("false")));
