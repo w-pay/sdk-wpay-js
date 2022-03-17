@@ -29,19 +29,23 @@ const AUTHORISATION = "authorization";
 describe("default headers", function () {
 	let headers;
 
-	it("should reject when missing apiKey", async function () {
-		await promiseThat(
-			getHeaders({}),
-			isRejectedWith(allOf(instanceOf(Error), hasProperty("message", containsString("apiKey"))))
-		);
-	});
+	describe("api key", function () {
+		it("should reject when missing apiKey", async function () {
+			await promiseThat(
+				getHeaders({}),
+				isRejectedWith(
+					allOf(instanceOf(Error), hasProperty("message", containsString("apiKey")))
+				)
+			);
+		});
 
-	it("should add apiKey header", async function () {
-		const apiKey = "abc123";
+		it("should add apiKey header", async function () {
+			const apiKey = "abc123";
 
-		headers = await getHeaders({ apiKey, walletId: "foo" });
+			headers = await getHeaders({ apiKey, walletId: "foo" });
 
-		assertThat(headers, hasProperty(X_API_KEY, equalTo(apiKey)));
+			assertThat(headers, hasProperty(X_API_KEY, equalTo(apiKey)));
+		});
 	});
 
 	describe("bearer token", function () {
