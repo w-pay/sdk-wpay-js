@@ -50,3 +50,7 @@ export interface GiftingProductDiscount {
 	/** The end date of the offered discount. */
 	endDate?: Date;
 }
+
+export interface DigitalPayGiftingProducts {
+	products: DigitalPayGiftingProduct[];
+}

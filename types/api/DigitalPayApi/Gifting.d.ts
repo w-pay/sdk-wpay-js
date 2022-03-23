@@ -1,4 +1,4 @@
-import { DigitalPayGiftingProduct } from "../../model/DigiPayModel/DigitalPayGiftingProduct";
+import { DigitalPayGiftingProducts } from "../../model/DigiPayModel/DigitalPayGiftingProduct";
 import { DigitalPayGiftingProductDetail } from "../../model/DigiPayModel/DigitalPayGiftingProductDetail";
 import { DigitalPayGiftingQuoteRequest } from "../../model/DigiPayModel/DigitalPayGiftingQuoteRequest";
 import { DigitalPayGiftingQuoteResponse } from "../../model/DigiPayModel/DigitalPayGiftingQuoteResponse";
@@ -28,7 +28,7 @@ export interface GiftingApi {
 		page?: number,
 		pageSize?: number,
 		lastUpdateDateTime?: Date
-	): Promise<DigitalPayGiftingProduct[]>;
+	): Promise<DigitalPayGiftingProducts>;
 
 	/**
 	 * Validates a gift card order and verifies discount prior to an order being placed.

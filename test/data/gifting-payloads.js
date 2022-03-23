@@ -37,7 +37,7 @@ const giftingProductDetail = () => ({
 });
 
 const giftingProductList = () => ({
-	giftingProducts: [
+	products: [
 		{
 			productId: "product-1",
 			name: "Test Gift Card",
