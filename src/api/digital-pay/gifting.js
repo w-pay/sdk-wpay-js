@@ -1,11 +1,13 @@
 "use strict";
 
-const mapProps = require("crocks/helpers/mapProps");
 const asyncToPromise = require("crocks/Async/asyncToPromise");
+const identity = require("crocks/combinators/identity");
+const mapProps = require("crocks/helpers/mapProps");
 const pipeK = require("crocks/helpers/pipeK");
 
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 
+const { fromData } = require("../../transformers/data");
 const { requiredParameterError } = require("../api-errors");
 const { optionalParam, params } = require("../../helpers/params");
 const { toISOString } = require("../../helpers/props");
@@ -17,7 +19,10 @@ const getProductById = (client) => (productId) => {
 	}
 
 	return asyncToPromise(
-		pipeK(client)({
+		pipeK(
+			client,
+			fromData(identity)
+		)({
 			method: HttpRequestMethod.GET,
 			url: "/gifting/products/:productId",
 			pathParams: {
@@ -30,7 +35,10 @@ const getProductById = (client) => (productId) => {
 // complete :: HttpApiClient -> (Number, Number, Date) -> Promise DigitalPayGiftingProduct[]
 const listProducts = (client) => (page, pageSize, lastUpdateDateTime) => {
 	return asyncToPromise(
-		pipeK(client)({
+		pipeK(
+			client,
+			fromData(identity)
+		)({
 			method: HttpRequestMethod.GET,
 			url: "/gifting/products",
 			queryParams: mapProps(
@@ -54,7 +62,10 @@ const getQuote = (client) => (quoteRequest) => {
 	}
 
 	return asyncToPromise(
-		pipeK(client)({
+		pipeK(
+			client,
+			fromData(identity)
+		)({
 			method: HttpRequestMethod.POST,
 			url: "/gifting/products/quote",
 			body: {
@@ -72,7 +83,10 @@ const order = (client) => (orderRequest, challengeResponses, fraud) => {
 	}
 
 	return asyncToPromise(
-		pipeK(client)({
+		pipeK(
+			client,
+			fromData(identity)
+		)({
 			method: HttpRequestMethod.POST,
 			url: "/gifting/products/order",
 			body: {

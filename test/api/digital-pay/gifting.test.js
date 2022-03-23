@@ -62,7 +62,7 @@ describe("GiftingApi", function () {
 		it("should get product details", async function () {
 			const result = await api.getProductById("product-1");
 
-			assertThat(result, is({ data: giftingProductDetail(), meta: {} }));
+			assertThat(result, is(giftingProductDetail()));
 		});
 	});
 
@@ -104,7 +104,7 @@ describe("GiftingApi", function () {
 		it("should get product list", async function () {
 			const result = await api.listProducts();
 
-			assertThat(result, is({ data: giftingProductList(), meta: {} }));
+			assertThat(result, is(giftingProductList()));
 		});
 	});
 
@@ -137,7 +137,7 @@ describe("GiftingApi", function () {
 		it("should obtain gifting quote", async function () {
 			const result = await api.getQuote(giftingQuoteRequest());
 
-			assertThat(result, is({ data: giftingQuoteResponse(), meta: {} }));
+			assertThat(result, is(giftingQuoteResponse()));
 		});
 	});
 
@@ -191,7 +191,7 @@ describe("GiftingApi", function () {
 		it("should complete gifting order", async function () {
 			const result = await api.order(giftingOrderRequest());
 
-			assertThat(result, is({ data: giftingOrderResponse(), meta: {} }));
+			assertThat(result, is(giftingOrderResponse()));
 		});
 	});
 });
