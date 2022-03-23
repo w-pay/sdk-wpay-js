@@ -25,9 +25,9 @@ export interface GiftingApi {
 	 * @param lastUpdateDateTime If present, only products changed since this time will be returned
 	 */
 	listProducts(
-		page: number,
-		pageSize: number,
-		lastUpdateDateTime: Date
+		page?: number,
+		pageSize?: number,
+		lastUpdateDateTime?: Date
 	): Promise<DigitalPayGiftingProduct[]>;
 
 	/**
