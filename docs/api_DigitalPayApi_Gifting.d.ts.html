@@ -85,7 +85,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { DigitalPayGiftingProduct } from "../../model/DigiPayModel/DigitalPayGiftingProduct";
+            <pre class="prettyprint source linenums"><code>import { DigitalPayGiftingProducts } from "../../model/DigiPayModel/DigitalPayGiftingProduct";
 import { DigitalPayGiftingProductDetail } from "../../model/DigiPayModel/DigitalPayGiftingProductDetail";
 import { DigitalPayGiftingQuoteRequest } from "../../model/DigiPayModel/DigitalPayGiftingQuoteRequest";
 import { DigitalPayGiftingQuoteResponse } from "../../model/DigiPayModel/DigitalPayGiftingQuoteResponse";
@@ -112,10 +112,10 @@ export interface GiftingApi {
 	 * @param lastUpdateDateTime If present, only products changed since this time will be returned
 	 */
 	listProducts(
-		page: number,
-		pageSize: number,
-		lastUpdateDateTime: Date
-	): Promise&lt;DigitalPayGiftingProduct[]>;
+		page?: number,
+		pageSize?: number,
+		lastUpdateDateTime?: Date
+	): Promise&lt;DigitalPayGiftingProducts>;
 
 	/**
 	 * Validates a gift card order and verifies discount prior to an order being placed.
