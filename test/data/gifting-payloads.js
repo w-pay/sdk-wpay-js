@@ -85,6 +85,8 @@ const giftingQuoteResponse = () => ({
 	orderItems: {
 		designId: "design-1",
 		amount: 100,
+		unitPrice: 100,
+		totalPrice: 100,
 		unitSalePrice: 90,
 		totalSalePrice: 90,
 		quantity: 1,
@@ -100,7 +102,7 @@ const giftingOrderRequest = () => ({
 	subTotalAmount: 100,
 	discountAmount: 10,
 	totalOrderAmount: 90,
-	billingAddress: {
+	billingContact: {
 		firstName: "Jane",
 		lastName: "Smith",
 		email: "jane.smith@test.com",
