@@ -16,7 +16,7 @@ const {
 	digitalPayRefundRequest,
 	digitalPayRefundResponse,
 	digitalPayVoidResponse
-} = require("../../data/dp-payments");
+} = require("../../data/digitalpay/payments");
 
 describe("digitalPayApi", function () {
 	let apiClient;

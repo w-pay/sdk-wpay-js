@@ -13,7 +13,7 @@ const {
 	digitalPayPaymentAgreementResponse,
 	digitalPayUpdatePaymentAgreementRequest,
 	digitalPayChargePaymentAgreementRequest
-} = require("../../data/dp-payment-agreements");
+} = require("../../data/digitalpay/payment-agreements");
 
 describe("PaymentAgreementsApi", function () {
 	let apiClient;

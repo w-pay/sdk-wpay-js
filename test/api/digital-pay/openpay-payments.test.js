@@ -16,7 +16,7 @@ const {
 	openPayRefundRequest,
 	openPayRefundResponse,
 	openPayVoidResponse
-} = require("../../data/dp-openpay-payments");
+} = require("../../data/digitalpay/openpay-payments");
 
 describe("OpenPayApi", function () {
 	let apiClient;
