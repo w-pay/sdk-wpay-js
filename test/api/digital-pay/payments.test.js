@@ -18,7 +18,7 @@ const {
 	digitalPayVoidResponse
 } = require("../../data/digitalpay/payments");
 
-describe("digitalPayApi", function () {
+describe("PaymentsApi", function () {
 	let apiClient;
 
 	let api;
