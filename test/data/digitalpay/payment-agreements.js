@@ -2,21 +2,19 @@
 
 const digitalPayPaymentAgreementDTO = () => ({
 	transactionReceipt: "abc123def",
-	paymentAgreement: digitalPayResponsePaymentAgreementDTO()
-});
-
-const digitalPayResponsePaymentAgreementDTO = () => ({
-	type: "RECURRING",
-	paymentInstrumentId: "90731",
-	paymentInstrumentType: "card",
-	scheme: "VISA",
-	cardSuffix: "4405",
-	expiryMonth: "11",
-	expiryYear: "22",
-	startDate: "2020-09-01T00:00:00.000Z",
-	endDate: "2021-12-31T23:29:29.999Z",
-	chargeFrequency: "MONTHLY",
-	chargeAmount: 25.99
+	paymentAgreement: {
+		type: "RECURRING",
+		paymentInstrumentId: "90731",
+		paymentInstrumentType: "card",
+		scheme: "VISA",
+		cardSuffix: "4405",
+		expiryMonth: "11",
+		expiryYear: "22",
+		startDate: "2020-09-01T00:00:00.000Z",
+		endDate: "2021-12-31T23:29:29.999Z",
+		chargeFrequency: "MONTHLY",
+		chargeAmount: 25.99
+	}
 });
 
 const digitalPayCreatePaymentAgreementRequest = () => ({
@@ -44,24 +42,6 @@ const digitalPayCreatePaymentAgreementRequest = () => ({
 		chargeAmount: 25.99,
 		immediateCharge: true,
 		stepUpToken: "e86b3a32-96a5-4659-b6d8-5d685bfa78e8"
-	}
-});
-
-const digitalPayPaymentAgreementResponse = () => ({
-	transactionReceipt: "1000000000670621",
-	paymentToken: "27e07e4e-58df-4072-8e75-33dd464af667",
-	paymentAgreement: {
-		type: "RECURRING",
-		paymentInstrumentId: "90731",
-		paymentInstrumentType: "CREDIT_CARD",
-		scheme: "VISA",
-		cardSuffix: "4405",
-		expiryMonth: "11",
-		expiryYear: "22",
-		startDate: "2018-09-01T00:00:00.000+1100",
-		endDate: "2018-12-31T23:59:59.999+1100",
-		chargeFrequency: "WEEKLY",
-		chargeAmount: 25.99
 	}
 });
 
@@ -104,7 +84,5 @@ module.exports = {
 	digitalPayChargePaymentAgreementRequest,
 	digitalPayCreatePaymentAgreementRequest,
 	digitalPayPaymentAgreementDTO,
-	digitalPayPaymentAgreementResponse,
-	digitalPayResponsePaymentAgreementDTO,
 	digitalPayUpdatePaymentAgreementRequest
 };

@@ -10,7 +10,7 @@ const { requiredParameterError } = require("../../matchers/required-parameters")
 const { StubApiClient } = require("../../stub-api-client");
 const {
 	digitalPayCreatePaymentAgreementRequest,
-	digitalPayPaymentAgreementResponse,
+	digitalPayPaymentAgreementDTO,
 	digitalPayUpdatePaymentAgreementRequest,
 	digitalPayChargePaymentAgreementRequest
 } = require("../../data/digitalpay/payment-agreements");
@@ -28,7 +28,7 @@ describe("PaymentAgreementsApi", function () {
 
 	describe("create", function () {
 		beforeEach(function () {
-			apiClient.response = digitalPayPaymentAgreementResponse();
+			apiClient.response = digitalPayPaymentAgreementDTO();
 		});
 
 		it("should throw error when payment request is missing", function () {
@@ -55,7 +55,7 @@ describe("PaymentAgreementsApi", function () {
 		it("should create payment agreement", async function () {
 			const result = await api.create(digitalPayCreatePaymentAgreementRequest());
 
-			assertThat(result, is(digitalPayPaymentAgreementResponse()));
+			assertThat(result, is(digitalPayPaymentAgreementDTO()));
 		});
 	});
 
@@ -63,7 +63,7 @@ describe("PaymentAgreementsApi", function () {
 		const paymentToken = uuid();
 
 		beforeEach(function () {
-			apiClient.response = digitalPayPaymentAgreementResponse();
+			apiClient.response = digitalPayPaymentAgreementDTO();
 		});
 
 		it("should throw error when payment token is missing", function () {
@@ -97,13 +97,13 @@ describe("PaymentAgreementsApi", function () {
 		it("should update payment agreement", async function () {
 			const result = await api.update(paymentToken, digitalPayUpdatePaymentAgreementRequest());
 
-			assertThat(result, is(digitalPayPaymentAgreementResponse()));
+			assertThat(result, is(digitalPayPaymentAgreementDTO()));
 		});
 	});
 
 	describe("charge", function () {
 		beforeEach(function () {
-			apiClient.response = digitalPayPaymentAgreementResponse();
+			apiClient.response = digitalPayPaymentAgreementDTO();
 		});
 
 		it("should throw error when completion request is missing", function () {
@@ -130,7 +130,7 @@ describe("PaymentAgreementsApi", function () {
 		it("should charge payment agreement", async function () {
 			const result = await api.charge(digitalPayChargePaymentAgreementRequest());
 
-			assertThat(result, is(digitalPayPaymentAgreementResponse()));
+			assertThat(result, is(digitalPayPaymentAgreementDTO()));
 		});
 	});
 
