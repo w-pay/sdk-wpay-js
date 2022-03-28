@@ -1,7 +1,9 @@
 "use strict";
 
 const openPayPaymentRequest = () => ({
-	transactionType: "PURCHASE",
+	transactionType: {
+		openPay: "PURCHASE"
+	},
 	clientReference: "ref-1234",
 	orderNumber: "12345678",
 	channel: "Online",

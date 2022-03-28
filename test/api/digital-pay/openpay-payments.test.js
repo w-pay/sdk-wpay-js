@@ -69,7 +69,7 @@ describe("OpenPayApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = openPayPaymentRequest();
+			const request = openPayCompletionRequest();
 			await api.complete(request);
 
 			assertThat(
