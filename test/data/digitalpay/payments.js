@@ -1,7 +1,9 @@
 "use strict";
 
 const digitalPayPaymentRequest = () => ({
-	transactionType: "PURCHASE",
+	transactionType: {
+		creditCard: "PURCHASE"
+	},
 	clientReference: "ref-1234",
 	orderNumber: "12345678",
 	shippingAddress: {
@@ -107,7 +109,8 @@ const digitalPayRefundResponse = () => ({
 		{
 			paymentTransactionRef: "pay-123",
 			refundTransactionRef: "ref-123",
-			amount: 123.45
+			amount: 123.45,
+			externalServiceMessage: "Message"
 		}
 	]
 });

@@ -99,7 +99,7 @@ describe("PaymentsApi", function () {
 		});
 
 		it("should set request params", async function () {
-			const request = digitalPayPaymentRequest();
+			const request = digitalPayCompletionRequest();
 			await api.complete(request);
 
 			assertThat(
