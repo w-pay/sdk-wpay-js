@@ -1,3 +1,14 @@
+exports.TransactionHistoryRequestDTO = () => ({
+	transactionTypes: ["PREAUTH", "PURCHASE"],
+	paymentInstrumentIds: ["90731", "81054", "90271"],
+	clientReference: "T5ESYRPWJKPHF54",
+	transactionRef: "1000000000670621",
+	orderNumber: "20170505090",
+	startDate: "2017-01-01T00:00:00.000+1100",
+	endDate: "2017-12-31T23:59:59.999+1100",
+	maxRecords: 5
+});
+
 exports.TransactionHistoryResponseDTO = () => ({
 	returned: 2,
 	total: 6,
@@ -14,6 +25,7 @@ exports.TransactionHistoryResponseDTO = () => ({
 			network: "MASTERCARD",
 			cardSuffix: "6106",
 			amount: 20.5,
+			comment: "",
 			paymentInstrumentType: "CREDIT_CARD"
 		},
 		{
@@ -24,9 +36,11 @@ exports.TransactionHistoryResponseDTO = () => ({
 			applicationName: "WowOnline",
 			clientReference: "95ORIO45ZMD4ZRF",
 			orderNumber: "20171107051",
+			bin: null,
 			network: "GIFT_CARD",
-			cardSuffix: "2517",
+			cardSuffix: null,
 			amount: 1,
+			comment: "",
 			paymentInstrumentType: "GIFT_CARD"
 		}
 	]

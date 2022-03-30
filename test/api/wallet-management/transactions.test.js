@@ -3,12 +3,11 @@
 const { assertThat, is } = require("hamjest");
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { StubApiClient } = require("../../stub-api-client");
+
 const {
+	TransactionHistoryRequestDTO,
 	TransactionHistoryResponseDTO
-} = require("../../data/wallet-management/TransactionHistoryResponse");
-const {
-	TransactionHistoryRequestDTO
-} = require("../../data/wallet-management/TransactionHistoryRequest");
+} = require("../../data/wallet-management/transaction-history");
 const apiFactory = require("../../../src/api/wallet-management/transactions");
 
 describe("Transactions", function () {
@@ -18,10 +17,7 @@ describe("Transactions", function () {
 	beforeEach(function () {
 		apiClient = new StubApiClient();
 		api = apiFactory(apiClient.client());
-		apiClient.response = {
-			data: TransactionHistoryResponseDTO(),
-			meta: {}
-		};
+		apiClient.response = TransactionHistoryResponseDTO();
 	});
 
 	describe("history", function () {
@@ -34,9 +30,9 @@ describe("Transactions", function () {
 			assertThat(request.body, is(TransactionHistoryRequestDTO()));
 		});
 
-		it("should return TokenizeGiftcardResponseDTO", async function () {
+		it("should return transaction history", async function () {
 			const result = await api.history(TransactionHistoryRequestDTO());
-			assertThat(result.data, is(TransactionHistoryResponseDTO()));
+			assertThat(result, is(TransactionHistoryResponseDTO()));
 		});
 	});
 });
