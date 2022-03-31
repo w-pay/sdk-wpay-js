@@ -3,9 +3,7 @@
 const { assertThat, is } = require("hamjest");
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { StubApiClient } = require("../../stub-api-client");
-const {
-	MerchantProfileResponseDTO
-} = require("../../data/wallet-management/MerchantProfileResponse");
+const { MerchantProfileResponseDTO } = require("../../data/wallet-management/merchant-profile");
 const apiFactory = require("../../../src/api/wallet-management/merchants");
 
 describe("Merchants", function () {
@@ -15,10 +13,7 @@ describe("Merchants", function () {
 	beforeEach(function () {
 		apiClient = new StubApiClient();
 		api = apiFactory(apiClient.client());
-		apiClient.response = {
-			data: MerchantProfileResponseDTO(),
-			meta: {}
-		};
+		apiClient.response = MerchantProfileResponseDTO();
 	});
 
 	describe("profile", function () {
@@ -30,9 +25,10 @@ describe("Merchants", function () {
 			assertThat(request.url, is("/merchants/profile"));
 		});
 
-		it("should return TokenizeGiftcardResponseDTO", async function () {
+		it("should return profile", async function () {
 			const result = await api.profile();
-			assertThat(result.data, is(MerchantProfileResponseDTO()));
+
+			assertThat(result, is(MerchantProfileResponseDTO()));
 		});
 	});
 });
