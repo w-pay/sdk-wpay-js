@@ -1,3 +1,7 @@
+exports.InitiateCardCaptureRequest = () => ({
+	clientReference: "JRIQ6EOK2NEQ6BY"
+});
+
 exports.InitiateCardCaptureResponseDTO = () => ({
 	cardCaptureURL:
 		"https://uat.woolworthspay.com.au/container-ws/getCaptureFrame/7038dda0-5928-4656-b051-b6c2ba20a8b7",
