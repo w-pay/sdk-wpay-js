@@ -125,13 +125,13 @@ interface Transaction {
 	orderNumber: string;
 
 	/* The bin (first 4 digits) of the card number used in the transaction. Will be null for transactions where bin is not applicable. */
-	bin: string;
+	bin: string | null;
 
 	/* The type of payment instrument used in the transaction. For credit card transactions this property will contain the scheme. */
 	network: string;
 
 	/* The suffix (last 4 digits) of the card number used in the transaction. Will be null for transactions where suffix is not applicable. */
-	cardSuffix: string;
+	cardSuffix: string | null;
 
 	/* The amount of the transaction. */
 	amount: number;
