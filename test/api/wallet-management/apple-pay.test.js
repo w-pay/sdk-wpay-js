@@ -5,12 +5,11 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { StubApiClient } = require("../../stub-api-client");
 const { requiredParameterError } = require("../../matchers/required-parameters");
 const { v4: uuid } = require("uuid");
+
 const {
+	TokenizeApplePayRequestDTO,
 	TokenizeApplePayResponseDTO
-} = require("../../data/wallet-management/TokenizeApplePayResponse");
-const {
-	TokenizeApplePayRequestDTO
-} = require("../../data/wallet-management/TokenizeApplePayRequest");
+} = require("../../data/wallet-management/apple-pay");
 const apiFactory = require("../../../src/api/wallet-management/apple-pay");
 
 describe("ApplePay", function () {
@@ -20,10 +19,7 @@ describe("ApplePay", function () {
 	beforeEach(function () {
 		apiClient = new StubApiClient();
 		api = apiFactory(apiClient.client());
-		apiClient.response = {
-			data: TokenizeApplePayResponseDTO(),
-			meta: {}
-		};
+		apiClient.response = TokenizeApplePayResponseDTO();
 	});
 
 	describe("tokenize", function () {
@@ -36,9 +32,10 @@ describe("ApplePay", function () {
 			assertThat(request.body, is(TokenizeApplePayRequestDTO()));
 		});
 
-		it("should return TokenizeApplePayResponseDTO", async function () {
+		it("should tokenize", async function () {
 			const result = await api.tokenize(TokenizeApplePayRequestDTO());
-			assertThat(result.data, is(TokenizeApplePayResponseDTO()));
+
+			assertThat(result, is(TokenizeApplePayResponseDTO()));
 		});
 	});
 
@@ -52,9 +49,10 @@ describe("ApplePay", function () {
 			assertThat(request.body, is(TokenizeApplePayRequestDTO()));
 		});
 
-		it("should return TokenizeApplePayResponseDTO", async function () {
+		it("should tokenize", async function () {
 			const result = await api.guestTokenize(TokenizeApplePayRequestDTO());
-			assertThat(result.data, is(TokenizeApplePayResponseDTO()));
+
+			assertThat(result, is(TokenizeApplePayResponseDTO()));
 		});
 	});
 
@@ -74,9 +72,10 @@ describe("ApplePay", function () {
 			assertThat(request.body, is(TokenizeApplePayRequestDTO()));
 		});
 
-		it("should return TokenizeApplePayResponseDTO", async function () {
+		it("should update", async function () {
 			const result = await api.update(uuid());
-			assertThat(result.data, is(TokenizeApplePayResponseDTO()));
+
+			assertThat(result, is(TokenizeApplePayResponseDTO()));
 		});
 	});
 });

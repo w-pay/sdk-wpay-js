@@ -10,3 +10,8 @@ exports.TokenizeApplePayRequestDTO = () => ({
 	comment: "AMEX-0001",
 	applicationData: "666555ef411bf515621f"
 });
+
+exports.TokenizeApplePayResponseDTO = () => ({
+	paymentInstrumentId: "20191",
+	stepUpToken: "6bf0a37c-0a5d-4619-8182-4c331358d021"
+});
