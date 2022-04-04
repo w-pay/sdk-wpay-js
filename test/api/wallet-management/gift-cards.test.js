@@ -3,86 +3,85 @@
 const { assertThat, is } = require("hamjest");
 const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { StubApiClient } = require("../../stub-api-client");
+
 const {
+	GiftcardsBalanceRequest,
+	GiftcardsBalanceResponseDTO,
+	TokenizeGiftcardRequest,
 	TokenizeGiftcardResponseDTO
-} = require("../../data/wallet-management/TokenizeGiftcardResponse");
-const {
-	GiftcardsBalanceResponseDTO
-} = require("../../data/wallet-management/GiftcardsBalanceResponse");
-const {
-	TokenizeGiftcardRequestDTO
-} = require("../../data/wallet-management/TokenizeGiftcardRequest");
-const {
-	GiftcardsBalanceRequestDTO
-} = require("../../data/wallet-management/GiftcardsBalanceRequest");
+} = require("../../data/wallet-management/gift-cards");
+
 const apiFactory = require("../../../src/api/wallet-management/gift-cards");
 
 describe("GiftCards", function () {
 	let apiClient;
 	let api;
 
-	function setResponse(response) {
-		apiClient.response = {
-			data: response,
-			meta: {}
-		};
-	}
-
 	beforeEach(function () {
 		apiClient = new StubApiClient();
 		api = apiFactory(apiClient.client());
-		apiClient.response = {
-			data: TokenizeGiftcardResponseDTO(),
-			meta: {}
-		};
 	});
 
 	describe("tokenize", function () {
+		beforeEach(function () {
+			apiClient.response = TokenizeGiftcardResponseDTO();
+		});
+
 		it("should set request params", async function () {
-			await api.tokenize(TokenizeGiftcardRequestDTO());
+			await api.tokenize(TokenizeGiftcardRequest());
 			const request = apiClient.request;
 
 			assertThat(request.method, is(HttpRequestMethod.POST));
 			assertThat(request.url, is("/giftcards/tokenize"));
-			assertThat(request.body, is(TokenizeGiftcardRequestDTO()));
+			assertThat(request.body, is(TokenizeGiftcardRequest()));
 		});
 
-		it("should return TokenizeGiftcardResponseDTO", async function () {
+		it("should tokenise card", async function () {
 			const result = await api.tokenize();
-			assertThat(result.data, is(TokenizeGiftcardResponseDTO()));
+
+			assertThat(result, is(TokenizeGiftcardResponseDTO()));
 		});
 	});
 
 	describe("guestTokenize", function () {
+		beforeEach(function () {
+			apiClient.response = TokenizeGiftcardResponseDTO();
+		});
+
 		it("should set request params", async function () {
-			await api.guestTokenize(TokenizeGiftcardRequestDTO());
+			await api.guestTokenize(TokenizeGiftcardRequest());
 			const request = apiClient.request;
 
 			assertThat(request.method, is(HttpRequestMethod.POST));
 			assertThat(request.url, is("/guest/giftcards/tokenize"));
-			assertThat(request.body, is(TokenizeGiftcardRequestDTO()));
+			assertThat(request.body, is(TokenizeGiftcardRequest()));
 		});
 
-		it("should return TokenizeGiftcardResponseDTO", async function () {
+		it("should tokenise card", async function () {
 			const result = await api.guestTokenize();
-			assertThat(result.data, is(TokenizeGiftcardResponseDTO()));
+
+			assertThat(result, is(TokenizeGiftcardResponseDTO()));
 		});
 	});
 
 	describe("balance", function () {
+		beforeEach(function () {
+			apiClient.response = GiftcardsBalanceResponseDTO();
+		});
+
 		it("should set request params", async function () {
-			await api.balance(GiftcardsBalanceRequestDTO());
+			await api.balance(GiftcardsBalanceRequest());
 			const request = apiClient.request;
 
 			assertThat(request.method, is(HttpRequestMethod.POST));
 			assertThat(request.url, is("/giftcards/tokenize"));
-			assertThat(request.body, is(GiftcardsBalanceRequestDTO()));
+			assertThat(request.body, is(GiftcardsBalanceRequest()));
 		});
 
-		it("should return GiftcardsBalanceResponseDTO", async function () {
-			setResponse(GiftcardsBalanceResponseDTO());
-			const result = await api.balance(GiftcardsBalanceRequestDTO());
-			assertThat(result.data, is(GiftcardsBalanceResponseDTO()));
+		it("should return balance", async function () {
+			const result = await api.balance(GiftcardsBalanceRequest());
+
+			assertThat(result, is(GiftcardsBalanceResponseDTO()));
 		});
 	});
 });
