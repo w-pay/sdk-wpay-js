@@ -28,7 +28,7 @@ const balance = (client) => (request) => {
 	return asyncToPromise(
 		pipeK(client)({
 			method: HttpRequestMethod.POST,
-			url: "/giftcards/tokenize",
+			url: "/giftcards/balance",
 			body: request
 		})
 	);

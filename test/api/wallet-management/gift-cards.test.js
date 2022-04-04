@@ -74,7 +74,7 @@ describe("GiftCards", function () {
 			const request = apiClient.request;
 
 			assertThat(request.method, is(HttpRequestMethod.POST));
-			assertThat(request.url, is("/giftcards/tokenize"));
+			assertThat(request.url, is("/giftcards/balance"));
 			assertThat(request.body, is(GiftcardsBalanceRequest()));
 		});
 
