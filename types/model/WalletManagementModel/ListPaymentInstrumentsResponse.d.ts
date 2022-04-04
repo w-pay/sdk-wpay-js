@@ -186,7 +186,7 @@ interface PaymentAgreementDetails {
 	chargeCycle: number;
 
 	/* A flag to indicate if the payment agreement is expired. */
-	expired: string;
+	expired: boolean;
 
 	/* The URL of the endpoint to use to update the payment agreement. */
 	updateURL: string;

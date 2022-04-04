@@ -5,36 +5,20 @@ const { HttpRequestMethod } = require("@api-sdk-creator/http-api-client");
 const { StubApiClient } = require("../../stub-api-client");
 const { requiredParameterError } = require("../../matchers/required-parameters");
 const { v4: uuid } = require("uuid");
+
 const {
-	ImportPaymentInstrumentsResponseDTO
-} = require("../../data/wallet-management/ImportPaymentInstrumentsResponse");
-const {
-	ImportPaymentInstrumentsRequestDTO
-} = require("../../data/wallet-management/ImportPaymentInstrumentsRequest");
-const {
+	ImportPaymentInstrumentsRequest,
+	ImportPaymentInstrumentsResponseDTO,
+	ListPaymentInstrumentsRequest,
+	ListPaymentInstrumentsResponseDTO,
+	VerifyPaymentInstrumentsRequest,
 	VerifyPaymentInstrumentsResponseDTO
-} = require("../../data/wallet-management/VerifyPaymentInstrumentsResponse");
-const {
-	VerifyPaymentInstrumentsRequestDTO
-} = require("../../data/wallet-management/VerifyPaymentInstrumentsRequest");
-const {
-	ListPaymentInstrumentsResponseDTO
-} = require("../../data/wallet-management/ListPaymentInstrumentsResponse");
-const {
-	ListPaymentInstrumentsRequestDTO
-} = require("../../data/wallet-management/ListPaymentInstrumentsRequest");
+} = require("../../data/wallet-management/instruments");
 const apiFactory = require("../../../src/api/wallet-management/instruments");
 
 describe("Instruments", function () {
 	let apiClient;
 	let api;
-
-	function setResponse(response) {
-		apiClient.response = {
-			data: response,
-			meta: {}
-		};
-	}
 
 	beforeEach(function () {
 		apiClient = new StubApiClient();
@@ -42,41 +26,53 @@ describe("Instruments", function () {
 	});
 
 	describe("import", function () {
+		beforeEach(function () {
+			apiClient.response = ImportPaymentInstrumentsResponseDTO();
+		});
+
 		it("should set request params", async function () {
-			await api.import(ImportPaymentInstrumentsRequestDTO());
+			await api.import(ImportPaymentInstrumentsRequest());
 			const request = apiClient.request;
 
 			assertThat(request.method, is(HttpRequestMethod.POST));
 			assertThat(request.url, is("/instruments/import"));
-			assertThat(request.body, is(ImportPaymentInstrumentsRequestDTO()));
+			assertThat(request.body, is(ImportPaymentInstrumentsRequest()));
 		});
 
-		it("should return ImportPaymentInstrumentsResponseDTO", async function () {
-			setResponse(ImportPaymentInstrumentsResponseDTO());
-			const result = await api.import(ImportPaymentInstrumentsRequestDTO());
-			assertThat(result.data, is(ImportPaymentInstrumentsResponseDTO()));
+		it("should import instruments", async function () {
+			const result = await api.import(ImportPaymentInstrumentsRequest());
+
+			assertThat(result, is(ImportPaymentInstrumentsResponseDTO()));
 		});
 	});
 
 	describe("verify", function () {
-		it("should set arequest params", async function () {
-			await api.verify(VerifyPaymentInstrumentsRequestDTO());
+		beforeEach(function () {
+			apiClient.response = VerifyPaymentInstrumentsResponseDTO();
+		});
+
+		it("should set request params", async function () {
+			await api.verify(VerifyPaymentInstrumentsRequest());
 			const request = apiClient.request;
 
 			assertThat(request.method, is(HttpRequestMethod.POST));
 			assertThat(request.url, is("/instruments/verify"));
-			assertThat(request.body, is(VerifyPaymentInstrumentsRequestDTO()));
+			assertThat(request.body, is(VerifyPaymentInstrumentsRequest()));
 		});
 
-		it("should return VerifyPaymentInstrumentsResponseDTO", async function () {
-			setResponse(VerifyPaymentInstrumentsResponseDTO());
-			const result = await api.verify(VerifyPaymentInstrumentsRequestDTO());
-			assertThat(result.data, is(VerifyPaymentInstrumentsResponseDTO()));
+		it("should verify instruments", async function () {
+			const result = await api.verify(VerifyPaymentInstrumentsRequest());
+
+			assertThat(result, is(VerifyPaymentInstrumentsResponseDTO()));
 		});
 	});
 
 	describe("getList", function () {
-		it("should set arequest params", async function () {
+		beforeEach(function () {
+			apiClient.response = ListPaymentInstrumentsResponseDTO();
+		});
+
+		it("should set request params", async function () {
 			await api.getList();
 			const request = apiClient.request;
 
@@ -84,27 +80,31 @@ describe("Instruments", function () {
 			assertThat(request.url, is("/instruments"));
 		});
 
-		it("should return ListPaymentInstrumentsResponseDTO", async function () {
-			setResponse(ListPaymentInstrumentsResponseDTO());
+		it("should list instruments", async function () {
 			const result = await api.getList();
-			assertThat(result.data, is(ListPaymentInstrumentsResponseDTO()));
+
+			assertThat(result, is(ListPaymentInstrumentsResponseDTO()));
 		});
 	});
 
 	describe("postList", function () {
-		it("should set arequest params", async function () {
-			await api.postList(ListPaymentInstrumentsRequestDTO());
+		beforeEach(function () {
+			apiClient.response = ListPaymentInstrumentsResponseDTO();
+		});
+
+		it("should set request params", async function () {
+			await api.postList(ListPaymentInstrumentsRequest());
 			const request = apiClient.request;
 
 			assertThat(request.method, is(HttpRequestMethod.POST));
 			assertThat(request.url, is("/instruments"));
-			assertThat(request.body, is(ListPaymentInstrumentsRequestDTO()));
+			assertThat(request.body, is(ListPaymentInstrumentsRequest()));
 		});
 
-		it("should return ListPaymentInstrumentsResponseDTO", async function () {
-			setResponse(ListPaymentInstrumentsResponseDTO());
-			const result = await api.postList(ListPaymentInstrumentsRequestDTO());
-			assertThat(result.data, is(ListPaymentInstrumentsResponseDTO()));
+		it("should list instruments", async function () {
+			const result = await api.postList(ListPaymentInstrumentsRequest());
+
+			assertThat(result, is(ListPaymentInstrumentsResponseDTO()));
 		});
 	});
 
@@ -121,12 +121,6 @@ describe("Instruments", function () {
 			assertThat(request.method, is(HttpRequestMethod.DELETE));
 			assertThat(request.url, is("/instruments/:paymentInstrumentId"));
 			assertThat(request.pathParams, is({ paymentInstrumentId }));
-		});
-
-		it("should return TokenizeAndroidPayResponseDTO", async function () {
-			setResponse({});
-			const result = await api.delete(uuid());
-			assertThat(result.data, is({}));
 		});
 	});
 });

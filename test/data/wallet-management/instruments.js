@@ -1,3 +1,57 @@
+"use strict";
+
+exports.ImportPaymentInstrumentsRequest = () => ({
+	uid: "61ea4c7310df484d91e15cd6ad883ccb",
+	shopperId: "12345",
+	creditCards: [
+		{
+			transactionRef: "2000000009719570",
+			transactionTimestamp: "2017-09-26T23:11:27.000Z",
+			orderNumber: "20170505090",
+			bin: "543048",
+			cardSuffix: "4307",
+			amount: 75.5
+		}
+	],
+	payPal: {
+		customerId: "690238314",
+		payPalId: "jane.doe@paypal.com",
+		paymentMethodToken: "I7wME6uOKgsq3fz3y52s"
+	}
+});
+
+exports.ImportPaymentInstrumentsResponseDTO = () => ({
+	uid: "61ea4c7310df484d91e15cd6ad883ccb",
+	shopperId: "12345",
+	creditCards: [
+		{
+			transactionRef: "2000000009719570",
+			transactionTimestamp: "2017-09-26T23:11:27.000Z",
+			transactionType: "PURCHASE",
+			transactionResponseCode: "00",
+			transactionResponseText: "APPROVED",
+			orderNumber: "20170505090",
+			bin: "543048",
+			cardSuffix: "4307",
+			expiryMonth: "01",
+			expiryYear: "19",
+			amount: 75.5,
+			result: "OK"
+		}
+	],
+	payPal: {
+		customerId: "690238314",
+		payPalId: "jane.doe@paypal.com",
+		paymentMethodToken: "I7wME6uOKgsq3fz3y52s",
+		result: "OK"
+	}
+});
+
+exports.ListPaymentInstrumentsRequest = () => ({
+	uid: "61ea4c7310df484d91e15cd6ad883ccb",
+	shopperId: "12345"
+});
+
 exports.ListPaymentInstrumentsResponseDTO = () => ({
 	creditCards: [
 		{
@@ -124,4 +178,39 @@ exports.ListPaymentInstrumentsResponseDTO = () => ({
 				"https://{environment}.mobile-api.woolworths.com.au/wow/v1/pay/applepay/tokenize/16161"
 		}
 	}
+});
+
+exports.VerifyPaymentInstrumentsRequest = () => ({
+	clientReference: "T5ESYRPWJKPHF54",
+	paymentInstruments: [
+		{
+			paymentToken: "f63fbfa8-0a2f-48a6-9162-6b102161a05b",
+			stepUpToken: "e86b3a32-96a5-4659-b6d8-5d685bfa78e8"
+		}
+	],
+	fraudPayload: {
+		provider: "cybersource",
+		version: "CyberSourceTransaction_1.101",
+		format: "ZIP_BASE_64_ENCODED",
+		responseFormat: "ZIP_BASE_64_ENCODED",
+		message: "GzbOxpLagX6iFEb7td61cZyA="
+	}
+});
+
+exports.VerifyPaymentInstrumentsResponseDTO = () => ({
+	transactionReceipt: "1000000009303280",
+	partialSuccess: false,
+	fraudResponse: {
+		clientId: "5615334856056397603065",
+		reasonCode: "100",
+		decision: "ACCEPT"
+	},
+	verifyResponses: [
+		{
+			paymentToken: "f63fbfa8-0a2f-48a6-9162-6b102161a05b",
+			verifyTransactionRef: "1000000009303281",
+			externalServiceCode: "00",
+			externalServiceMessage: "ACCEPTED"
+		}
+	]
 });
