@@ -28,7 +28,7 @@ export interface MerchantProfileResponse {
 		};
 
 		/** The presence of this object in the response indicates that paypal is an allowed payment method and instrument in the container for the relevant merchant. */
-		paypal: {
+		payPal: {
 			/** The paypal client token used for configuration and authorization of paypal transactions. */
 			clientToken: string;
 
